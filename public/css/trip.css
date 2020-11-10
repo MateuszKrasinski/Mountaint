@@ -1,0 +1,104 @@
+main{
+ display: flex;
+ flex-direction: column;
+ justify-content: flex-start;
+ align-items: center;
+ width: 100vw;
+ height: 100vh;
+}
+header{
+ width: 60vw;
+}
+.create-trip-container{
+ display: flex;
+ height: 20vh;
+ width: 60vw;
+ background: #DA4AC21A 0% 0% no-repeat padding-box;
+ border-radius: 32px;
+}
+
+.point{
+ color: #ffffff;
+ margin-top: 2vh;
+ margin-left: 5vh;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ width: 20%;
+ height: 30%;
+ border-radius: 32px;
+ background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
+ font: normal normal bold 2.5vh Roboto Slab;
+}
+
+.description-container{
+ margin-top: 5vh;
+ display: flex;
+ flex-direction: column;
+ width: 60vw;
+ height: 40vh;
+ background: #DA4AC21A 0% 0% no-repeat padding-box;
+ border-radius: 32px;
+ font: normal normal normal 3vh Georgia;
+letter-spacing: 0px;
+color: #5B0461;
+align-items: center;
+justify-content: center;
+}
+.description-container>p{
+ width: 90%;
+ margin: 0px auto;
+ padding:2vh
+}
+.title{
+ margin-top: 1vh;
+ width: 90%;
+ font-size: 4.5vh;
+}
+
+.date-container{
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ width: 60vw;
+ height: 10vh;
+}
+
+.date-container>.input-holder{
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+ justify-content: center;
+ width: 30vh;
+ height: 7vh;
+ background:transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
+ border-radius: 32px;
+}
+.input-holder>input{
+ color: white;
+ width: 70%;
+}
+/* ::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    width: 3vh;
+    height: 3vh;
+} */
+.input-holder>label{
+ display: block;
+ text-align: center;
+ width: 30%;
+ color: white;
+ font: normal normal bold 2.5vh Roboto Slab;
+}
+
+.add-trip-container{
+ display: flex;
+ justify-content: center;
+ align-items: center;
+ width: 60vw;
+ height: 10vh;
+}
+.add-trip-container>button{
+ width: 20vh;
+ height: 7vh;
+}
