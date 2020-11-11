@@ -2,15 +2,14 @@ body{
  margin: 0px;
 }
 .container{
+ color: #FFFFFF;
  background-size: cover;
  width: 100vw;
  height: 100vh;
- background-image: url("/public/img/backgroun3.png");
+ background-image: url("/public/img/background.png");
  background-size: cover;
  display: flex;
  flex-direction: column;
- align-items: flex-start;
- justify-content: center;
 }
 
 .logo-container{
@@ -18,19 +17,21 @@ body{
  justify-content: center;
  align-items: center;
  width: 100vw;
- margin-top: 3em;
+ margin-top: 5vh;
 }
 .logo-container>a{
- width: 100%;
- display: flex;
- justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .logo-container>a>img{
- width: 40vw;
+  width: 50vw;
 }
 
+/* starter.html///////////////////////////////////////////////////////////////// */
+
 .container-left{
- margin-left: 2%;
+ margin-left: 2vw;
  width: fit-content;
  height: 100%;
  display: flex;
@@ -40,100 +41,41 @@ body{
 }
 
 .container-left h1{
- margin: 5px;
+ margin: 0;
  text-align: left;
  font: normal normal bold 6vh Roboto Slab;
  letter-spacing: 0px;
- color: #FFFFFF;
 }
 .container-left h2{
- margin: 5px;
+ margin: 0px;
+ margin-bottom: 1vh;
  text-align: left;
-font: normal normal 300 5vh Roboto Condensed;
-letter-spacing: 0px;
-color: #FFFFFF;
+ font: normal normal 300 5vh Roboto Condensed;
 }
 .container-buttons>button{
- padding: 5px;
- padding-left: 15px;
- padding-right: 15px;
- color: white;
+ padding: 1vh;
+ padding-left: 1vw;
+ padding-right: 1vw;
+ color: #FFFFFF;
  background: transparent linear-gradient(180deg, #330436 0%, #7C3E72CC 100%) 0% 0% no-repeat padding-box;
-border-radius: 32px;
-font: normal normal bold 28px/37px Roboto Slab;
+ border-radius: 32px;
+ font: normal normal bold 3vh Roboto Slab;
 }
 .container-buttons{
+ width: 100%; 
+ 
  display: flex;
  justify-content: space-around;
- width: 100%;
 }
-
-/* login html */
-
-
-
-.login-container {
-  margin: 0px auto;
-  width: 50%;
-  height: 30vh;
-  margin-top: 30vh;
-  border-radius: 32px;
-  justify-content: space-around;
-  display: flex;
-  background: transparent linear-gradient(180deg, #330436 0%, #7c3e7299 100%) 0%
-    0% no-repeat padding-box;
-  border-radius: 32px;
-}
-
-
-.login-container>form.login {
-  width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-input {
-  letter-spacing: 0px;
-  color: white;
-  background-color: transparent;
-  border: 0px;
-  border-bottom: 2px solid #ffffff99;
-  color: #ffffff99;
-  font: normal normal bold 3vh Roboto Slab;
-  width: 100%;
-}
-.login-container.login{
-  justify-content: center;
-  align-items: center;
-}
-.login-container>form>button {
-  align-items: center;
-  justify-content: center;
-  font: normal normal bold 3vh Roboto Slab;
-  color: white;
-  background-color: transparent;
-  width: 60%;
-  height: 18%;
-  background: transparent linear-gradient(180deg, #330436 0%, #7c3e72cc 100%) 0%
-    0% no-repeat padding-box;
-  border-radius: 2em;
-}
-
 
 @media only screen and (max-device-width: 420px) {
  .login-container{
-  width: 70%;
- }
- .login-container>button{
-  font-size: 3vh;
- }
- .login-container>form>input{
-  font-size: 2vh;
- }
- .logo-container>a>img{
+   margin-top: 5vh;
   width: 80%;
+  height: 50%;
+  border-radius: 50px;
  }
+ 
  .container-left h2{
   display: none;
  }

@@ -6,12 +6,11 @@ body {
   width: 100vw;
   height: 100vh;
   background-size: cover;
-  background-image: url("/public/img/backgroun3.png");
+  background-image: url("/public/img/background.png");
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-
 
 header {
   display: flex;
@@ -113,7 +112,6 @@ li i {
   height: 5vh;
 }
 
-
 li {
   text-align: left;
   color: white;
@@ -132,8 +130,8 @@ a {
   line-height: 2em;
 }
 
-.highlight{
-    color: #9c5e99;
+.highlight {
+  color: #9c5e99;
 }
 
 .button {

@@ -1,0 +1,66 @@
+.container{
+ align-items: center;
+}
+.login-container {
+  width: 50vw;
+  height: 30vh;
+  margin-top: 30vh;
+  border-radius: 32px;
+  background: transparent linear-gradient(180deg, #330436 0%, #7c3e7299 100%) 0%
+  0% no-repeat padding-box;
+
+  display: flex;
+  justify-content: space-around;
+  
+}
+
+.login-container>form.login {
+  width: 90%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.login-container>form.login>input{
+  width: 100%;
+  background-color: transparent;
+  border: 0px;
+  border-bottom: 2px solid #ffffff99;
+  color: #ffffff99;
+  font: normal normal bold 3vh Roboto Slab;
+  
+}
+.login-container.login{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-container>form>button {
+  font: normal normal bold 3vh Roboto Slab;
+  color: white;
+  width: 40%;
+  height: 18%;
+  background: transparent linear-gradient(180deg, #330436 0%, #7c3e72cc 100%) 0%
+    0% no-repeat padding-box;
+  border-radius: 32px;
+}
+
+@media only screen and (max-device-width: 420px) {
+ .login-container{
+   margin-top: 20vh;
+  width: 80%;
+  height: 50%;
+  border-radius: 50px;
+ }
+ .login-container>button{
+  font-size: 3vh;
+ }
+ .login-container>form>input{
+  font-size: 2vh;
+ }
+ .logo-container>a>img{
+  width: 80%;
+ }
+}
