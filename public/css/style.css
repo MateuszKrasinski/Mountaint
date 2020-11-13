@@ -2,22 +2,79 @@ body {
   margin: 0px;
   background-color: rgba(250, 250, 250, 0.8);
 }
-.container {
+
+.base-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100vw;
   height: 100vh;
-  background-size: cover;
-  background-image: url("/public/img/background.png");
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-header {
-  display: flex;
-  justify-content: space-around;
-  padding: 1em 2em;
-  align-items: center;
+
+main {
+  width: 80vw;
 }
+
+nav {
+  display: flex;
+  flex-direction: column;
+  width: 20vw;
+  height: 100vh;
+  background: transparent linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
+    0% no-repeat padding-box;
+  border: 1px solid #5b0461;
+  align-items: center;
+  justify-content: center;
+}
+nav>a{
+  height: 5vh;
+  display: flex;
+  justify-content: center;
+}
+nav > a > img {
+  width: 90%;
+}
+
+ul {
+  list-style-type: none;
+  font: normal normal bold 2vh Roboto Slab;
+  height: 100%;
+  width: 100%;
+  position: relative;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+li {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  margin-bottom: 1vh;
+}
+li:last-child {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+li i {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 5vh;
+  width: 5vh;
+  height: 5vh;
+}
+
+.highlight {
+  color: #f59bf0;
+}
+
+
+
 
 .add-project {
   display: flex;
@@ -38,90 +95,8 @@ header {
   padding-right: 0.5em;
 }
 
-.search-bar {
-  width: 70%;
-}
 
-.search-bar > form > input {
-  margin: 0;
-  background: #ffffff 0% 0% no-repeat padding-box;
-  border: 1px solid #da4ac233;
-  border-radius: 2em;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  letter-spacing: 0.72px;
-  color: #a8a8a8;
-  margin: 0;
-  box-sizing: border-box;
-  padding: 0.5em 0.5em;
-}
-.search-bar > form > input::placeholder {
-  color: #7c3e72b3;
-  opacity: 0.5;
-}
 
-.base-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-nav {
-  display: flex;
-  flex-direction: column;
-  width: 20vw;
-  height: 100vh;
-  background: transparent linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
-    0% no-repeat padding-box;
-  border: 1px solid #5b0461;
-  align-items: center;
-}
-
-main {
-  width: 80vw;
-}
-
-nav > a {
-  width: 80%;
-  height: 6vh;
-}
-nav > a > img {
-  width: 100%;
-}
-
-ul {
-  list-style-type: none;
-  color: white;
-  font: normal normal normal 20px/27px Segoe UI;
-  height: 100%;
-  width: 90%;
-  position: relative;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  margin-left: 10%;
-}
-
-li i {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 5vh;
-  width: 5vh;
-  height: 5vh;
-}
-
-li {
-  text-align: left;
-  color: white;
-  margin-bottom: 1em;
-}
-li:last-child {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-}
 
 a {
   color: white;
@@ -130,9 +105,6 @@ a {
   line-height: 2em;
 }
 
-.highlight {
-  color: #9c5e99;
-}
 
 .button {
   border: 1px solid #ffffff;
@@ -151,6 +123,15 @@ a {
   }
   .project {
     width: 50%;
+  }
+}
+
+@media only screen and (max-device-width: 1120px) {
+  .p2 {
+    display: none;
+  }
+  .project {
+    width: 60vw;
   }
 }
 @media only screen and (max-device-width: 420px) {

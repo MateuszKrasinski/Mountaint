@@ -1,3 +1,6 @@
+body{
+    margin: 0;
+}
 .projects{
  height: 80vh;
  width: 100%;
@@ -15,6 +18,40 @@
  height: 90%;
  width: 35%;
  
+}
+header {
+  display: flex;
+  justify-content: space-around;
+  padding: 1em 2em;
+  align-items: center;
+}
+
+.search-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
+}
+.search-bar > form{
+    width: 100%;
+    height: 5vh;
+}
+.search-bar > form > input {
+  margin: 0;
+  background: #ffffff 0% 0% no-repeat padding-box;
+  border: 1px solid #da4ac233;
+  border-radius: 2em;
+  width: 90%;
+  height: 100%;
+  text-align: center;
+  letter-spacing: 0.72px;
+  color: #a8a8a8;
+  margin: 0;
+  box-sizing: border-box;
+  padding: 0.5em 0.5em;
+}
+.search-bar > form > input::placeholder {
+  color: #7c3e72b3;
 }
 
 
@@ -70,27 +107,33 @@ opacity: 1;
  padding: 0.5em;
  height: fit-content;
  height: 45%;
- overflow: scroll;
+ overflow: hidden;
  width: 90%;
  text-align: center;
- font: normal normal normal 2vh Arial;
- letter-spacing: 0px;
+ font: normal normal normal 2.2vh Arial;
  color: #5B0461;
 }
 .social-section{
+    margin-top: 1vh;
     height: 5%;
     width: 100%;
     display: flex;
     justify-content: space-around;
     color: #5B0461 ;
 }
-
+.social-section>i{
+    display: flex;
+    width: 15%;
+    justify-content: space-around;
+    font-size: 3vh;
+}
 .button-container{
  width: 100%;
  height: 40%;
  display: flex;
  justify-content: center;
  align-items: center;
+
 }
 
 
@@ -99,8 +142,13 @@ opacity: 1;
  display: flex;
  align-items: center;
  justify-content: center;
- width: 25%;
- height: 35%;
+ width: 30%;
+ height: 40%;
+ border-radius: 32px;
+ color: #ffffff;
+ background: transparent linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
+    0% no-repeat padding-box;
+ font: normal normal bold 2vh Roboto Slab;
 }
 
 
