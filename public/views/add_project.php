@@ -14,16 +14,16 @@
 <body>
  <div class="base-container">
   <nav>
-   <a href="login.html"><img src="/public/img/logo2.png"></a>
+   <a href="login.php"><img src="/public/img/logo2.png"></a>
    <ul>
     <li>
-     <a href="trip.html"><i class="fas fa-hiking"></i></a>
-     <a href="trip.html" class="button">Trips</a>
+     <a href="trip.php"><i class="fas fa-hiking"></i></a>
+     <a href="trip.php" class="button">Trips</a>
     </li>
     <li>
-     <a href="friend.html">
+     <a href="friend.php">
       <i class="fas fa-user-friends"></i></a>
-     <a href="friend.html" class="button">Friend</a>
+     <a href="friend.php" class="button">Friend</a>
     </li>
     <li>
      <i class="fas fa-envelope-open"></i>

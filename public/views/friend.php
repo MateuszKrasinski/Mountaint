@@ -1,27 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
  <link rel="stylesheet" href="/public/css/friends.css">
  <link rel="stylesheet" href="/public/css/style.css">
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
  <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
- <title>Friends</title>
+ <title>Trips</title>
 </head>
+
 <body>
  <div class="base-container">
   <nav>
-   
-   <a href="login.html"><img src="/public/img/logo2.png"></a>
+   <a href="login.php"><img src="/public/img/logo2.png"></a>
    <ul>
     <li>
-     <a href="trip.html"><i class="fas fa-hiking highlight"></i></a>
-     <a href="trip.html" class="button">Trips</a>
+     <a href="trip.php"><i class="fas fa-hiking"></i></a>
+     <a href="trip.php" class="button">Trips</a>
     </li>
     <li>
-     <a href="friend.html">
-      <i class="fas fa-user-friends"></i></a>
-     <a href="friend.html" class="button">Friend</a>
+      <i class="fas fa-user-friends highlight"></i></a>
+      <span class="button">Friend</span>
     </li>
     <li>
      <i class="fas fa-envelope-open"></i>
@@ -41,60 +41,62 @@
    <header>
     <div class="search-bar">
      <form>
-      <input placeholder="search project">
+      <input placeholder="search friend">
      </form>
     </div>
-    <div class="add-project">
-     <a href="add_project.html"><i class="fas fa-plus"> </i>
-     <span>add project</span></a>
-    </div>
+    
    </header>
    <section class="projects">
     <div class="project 1">
      <div class="project-image">
-      <img src="/public/img/background.png">
+      <img src="/public/img/person3.svg">
      </div>
      <div class="project-info">
-      <h2>Giewont</h2>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, repellendus totam ab soluta sunt architecto eos distinctio vitae. Ab eius maxime harum quis quia alias reprehenderit perferendis totam eaque provident? </p>
+      <h2>Name Surname</h2>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, repellendus totam ab soluta sunt architecto
+       eos distinctio vitae. Ab eius maxime harum quis quia alias reprehenderit perferendis totam eaque provident? </p>
       <div class="social-section">
        <i class="fas fa-heart">600</i>
        <i class="fas fa-minus-square">600</i>
       </div>
       <div class="button-container">
-       <button class="join-btn">join</button>
+       <button class="join-btn">invite</button>
       </div>
      </div>
     </div>
     <div class="project p2">
      <div class="project-image">
-      <img src="/public/img/background.png">
+      <img src="/public/img/person2.svg">
      </div>
      <div class="project-info">
-      <h2>Giewont</h2>
-      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro odio unde beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora sapiente sunt quasi.</p>
+      <h2>Name Surname</h2>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro odio unde
+       beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora sapiente sunt
+       quasi.</p>
       <div class="social-section">
        <i class="fas fa-heart">600</i>
        <i class="fas fa-minus-square">600</i>
       </div>
       <div class="button-container">
-       <button class="join-btn">join</button>
+       <button class="join-btn">invite</button>
       </div>
      </div>
     </div>
     <div class="project p3">
      <div class="project-image">
-      <img src="/public/img/background.png">
+      <img src="/public/img/person.svg">
      </div>
      <div class="project-info">
-      <h2>Giewont</h2>
-      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis, molestias ad. Est ullam, vitae reprehenderit delectus provident non adipisci, sit placeat aut fuga odit ipsam earum laboriosam accusantium eius asperiores?</p>
+      <h2>Name Surname</h2>
+      <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis, molestias ad. Est ullam, vitae
+       reprehenderit delectus provident non adipisci, sit placeat aut fuga odit ipsam earum laboriosam accusantium eius
+       asperiores?</p>
       <div class="social-section">
        <i class="fas fa-heart">600</i>
        <i class="fas fa-minus-square">600</i>
       </div>
       <div class="button-container">
-       <button class="join-btn">join</button>
+       <button class="join-btn">invite</button>
       </div>
      </div>
     </div>
@@ -102,11 +104,12 @@
    </section>
   </main>
  </div>
- 
- 
- 
- 
+
+
+
+
  </div>
- 
+
 </body>
+
 </html>

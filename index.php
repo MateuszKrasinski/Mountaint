@@ -3,7 +3,11 @@
 
 $path = trim($_SERVER['REQUEST_URI'], '/');
 $path = parse_url($path, PHP_URL_PATH);
-Routing::get('index', 'DefaultController');
-Routing::get('friend', 'DefaultController');
+Router::get('', 'DefaultController');
+Router::get('friend', 'DefaultController');
+Router::get('starter', 'DefaultController');
+Router::get('trip', 'DefaultController');
+Router::post('login', 'SecurityController');
 
-Routing::run($path);
+
+Router::run($path);
