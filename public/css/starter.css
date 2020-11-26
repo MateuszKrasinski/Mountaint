@@ -11,7 +11,10 @@ body{
  display: flex;
  flex-direction: column;
 }
-
+a{
+ text-decoration: none;
+ color: white;
+}
 .logo-container{
  display: flex;
  justify-content: center;
@@ -59,6 +62,7 @@ body{
  color: #FFFFFF;
  background: transparent linear-gradient(180deg, #330436 0%, #7C3E72CC 100%) 0% 0% no-repeat padding-box;
  border-radius: 32px;
+ border: none;
  font: normal normal bold 3vh Roboto Slab;
 }
 .container-buttons{

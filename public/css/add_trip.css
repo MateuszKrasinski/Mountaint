@@ -1,0 +1,154 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+header {
+    width: 60vw;
+}
+
+.create-trip-container {
+    display: flex;
+    height: 20vh;
+    width: 90%;
+    background: #DA4AC21A 0% 0% no-repeat padding-box;
+    border-radius: 32px;
+}
+
+.point {
+    color: #ffffff;
+    margin-top: 2vh;
+    margin-left: 2vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    height: 30%;
+    border-radius: 32px;
+    background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
+    font: normal normal bold 2.5vh Roboto Slab;
+}
+
+.description-container {
+    width: 90%;
+    height: 30% ;
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+    background: #DA4AC21A 0% 0% no-repeat padding-box;
+    border-radius: 32px;
+    font: normal normal normal 3vh Georgia;
+    letter-spacing: 0px;
+    color: #5B0461;
+    align-items: center;
+    justify-content: center;
+}
+
+.description-container > p {
+    width: 90%;
+    height: 90%;
+    overflow: hidden;
+    margin: 0px auto;
+    padding: 2vh
+}
+
+.title {
+    margin-top: 1vh;
+    width: 90%;
+    font-size: 4.5vh;
+}
+
+.date-container {
+    margin-top: 2vh;
+    margin-left: 0px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    height: 10vh;
+}
+
+.date-container > .input-holder {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 45%;
+    height: 7vh;
+    background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
+    border-radius: 32px;
+}
+
+.input-holder > input {
+    color: white;
+    width: 20%;
+    border: none;
+    border-radius: 32px;
+}
+input::-webkit-clear-button {
+    display: none;
+}
+
+input::-webkit-calendar-picker-indicator {
+    color: rgba(0, 0, 0, 0);
+    opacity: 1
+}
+
+input::-webkit-calendar-picker-indicator:hover {
+    cursor: pointer;
+}
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+.input-holder>#start{
+    display: flex;
+    justify-content: space-between;
+    font-size: 2vh;
+    width: 60%;
+    background: transparent;
+}
+.input-holder>#finish{
+    display: flex;
+    justify-content: space-between;
+    font-size: 2vh;
+    width: 60%;
+    background: transparent;
+}
+.add-trip-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 90vw;
+    height: 10vh;
+}
+
+.add-trip-container > button {
+    width: 20vh;
+    height: 7vh;
+}
+
+button {
+    color: white;
+    border: none;
+    border-radius: 32px;
+    background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
+}
+
+
+@media only screen and (max-device-width: 800px) {
+    .create-trip-container {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 90%;
+    }
+
+    .point {
+        width: 40%;
+    }
+}

@@ -78,17 +78,18 @@ li i {
 
 .add-project {
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   flex-direction: row;
   font: normal normal normal 20px/29px Roboto Slab;
-  width: fit-content;
   background: transparent linear-gradient(180deg, #330436 0%, #7c3e72b3 100%) 0%
     0% no-repeat padding-box;
   border-radius: 2em;
+  width: 20vw;
+  height: 8vh;
   color: white;
   text-align: center;
-  padding: 0.5em 0.5em;
+  padding: 1vh 1vh
 }
 
 .add-project > i {
@@ -127,14 +128,28 @@ a {
 }
 
 @media only screen and (max-device-width: 1120px) {
-  .p2 {
+  .p3 {
     display: none;
   }
   .project {
-    width: 60vw;
+    width: 40vw;
   }
+
 }
-@media only screen and (max-device-width: 420px) {
+@media only screen and (max-device-width: 800px) {
+  .add-project > a > span {
+    display: none;
+  }
+  .add-project{
+    width: fit-content;
+    height: fit-content;
+    border-radius: 100%;
+    padding-right: 4vw;
+    padding-left: 4vw;
+    padding-top: 1vw;
+    padding-bottom: 1vw;
+  }
+
   li:last-child {
     display: none;
   }
@@ -160,7 +175,6 @@ a {
     margin: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
     width: 100%;
     flex-direction: row;
     justify-content: space-around;
@@ -171,10 +185,9 @@ a {
   .project {
     width: 100%;
   }
-  .add-project > span {
+  .add-project > a > span {
     display: none;
   }
-  .add-project > i {
-    padding: 0.1em;
-  }
+
+
 }

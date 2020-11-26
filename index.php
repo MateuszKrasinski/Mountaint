@@ -7,6 +7,9 @@ Router::get('', 'DefaultController');
 Router::get('friend', 'DefaultController');
 Router::get('starter', 'DefaultController');
 Router::get('trip', 'DefaultController');
+Router::get('add_project', 'DefaultController');
+Router::get('messages', 'DefaultController');
+Router::get('notifications', 'DefaultController');
 Router::post('login', 'SecurityController');
 
 

@@ -42,9 +42,9 @@
   color: white;
   width: 40%;
   height: 18%;
-  background: transparent linear-gradient(180deg, #330436 0%, #7c3e72cc 100%) 0%
-    0% no-repeat padding-box;
+  background: #330436;
   border-radius: 32px;
+  border: none;
 }
 
 @media only screen and (max-device-width: 420px) {

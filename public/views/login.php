@@ -11,16 +11,15 @@
 <body>
 <div class="container">
     <div class="logo-container">
-        <a href="trip.php"><img src="/public/img/logo2.png"></a>
-
+        <a href="starter"><img src="/public/img/logo2.png"></a>
     </div>
 
     <div class="login-container">
         <form class="login" action="login" method="POST">
             <div class="messages">
                 <?php
-                if(isset($messages)){
-                    foreach($messages as $message) {
+                if (isset($messages)) {
+                    foreach ($messages as $message) {
                         echo $message;
                     }
                 }

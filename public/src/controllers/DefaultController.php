@@ -23,8 +23,16 @@ class DefaultController extends AppController
         $this->render('trip');
     }
 
-    public function addProject()
+    public function add_project()
     {
         $this->render('add_project');
+    }
+    public function messages()
+    {
+        $this->render('messages');
+    }
+    public function notifications()
+    {
+        $this->render('notifications');
     }
 }
