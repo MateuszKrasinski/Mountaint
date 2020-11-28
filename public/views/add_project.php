@@ -41,42 +41,33 @@
         </ul>
     </nav>
     <main>
-        <header>
-            <div class="search-bar">
-                <form>
-                    <input placeholder="type next point">
-                </form>
+        <form action="addTrip" method="POST" ENCTYPE="multipart/form-data">
+            <div class="messages">
+                <?php
+                if (isset($messages)) {
+                    foreach ($messages as $message) {
+                        echo $message;
+                    }
+                }
+                ?>
             </div>
-        </header>
-        <div class="create-trip-container">
-            <div class="point">place #1</div>
-            <div class="point">place #1</div>
-            <div class="point">place #1</div>
-            <div class="point">place #1</div>
-        </div>
-        <div class="description-container">
-            <div class="title">
-                Description:
-            </div>
-            <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. In excepturi voluptatum exercitationem unde sed
-                voluptas fugit velit accusantium explicabo nobis praesentium labore, laboriosam quam magni inventore
-                nihil incidunt aspernatur optio.
-        </div>
-        <div class="date-container">
-            <form class="input-holder">
-                <label>Start:</label>
-                <input type="date" id="start" name="trip-start" value="2020-11-1">
+            <div class="first-line">
+                <input class="title" name="title" type="text" placeholder="title">
+                <div class="file-upload">
+                    <input type="file" name="file" placeholder="" class="custom-file-input"/>
 
-            </form>
-            <form class="input-holder">
-                <label>Finish:</label>
-                <input type="date" id="finish" name="trip-start" value="2020-11-1">
-            </form>
-        </div>
-        <div class="add-trip-container">
-            <button>add trip</button>
-        </div>
+                </div>
+            </div>
+
+            <textarea name="description" rows=5 placeholder="description"></textarea>
+
+
+            <div class="date-container">
+                <input type="date" class="date-input" name="date_start" value="2020-11-1" placeholder="start">
+                <input type="date" class="date-input" name="date_finish" value="2020-11-1" placeholder="finish">
+            </div>
+            <button type="submit">new trip</button>
+        </form>
 
 
     </main>

@@ -47,8 +47,8 @@
                 </form>
             </div>
             <div class="add-project">
-                <a href="add_project"><i class="fas fa-plus"> </i></a>
-                <a href="add_project"><span>add project</span></a>
+                <a href="addTrip"><i class="fas fa-plus"> </i></a>
+                <a href="addTrip"><span>add project</span></a>
             </div>
         </header>
         <section class="projects">
@@ -90,13 +90,21 @@
             </div>
             <div class="project p3">
                 <div class="project-image">
-                    <img src="/public/img/background.png">
+                    <img src="/public/img/uploads/<?= $project->getImage() ?>">
                 </div>
                 <div class="project-info">
-                    <h2>Giewont</h2>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis, molestias ad. Est ullam,
-                        vitae reprehenderit delectus provident non adipisci, sit placeat aut fuga odit ipsam earum
-                        laboriosam accusantium eius asperiores?</p>
+                    <h2><?= $project->getTitle() ?></h2>
+                    <div class="date-container">
+                        <div class="date">
+                            <?= $project->getDateStart() ?>
+                        </div>
+                        <div class="date">
+                            <?= $project->getDateFinish() ?>
+                        </div>
+                    </div>
+                    <p>
+                        <?= $project->getDescription() ?>
+                    </p>
                     <div class="social-section">
                         <i class="fas fa-heart">600</i>
                         <i class="fas fa-minus-square">600</i>

@@ -2,6 +2,7 @@
 
 require_once 'public/src/controllers/DefaultController.php';
 require_once 'public/src/controllers/SecurityController.php';
+require_once 'public/src/controllers/TripController.php';
 
 class Router
 {
