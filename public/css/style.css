@@ -5,8 +5,8 @@ body {
 
 .base-container {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-start;
   width: 100vw;
   height: 100vh;
 }

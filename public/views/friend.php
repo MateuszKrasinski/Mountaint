@@ -48,16 +48,21 @@
 
         </header>
         <section class="projects">
-            <div class="project 1">
+            <div class="project p1">
                 <div class="project-image">
                     <img src="/public/img/person3.svg">
                 </div>
                 <div class="project-info">
                     <h2>Name Surname</h2>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, repellendus totam ab soluta
-                        sunt architecto
-                        eos distinctio vitae. Ab eius maxime harum quis quia alias reprehenderit perferendis totam eaque
-                        provident? </p>
+                    <div class="want-to-go-container">
+                        <div class="want-to-go">Mountain</div>
+                        <div class="want-to-go">Mountain</div>
+                    </div>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
+                        odio unde
+                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
+                        sapiente sunt
+                        quasi.</p>
                     <div class="social-section">
                         <i class="fas fa-heart">600</i>
                         <i class="fas fa-minus-square">600</i>
@@ -69,10 +74,14 @@
             </div>
             <div class="project p2">
                 <div class="project-image">
-                    <img src="/public/img/person2.svg">
+                    <img src="/public/img/person.svg">
                 </div>
                 <div class="project-info">
                     <h2>Name Surname</h2>
+                    <div class="want-to-go-container">
+                        <div class="want-to-go">Mountain</div>
+                        <div class="want-to-go">Mountain</div>
+                    </div>
                     <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
                         odio unde
                         beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
@@ -89,15 +98,19 @@
             </div>
             <div class="project p3">
                 <div class="project-image">
-                    <img src="/public/img/person.svg">
+                    <img src="/public/img/person2.svg">
                 </div>
                 <div class="project-info">
                     <h2>Name Surname</h2>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Blanditiis, molestias ad. Est ullam,
-                        vitae
-                        reprehenderit delectus provident non adipisci, sit placeat aut fuga odit ipsam earum laboriosam
-                        accusantium eius
-                        asperiores?</p>
+                    <div class="want-to-go-container">
+                        <div class="want-to-go">Mountain</div>
+                        <div class="want-to-go">Mountain</div>
+                    </div>
+                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
+                        odio unde
+                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
+                        sapiente sunt
+                        quasi.</p>
                     <div class="social-section">
                         <i class="fas fa-heart">600</i>
                         <i class="fas fa-minus-square">600</i>
