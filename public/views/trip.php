@@ -106,8 +106,8 @@
                         <?= $project->getDescription() ?>
                     </p>
                     <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
+                        <i class="fas fa-heart"><?= $project->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $project->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>

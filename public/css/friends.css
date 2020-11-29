@@ -43,20 +43,21 @@ header {
 
 .search-bar > form > input {
     margin: 0;
-    background: #ffffff 0% 0% no-repeat padding-box;
-    border: 1px solid #da4ac233;
+    background: #DA4AC21A 0% 0% no-repeat padding-box;
+    border: 1px solid #330436;
     border-radius: 2em;
     width: 90%;
     height: 100%;
     text-align: center;
     letter-spacing: 0.72px;
-    color: #a8a8a8;
+    color: #330436 ;
     box-sizing: border-box;
     padding: 0.5em 0.5em;
+    opacity: 0.7;
 }
 
 .search-bar > form > input::placeholder {
-    color: #7c3e72b3;
+    color: #330436;
 }
 
 
@@ -67,7 +68,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
-    border: 2px solid #DA4AC21A;
+    border: 1px solid #330436;
     border-radius: 76px 76px 0px 0px;
 }
 
@@ -77,7 +78,7 @@ header {
     width: 30vh;
     height: 30vh;
     border-radius: 50%;
-    border: #5B0461 1px solid;
+    border: #330436 1px solid;
 }
 
 
@@ -89,7 +90,8 @@ header {
     width: 80%;
     height: 80%;
     max-height: 50%;
-    border: 2px solid #DA4AC21A;
+    border: 1px solid #330436;
+    border-top: none;
     border-radius: 0px 0px 76px 76px;
     opacity: 0.83;
 }

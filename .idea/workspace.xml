@@ -20,14 +20,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9a7818e-0042-45e4-a0cc-3b49ae52cc39" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/src/controllers/TripController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/public/src/models/Project.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/background100x100.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/public/img/placeholder-trip.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Routing.php" beforeDir="false" afterPath="$PROJECT_DIR$/Routing.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/add_trip.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/add_trip.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/friends.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/friends.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/controllers/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/src/controllers/SecurityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/models/Project.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/src/models/Project.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/views/add_project.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/add_project.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/views/trip.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/trip.php" afterDir="false" />
     </list>
@@ -43,6 +43,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="CSS File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -86,6 +87,8 @@
       <workItem from="1606410119060" duration="12485000" />
       <workItem from="1606485810315" duration="18000" />
       <workItem from="1606485891960" duration="16931000" />
+      <workItem from="1606571931171" duration="16136000" />
+      <workItem from="1606634938888" duration="10748000" />
     </task>
     <servers />
   </component>
@@ -108,11 +111,11 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1606512636137">
+    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser" timestamp="1606599625485">
       <screen x="0" y="0" width="1536" height="824" />
     </state>
     <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/1920.0.1280.680@0.0.1536.824" timestamp="1606137124102" />
-    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1606512636137" />
+    <state x="574" y="128" key="#com.intellij.ide.util.MemberChooser/0.0.1536.824/1920.0.1920.1040@0.0.1536.824" timestamp="1606599625485" />
     <state x="458" y="178" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1606139100483">
       <screen x="0" y="0" width="1536" height="824" />
     </state>

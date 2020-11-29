@@ -7,6 +7,29 @@ class Project
     private $image;
     private $date_start;
     private $date_finish;
+    private $numberOfLikes;
+    private $numberOfMinuses;
+
+
+    public function getNumberOfLikes()
+    {
+        return $this->numberOfLikes;
+    }
+
+    public function setNumberOfLikes($numberOfLikes)
+    {
+        $this->numberOfLikes = $numberOfLikes;
+    }
+
+    public function getNumberOfMinuses()
+    {
+        return $this->numberOfMinuses;
+    }
+
+    public function setNumberOfMinuses($numberOfMinuses)
+    {
+        $this->numberOfMinuses = $numberOfMinuses;
+    }
 
 
     public function getDateStart()
@@ -38,6 +61,8 @@ class Project
         $this->image = $image;
         $this->date_start = $date_start;
         $this->date_finish = $date_finish;
+        $this->numberOfLikes = 0;
+        $this->numberOfMinuses = 0;
 
     }
 

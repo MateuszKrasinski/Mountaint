@@ -5,7 +5,6 @@
     <link rel="stylesheet" href="/public/css/friends.css">
     <link rel="stylesheet" href="/public/css/add_trip.css">
     <link rel="stylesheet" href="/public/css/style.css">
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
@@ -41,7 +40,7 @@
         </ul>
     </nav>
     <main>
-        <form action="addTrip" method="POST" ENCTYPE="multipart/form-data">
+        <form onsubmit=noReload() action="addTrip" method="POST" ENCTYPE="multipart/form-data">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
@@ -51,15 +50,21 @@
                 }
                 ?>
             </div>
-            <div class="first-line">
-                <input class="title" name="title" type="text" placeholder="title">
-                <div class="file-upload">
-                    <input type="file" name="file" placeholder="" class="custom-file-input"/>
+            <div class="first-line-container">
+                <div class="first-line-left-container">
+                    <input class="title" name="title" type="text" placeholder="title">
+                    <input onkeypress="newPoint(event)" class="point-input" name="point"
+                           type="text" placeholder="next point">
+                </div>
 
+                <div class="file-upload">
+                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"/>
                 </div>
             </div>
+            <div class="create-trip-container">
 
-            <textarea name="description" rows=5 placeholder="description"></textarea>
+            </div>
+            <textarea name="description" placeholder="description"></textarea>
 
 
             <div class="date-container">
@@ -77,5 +82,5 @@
 </div>
 
 </body>
-
+<script src="/main.js"></script>
 </html>
