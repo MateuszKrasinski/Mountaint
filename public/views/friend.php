@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__.'/../src/repository/UserRepository.php';
+$repository = new UserRepository();
+$users = array($repository->getUserById(1),$repository->getUserById(2),$repository->getUserById(3));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -50,22 +56,18 @@
         <section class="projects">
             <div class="project p1">
                 <div class="project-image">
-                    <img src="/public/img/person3.svg">
+                    <img src="/public/img/person.svg">
                 </div>
                 <div class="project-info">
-                    <h2>Name Surname</h2>
+                    <h2><?=  $users[0]->getName(). " " . $users[0]->getSurname(); ?></h2>
                     <div class="want-to-go-container">
                         <div class="want-to-go">Mountain</div>
                         <div class="want-to-go">Mountain</div>
                     </div>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde
-                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
-                        sapiente sunt
-                        quasi.</p>
+                    <p><?= $users[0]->getDescription(); ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
+                        <i class="fas fa-heart"><?= $users[0]->getNumberOfHearts(); ?></i>
+                        <i class="fas fa-minus-square"><?= $users[0]->getNumberOfMinuses(); ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">invite</button>
@@ -77,19 +79,15 @@
                     <img src="/public/img/person.svg">
                 </div>
                 <div class="project-info">
-                    <h2>Name Surname</h2>
+                    <h2><?=  $users[2]->getName(). " " . $users[2]->getSurname(); ?></h2>
                     <div class="want-to-go-container">
                         <div class="want-to-go">Mountain</div>
                         <div class="want-to-go">Mountain</div>
                     </div>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde
-                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
-                        sapiente sunt
-                        quasi.</p>
+                    <p><?= $users[2]->getDescription(); ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
+                        <i class="fas fa-heart"><?= $users[2]->getNumberOfHearts(); ?></i>
+                        <i class="fas fa-minus-square"><?= $users[2]->getNumberOfMinuses(); ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">invite</button>
@@ -98,22 +96,18 @@
             </div>
             <div class="project p3">
                 <div class="project-image">
-                    <img src="/public/img/person2.svg">
+                    <img src="/public/img/person.svg">
                 </div>
                 <div class="project-info">
-                    <h2>Name Surname</h2>
+                    <h2><?=  $users[1]->getName(). " " . $users[1]->getSurname(); ?></h2>
                     <div class="want-to-go-container">
                         <div class="want-to-go">Mountain</div>
                         <div class="want-to-go">Mountain</div>
                     </div>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde
-                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
-                        sapiente sunt
-                        quasi.</p>
+                    <p><?= $users[1]->getDescription(); ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
+                        <i class="fas fa-heart"><?= $users[1]->getNumberOfHearts(); ?></i>
+                        <i class="fas fa-minus-square"><?= $users[1]->getNumberOfMinuses(); ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">invite</button>

@@ -35,7 +35,7 @@
             </li>
             <li>
                 <i class="fas fa-cog"></i>
-                <a href="#" class="button">Settings</a>
+                <a href="profile" class="button">Settings</a>
             </li>
         </ul>
     </nav>
@@ -52,18 +52,24 @@
             </div>
         </header>
         <section class="projects">
-            <div class="project 1">
+            <div class="project p1">
                 <div class="project-image">
-                    <img src="/public/img/background.png">
+                    <img src="<?= Database::$base[0]->getImage() ?>">
                 </div>
                 <div class="project-info">
-                    <h2>Giewont</h2>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, repellendus totam ab soluta
-                        sunt architecto eos distinctio vitae. Ab eius maxime harum quis quia alias reprehenderit
-                        perferendis totam eaque provident? </p>
+                    <h2><?= Database::$base[0]->getTitle() ?></h2>
+                    <div class="date-container">
+                        <div class="date">
+                            <?= Database::$base[0]->getDateStart() ?>
+                        </div>
+                        <div class="date">
+                            <?= Database::$base[0]->getDateFinish() ?>
+                        </div>
+                    </div>
+                    <p><?= Database::$base[0]->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
+                        <i class="fas fa-heart"><?= Database::$base[0]->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= Database::$base[0]->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
@@ -72,16 +78,22 @@
             </div>
             <div class="project p2">
                 <div class="project-image">
-                    <img src="/public/img/background.png">
+                    <img src="<?= Database::$base[1]->getImage() ?>">
                 </div>
                 <div class="project-info">
-                    <h2>Giewont</h2>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut
-                        tempora sapiente sunt quasi.</p>
+                    <h2><?= Database::$base[1]->getTitle() ?></h2>
+                    <div class="date-container">
+                        <div class="date">
+                            <?= Database::$base[1]->getDateStart() ?>
+                        </div>
+                        <div class="date">
+                            <?= Database::$base[1]->getDateFinish() ?>
+                        </div>
+                    </div>
+                    <p><?= Database::$base[1]->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
+                        <i class="fas fa-heart"><?= Database::$base[1]->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= Database::$base[1]->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
@@ -90,24 +102,22 @@
             </div>
             <div class="project p3">
                 <div class="project-image">
-                    <img src="/public/img/uploads/<?= $project->getImage() ?>">
+                    <img src="<?= Database::$base[2]->getImage() ?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= $project->getTitle() ?></h2>
+                    <h2><?= Database::$base[2]->getEmail() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= $project->getDateStart() ?>
+                            <?= Database::$base[2]->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= $project->getDateFinish() ?>
+                            <?= Database::$base[2]->getDateFinish() ?>
                         </div>
                     </div>
-                    <p>
-                        <?= $project->getDescription() ?>
-                    </p>
+                    <p><?= Database::$base[2]->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= $project->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $project->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart"><?= Database::$base[2]->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= Database::$base[2]->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>

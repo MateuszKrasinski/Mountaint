@@ -1,5 +1,7 @@
 <?php
 require_once 'AppController.php';
+require_once __DIR__ . '/../models/Project.php';
+require_once __DIR__.'/../repository/UserRepository.php';
 
 class DefaultController extends AppController
 {
@@ -19,7 +21,10 @@ class DefaultController extends AppController
     }
 
     public function trip()
+
     {
+
+
         $this->render('trip');
     }
 
@@ -27,12 +32,19 @@ class DefaultController extends AppController
     {
         $this->render('add_project');
     }
+
     public function messages()
     {
         $this->render('messages');
     }
+
     public function notifications()
     {
         $this->render('notifications');
+    }
+
+    public function profile()
+    {
+        $this->render('profile');
     }
 }

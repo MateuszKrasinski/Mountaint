@@ -21,7 +21,6 @@ class TripController extends AppController
             );
 
             // TODO create new project object and save it in database
-            $project = new Project($_POST['title'], $_POST['description'], $_FILES['file']['name'], $_POST['date_start'], $_POST['date_finish']);
 
             return $this->render('trip', ['messages' => $this->message, 'project' => $project]);
         }
