@@ -1,6 +1,6 @@
 <?php
 
-class Project
+class Trip
 {
     private $title;
     private $description;
@@ -9,7 +9,6 @@ class Project
     private $date_finish;
     private $numberOfLikes;
     private $numberOfMinuses;
-
 
     public function getNumberOfLikes()
     {
@@ -54,7 +53,7 @@ class Project
         $this->date_finish = $date_finish;
     }
 
-    public function __construct($title, $description, $image, $date_start, $date_finish)
+    public function __construct($title, $description, $date_start, $date_finish, string $image = 'public/img/background100x100.png')
     {
         $this->title = $title;
         $this->description = $description;

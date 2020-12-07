@@ -1,3 +1,9 @@
+<?php
+require_once __DIR__.'/../src/repository/TripRepository.php';
+$repository = new TripRepository();
+$trips = array($repository->getTripById(1), $repository->getTripById(2), $repository->getTripById(3));
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -54,22 +60,22 @@
         <section class="projects">
             <div class="project p1">
                 <div class="project-image">
-                    <img src="<?= Database::$base[0]->getImage() ?>">
+                    <img src="<?= $trips[0]->getImage()?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= Database::$base[0]->getTitle() ?></h2>
+                    <h2><?= $trips[0]->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= Database::$base[0]->getDateStart() ?>
+                            <?= $trips[0]->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= Database::$base[0]->getDateFinish() ?>
+                            <?= $trips[0]->getDateFinish() ?>
                         </div>
                     </div>
-                    <p><?= Database::$base[0]->getDescription() ?></p>
+                    <p><?= $trips[0]->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= Database::$base[0]->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= Database::$base[0]->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart"><?= $trips[0]->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $trips[0]->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
@@ -78,22 +84,22 @@
             </div>
             <div class="project p2">
                 <div class="project-image">
-                    <img src="<?= Database::$base[1]->getImage() ?>">
+                    <img src="<?= $trips[1]->getImage()?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= Database::$base[1]->getTitle() ?></h2>
+                    <h2><?= $trips[1]->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= Database::$base[1]->getDateStart() ?>
+                            <?= $trips[1]->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= Database::$base[1]->getDateFinish() ?>
+                            <?= $trips[1]->getDateFinish() ?>
                         </div>
                     </div>
-                    <p><?= Database::$base[1]->getDescription() ?></p>
+                    <p><?= $trips[1]->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= Database::$base[1]->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= Database::$base[1]->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart"><?= $trips[1]->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $trips[1]->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
@@ -102,22 +108,22 @@
             </div>
             <div class="project p3">
                 <div class="project-image">
-                    <img src="<?= Database::$base[2]->getImage() ?>">
+                    <img src="<?= $trips[2]->getImage()?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= Database::$base[2]->getEmail() ?></h2>
+                    <h2><?= $trips[2]->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= Database::$base[2]->getDateStart() ?>
+                            <?= $trips[2]->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= Database::$base[2]->getDateFinish() ?>
+                            <?= $trips[2]->getDateFinish() ?>
                         </div>
                     </div>
-                    <p><?= Database::$base[2]->getDescription() ?></p>
+                    <p><?= $trips[2]->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= Database::$base[2]->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= Database::$base[2]->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart"><?= $trips[2]->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $trips[2]->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
