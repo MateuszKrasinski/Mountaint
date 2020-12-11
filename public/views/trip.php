@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/../src/repository/TripRepository.php';
 $repository = new TripRepository();
-$trips = array($repository->getTripById(1), $repository->getTripById(2), $repository->getTripById(3));
+$trips = array($repository->getTrip(13), $repository->getTrip(13), $repository->getTrip(13));
 ?>
 
 <!DOCTYPE html>

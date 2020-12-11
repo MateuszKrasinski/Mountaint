@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__.'/../src/repository/UserRepository.php';
 $repository = new UserRepository();
-$users = array($repository->getUserById(1),$repository->getUserById(2),$repository->getUserById(3));
+$users = array($repository->getUser(1),$repository->getUser(2),$repository->getUser(3));
 ?>
 
 <!DOCTYPE html>

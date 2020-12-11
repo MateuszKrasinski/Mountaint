@@ -53,7 +53,7 @@ class Trip
         $this->date_finish = $date_finish;
     }
 
-    public function __construct($title, $description, $date_start, $date_finish, string $image = 'public/img/background100x100.png')
+    public function __construct($title, $description, $image = 'public/img/background100x100.png', $date_start=0, $date_finish=0)
     {
         $this->title = $title;
         $this->description = $description;

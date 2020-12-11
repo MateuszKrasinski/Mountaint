@@ -15,24 +15,13 @@ class User {
         string $email,
         string $password,
         string $name,
-        string $surname,
-        string $id,
-        string $description = '',
-        string $photo = __DIR__.'/img/person2.svg',
-        int $numberOfHearts = 0 ,
-        int $numberOfMinuses = 0
+        string $surname
     ) {
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
-        $this->id = $id;
-        $this->photo = $photo;
-        $this->numberOfMinuses = $numberOfMinuses;
-        $this->numberOfHearts = $numberOfHearts;
-        $this->description = $description;
     }
-
     /**
      * @return string
      */

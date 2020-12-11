@@ -41,4 +41,12 @@ class Database {
             die("Connection failed: " . $e->getMessage());
         }
     }
+
+    /**
+     * @return string
+     */
+    public function getDatabase(): string
+    {
+        return $this->database;
+    }
 }

@@ -5,12 +5,13 @@ require_once __DIR__.'/../models/Trip.php';
 
 class TripRepository extends Repository
 {
-    public static function getTripById(int $id): ?Trip
+
+    public function getTrip(int $id): ?Trip
     {
-        $stmt = Database::getInstance() ->connect()->prepare('
+        $stmt = $this->database->connect()->prepare('
             SELECT * FROM public.trips WHERE id = :id
         ');
-        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
 
         $trip = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -22,8 +23,27 @@ class TripRepository extends Repository
         return new Trip(
             $trip['title'],
             $trip['description'],
-            $trip['date_finish'],
-            $trip['date_start'],
+            $trip['image']
         );
+    }
+
+    public function addTrip(Trip $trip): void
+    {
+        $date = new DateTime();
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO trips (title, description, image, created_at, id_assigned_by)
+            VALUES (?, ?, ?, ?, ?)
+        ');
+
+        //TODO you should get this value from logged user session
+        $assignedById = 1;
+
+        $stmt->execute([
+            $trip->getTitle(),
+            $trip->getDescription(),
+            $trip->getImage(),
+            $date->format('Y-m-d'),
+            $assignedById
+        ]);
     }
 }
