@@ -20,7 +20,7 @@
         </div>
         <div class="container-buttons">
             <button type="submit"><a href="login">log in</a></button>
-            <button type="submit"><a href="login">sign up</a></button>
+            <button type="submit"><a href="register">sign up</a></button>
         </div>
     </div>
 

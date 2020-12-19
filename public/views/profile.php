@@ -89,5 +89,5 @@
 </div>
 
 </body>
-<script src="/main.js"></script>
+<script src="/public/js/main.js"></script>
 </html>

@@ -1,8 +1,3 @@
-<?php
-require_once __DIR__.'/../src/repository/TripRepository.php';
-$repository = new TripRepository();
-$trips = array($repository->getTrip(13), $repository->getTrip(13), $repository->getTrip(13));
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,79 +53,32 @@ $trips = array($repository->getTrip(13), $repository->getTrip(13), $repository->
             </div>
         </header>
         <section class="projects">
+            <?php foreach ($trips as $trip): ?>
             <div class="project p1">
                 <div class="project-image">
-                    <img src="<?= $trips[0]->getImage()?>">
+                    <img src="public/img/uploads/<?= $trip->getImage()?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= $trips[0]->getTitle() ?></h2>
+                    <h2><?= $trip->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= $trips[0]->getDateStart() ?>
+                            <?= $trip->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= $trips[0]->getDateFinish() ?>
+                            <?= $trip->getDateFinish() ?>
                         </div>
                     </div>
-                    <p><?= $trips[0]->getDescription() ?></p>
+                    <p><?= $trip->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= $trips[0]->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $trips[0]->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart"><?= $trip->getNumberOfLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $trip->getNumberOfMinuses() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
                     </div>
                 </div>
             </div>
-            <div class="project p2">
-                <div class="project-image">
-                    <img src="<?= $trips[1]->getImage()?>">
-                </div>
-                <div class="project-info">
-                    <h2><?= $trips[1]->getTitle() ?></h2>
-                    <div class="date-container">
-                        <div class="date">
-                            <?= $trips[1]->getDateStart() ?>
-                        </div>
-                        <div class="date">
-                            <?= $trips[1]->getDateFinish() ?>
-                        </div>
-                    </div>
-                    <p><?= $trips[1]->getDescription() ?></p>
-                    <div class="social-section">
-                        <i class="fas fa-heart"><?= $trips[1]->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $trips[1]->getNumberOfMinuses() ?></i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">join</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project p3">
-                <div class="project-image">
-                    <img src="<?= $trips[2]->getImage()?>">
-                </div>
-                <div class="project-info">
-                    <h2><?= $trips[2]->getTitle() ?></h2>
-                    <div class="date-container">
-                        <div class="date">
-                            <?= $trips[2]->getDateStart() ?>
-                        </div>
-                        <div class="date">
-                            <?= $trips[2]->getDateFinish() ?>
-                        </div>
-                    </div>
-                    <p><?= $trips[2]->getDescription() ?></p>
-                    <div class="social-section">
-                        <i class="fas fa-heart"><?= $trips[2]->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $trips[2]->getNumberOfMinuses() ?></i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">join</button>
-                    </div>
-                </div>
-            </div>
-
+            <?php endforeach  ?>
         </section>
     </main>
 </div>

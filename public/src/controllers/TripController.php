@@ -18,7 +18,13 @@ class TripController extends AppController {
         parent::__construct();
         $this->tripRepository = new TripRepository();
     }
+    public function trip()
 
+    {
+        $trips = $this->tripRepository->getTrips();
+
+        $this->render('trip', ['trips' => $trips]);
+    }
     public function addTrip()
     {
         if ($this->isPost() && is_uploaded_file($_FILES['file']['tmp_name']) && $this->validate($_FILES['file'])) {
@@ -31,7 +37,9 @@ class TripController extends AppController {
             $trip = new Trip($_POST['title'], $_POST['description'], $_FILES['file']['name']);
             $this->tripRepository->addTrip($trip);
 
-            return $this->render('trip', ['messages' => $this->message]);
+            return $this->render('trip', [
+                'trips' => $this->tripRepository->getTrips(),
+                'messages' => $this->message]);
         }
         return $this->render('add_project', ['messages' => $this->message]);
     }

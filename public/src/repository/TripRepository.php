@@ -46,4 +46,22 @@ class TripRepository extends Repository
             $assignedById
         ]);
     }
+
+    public function getTrips(): array{
+        $result = [];
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM trips
+        ');
+        $stmt->execute();
+        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($trips as $trip){
+            $result[] = new Trip(
+                $trip['title'],
+                $trip['description'],
+                $trip['image']
+            );
+        }
+
+        return $result;
+    }
 }
