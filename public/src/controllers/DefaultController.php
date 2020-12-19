@@ -7,7 +7,7 @@ class DefaultController extends AppController
 {
     public function index()
     {
-        $this->render('login', ['message']);
+        $this->render('starter', ['message']);
     }
 
     public function friend()

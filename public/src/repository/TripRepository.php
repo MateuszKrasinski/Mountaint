@@ -36,7 +36,7 @@ class TripRepository extends Repository
         ');
 
         //TODO you should get this value from logged user session
-        $assignedById = 1;
+        $assignedById = 9;
 
         $stmt->execute([
             $trip->getTitle(),

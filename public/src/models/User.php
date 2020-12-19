@@ -1,27 +1,27 @@
 <?php
 
-class User {
+class User
+{
     private $email;
     private $password;
     private $name;
     private $surname;
-    private $id;
-    private $photo;
-    private $numberOfHearts;
-    private $numberOfMinuses;
-    private $description;
-
+    private $phone;
     public function __construct(
         string $email,
         string $password,
         string $name,
-        string $surname
-    ) {
+        string $surname,
+        string $phone
+    )
+    {
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
+        $this->phone = $phone;
     }
+
     /**
      * @return string
      */
@@ -89,82 +89,17 @@ class User {
     /**
      * @return string
      */
-    public function getId(): string
+    public function getPhone(): string
     {
-        return $this->id;
+        return $this->phone;
     }
 
     /**
-     * @param string $id
+     * @param string $phone
      */
-    public function setId(string $id): void
+    public function setPhone(string $phone): void
     {
-        $this->id = $id;
+        $this->phone = $phone;
     }
-
-    /**
-     * @return string
-     */
-    public function getPhoto(): string
-    {
-        return $this->photo;
-    }
-
-    /**
-     * @param string $photo
-     */
-    public function setPhoto(string $photo): void
-    {
-        $this->photo = $photo;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfHearts(): int
-    {
-        return $this->numberOfHearts;
-    }
-
-    /**
-     * @param int $numberOfHearts
-     */
-    public function setNumberOfHearts(int $numberOfHearts): void
-    {
-        $this->numberOfHearts = $numberOfHearts;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberOfMinuses(): int
-    {
-        return $this->numberOfMinuses;
-    }
-
-    /**
-     * @param int $numberOfMinuses
-     */
-    public function setNumberOfMinuses(int $numberOfMinuses): void
-    {
-        $this->numberOfMinuses = $numberOfMinuses;
-    }
-
-    /**
-     * @return string
-     */
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    /**
-     * @param string $description
-     */
-    public function setDescription(string $description): void
-    {
-        $this->description = $description;
-    }
-
 
 }

@@ -25,33 +25,42 @@ class UserRepository extends Repository
             $user['email'],
             $user['password'],
             $user['name'],
-            $user['surname']
+            $user['surname'],
+            $user['phone']
         );
     }
 
     public function addUser(User $user)
     {
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO users_details (name, surname, phone)
+        $stmt2 = $this->database->connect()->prepare('
+            INSERT INTO users_details (name,surname,phone)
             VALUES (?, ?, ?)
         ');
 
-        $stmt->execute([
+        $stmt2->execute([
             $user->getName(),
             $user->getSurname(),
             $user->getPhone()
         ]);
+        $stmt = $this->database->connect()->prepare('
+            SELECT id FROM public.users_details WHERE phone = :phone
+        ');
+        $phone = $user->getPhone();
+        $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $stmt->execute();
 
+        $userID= $stmt->fetch(PDO::FETCH_ASSOC);
+        $idForeignKey = $userID['id'];
         $stmt = $this->database->connect()->prepare('
             INSERT INTO users (email, password, id_user_details)
             VALUES (?, ?, ?)
         ');
-
         $stmt->execute([
             $user->getEmail(),
             $user->getPassword(),
-            $this->getUserDetailsId($user)
+            $idForeignKey
         ]);
+
     }
 
     public function getUserDetailsId(User $user): int

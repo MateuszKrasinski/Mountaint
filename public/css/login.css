@@ -13,8 +13,20 @@
   justify-content: space-around;
   
 }
+.register-container{
+    width: 50vw;
+    height: 50vh;
+    margin-top: 10vh ;
+    border-radius: 18px;
+    background: transparent linear-gradient(180deg, #330436 0%, #7c3e7299 100%) 0%
+    0% no-repeat padding-box;
 
-.login-container>form.login {
+    display: flex;
+    justify-content: space-around;
+
+}
+
+.login-container>form.login, .register-container>form.login  {
   width: 90%;
 
   display: flex;
@@ -23,7 +35,7 @@
   align-items: center;
 }
 
-.login-container>form.login>input{
+.login-container>form.login>input, .register-container>form.login>input{
   width: 100%;
   background-color: transparent;
   border: 0px;
@@ -32,12 +44,15 @@
   font: normal normal bold 3vh Roboto Slab;
   
 }
-.login-container.login{
+.login-container.login, .register-container.login{
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.login-container>form>button {
+
+
+
+.login-container>form>button , .register-container>form>button{
   padding: 0.5vh 5vw;
   font: normal normal bold 3vh Roboto Slab;
   color: white;
@@ -72,8 +87,5 @@ button:hover{
 }
 
 .no-valid{
-    border:3px solid red;
-    border-radius: 1em;
-    box-shadow: 0 0 0.2em red;
-    outline: none;
+    border-bottom: 1px solid red !important;
 }

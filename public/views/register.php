@@ -14,8 +14,8 @@
         <a href="starter"><img src="/public/img/logo2.png"></a>
     </div>
 
-    <div class="login-container">
-        <form class="login" action="register" method="POST">
+    <div class="register-container">
+        <form class="login" action="newUser" method="POST">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
