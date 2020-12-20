@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Repository.php';
-require_once __DIR__.'/../models/User.php';
+require_once __DIR__ . '/../models/User.php';
 
 class UserRepository extends Repository
 {
@@ -30,6 +30,7 @@ class UserRepository extends Repository
             $user['id']
         );
     }
+
     public function getUsers(): ?array
     {
         $result = [];
@@ -53,6 +54,7 @@ class UserRepository extends Repository
 
         return $result;
     }
+
     public function addUser(User $user)
     {
         $stmt2 = $this->database->connect()->prepare('
@@ -65,16 +67,34 @@ class UserRepository extends Repository
             $user->getSurname(),
             $user->getPhone()
         ]);
+        $stmt3 = $this->database->connect()->prepare('
+            INSERT INTO profile_details (description,likes,dislikes,photo,first_mountain,second_mountain)
+            VALUES (?, ?, ?, ?, ?, ?)
+            returning *
+        ');
 
-        $idForeignKey = $this->getUserDetailsId($user);
+        $stmt3->execute([
+            $user->getDescription(),
+            $user->getLikes(),
+            $user->getDislikes(),
+            $user->getPhoto(),
+            $user->getFirstMountain(),
+            $user->getSecondMountain()
+
+        ]);
+        $lastInsertedRow = $stmt3->fetch(PDO::FETCH_ASSOC);
+        $idForeignKeyProfileDetails = $lastInsertedRow['id'];
+        $idForeignKeyUserDetails = $this->getUserDetailsId($user);
+
         $stmt = $this->database->connect()->prepare('
-            INSERT INTO users (email, password, id_user_details)
-            VALUES (?, ?, ?)
+            INSERT INTO users (email, password, id_user_details, id_profile_details)
+            VALUES (?, ?, ?,?)
         ');
         $stmt->execute([
             $user->getEmail(),
             $user->getPassword(),
-            $idForeignKey
+            $idForeignKeyUserDetails,
+            $idForeignKeyProfileDetails
         ]);
 
     }
@@ -87,6 +107,19 @@ class UserRepository extends Repository
         $stmt->bindParam(':name', $user->getName(), PDO::PARAM_STR);
         $stmt->bindParam(':surname', $user->getSurname(), PDO::PARAM_STR);
         $stmt->bindParam(':phone', $user->getPhone(), PDO::PARAM_STR);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data['id'];
+    }
+    public function getProfileDetailsId(User $user): int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM public.profile_details WHERE description = :description AND second_mountain = :secondMountain AND first_mountain = :firstMountain
+        ');
+        $stmt->bindParam(':description', $user->getDescription(), PDO::PARAM_STR);
+//        $stmt->bindParam(':firstMountain', $user->getFirstMountain(), PDO::PARAM_STR);
+//        $stmt->bindParam(':secondMountain', $user->getSecondMountain(), PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);

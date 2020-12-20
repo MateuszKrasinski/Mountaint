@@ -8,6 +8,13 @@ class User
     private $surname;
     private $phone;
     private $id;
+    private $description;
+    private $firstMountain;
+    private $secondMountain;
+    private $photo;
+    private $likes;
+    private $dislikes;
+
 
 
     public function __construct(
@@ -120,6 +127,102 @@ class User
     public function setId($id): void
     {
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFirstMountain()
+    {
+        return $this->firstMountain;
+    }
+
+    /**
+     * @param mixed $firstMountain
+     */
+    public function setFirstMountain($firstMountain): void
+    {
+        $this->firstMountain = $firstMountain;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSecondMountain()
+    {
+        return $this->secondMountain;
+    }
+
+    /**
+     * @param mixed $secondMountain
+     */
+    public function setSecondMountain($secondMountain): void
+    {
+        $this->secondMountain = $secondMountain;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param mixed $photo
+     */
+    public function setPhoto($photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param mixed $likes
+     */
+    public function setLikes($likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDislikes()
+    {
+        return $this->dislikes;
+    }
+
+    /**
+     * @param mixed $dislikes
+     */
+    public function setDislikes($dislikes): void
+    {
+        $this->dislikes = $dislikes;
     }
 
 }

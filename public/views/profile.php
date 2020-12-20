@@ -53,8 +53,6 @@
             <div class="first-line-container">
 
                 <div class="first-line-left-container">
-                    <?php print($user->getName()) ;
-                    print("  ".$user->getSurname()) ?>
                     <input class="title" name="title" type="text" placeholder="mountain#1">
                     <input onkeypress="newPoint(event)" class="point-input" name="point"
                            type="text" placeholder="mountain#2">
