@@ -82,6 +82,10 @@ main > form {
     height: 18vh;
     background-image: url("/public/img/placeholder-trip.jpg");
 }
+.human {
+    background-image: url("/public/img/person-placeholder.jpg");
+}
+
 
 .custom-file-input::-webkit-file-upload-button {
     visibility: hidden;

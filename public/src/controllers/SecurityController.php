@@ -14,11 +14,17 @@ class SecurityController extends AppController {
         parent::__construct();
         $this->userRepository = new UserRepository();
     }
+    public function profile()
 
+    {
+        $user = $this->userRepository->getUser($_SESSION['email']);
+
+        $this->render('profile', ['user' => $user]);
+    }
     public function friend()
 
     {
-        $users = $this->userRepository->getUsers();
+        $user = $this->userRepository->getUser($_SESSION['email']);
 
         $this->render('friend', ['users' => $users]);
     }
@@ -48,6 +54,7 @@ class SecurityController extends AppController {
         }
         $_SESSION['email'] = $email;
         $_SESSION['idUser'] = $userRepository->getUserId($user);
+        $_SESSION['user'] = $user;
 
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/trip");

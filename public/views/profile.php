@@ -40,7 +40,7 @@
         </ul>
     </nav>
     <main>
-        <form onsubmit=noReload() action="addTrip" method="POST" ENCTYPE="multipart/form-data">
+        <form onsubmit=noReload() action="setProfile" method="POST" ENCTYPE="multipart/form-data">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
@@ -51,34 +51,25 @@
                 ?>
             </div>
             <div class="first-line-container">
+
                 <div class="first-line-left-container">
-                    <input class="title" name="title" type="text" placeholder="title">
+                    <?php print($user->getName()) ;
+                    print("  ".$user->getSurname()) ?>
+                    <input class="title" name="title" type="text" placeholder="mountain#1">
                     <input onkeypress="newPoint(event)" class="point-input" name="point"
-                           type="text" placeholder="next point">
+                           type="text" placeholder="mountain#2">
                 </div>
 
                 <div class="file-upload">
-                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"/>
+                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input human"/>
                 </div>
             </div>
-            <div class="create-trip-container">
 
-            </div>
             <textarea name="description" placeholder="description"></textarea>
 
 
-            <div class="date-container">
-                <div class="date-input-container">
-                    Start:
-                    <input type="date" class="date-input" name="date_start" value="2020-11-1" placeholder="start">
-                </div>
-                <div class="date-input-container">
-                    Finish:
-                    <input type="date" class="date-input" name="date_finish" value="2020-11-1" placeholder="finish">
 
-                </div>
-            </div>
-            <button type="submit">new trip</button>
+            <button type="submit">set</button>
         </form>
 
 
