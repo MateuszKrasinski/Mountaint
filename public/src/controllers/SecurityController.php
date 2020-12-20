@@ -30,7 +30,7 @@ class SecurityController extends AppController
     public function friend()
 
     {
-        $user = $this->userRepository->getUser($_SESSION['email']);
+        $users = $this->userRepository->getUsers();
 
         $this->render('friend', ['users' => $users]);
     }
@@ -61,7 +61,8 @@ class SecurityController extends AppController
         }
         $_SESSION['email'] = $email;
         $_SESSION['idUser'] = $userRepository->getUserId($user);
-        $_SESSION['user'] = $user;
+        $_SESSION['idProfileDetails'] = $userRepository->getUserProfileDetailsId($user);
+        $_SESSION['idUserDetails'] = $userRepository->getUserDetailsId($user);
 
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/trip");

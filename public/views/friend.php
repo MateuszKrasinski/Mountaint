@@ -51,18 +51,18 @@
             <?php foreach ($users as $user): ?>
                 <div class="project p1">
                     <div class="project-image">
-                        <img src="/public/img/person.svg">
+                        <img src="/public/img/<?= $user->getPhoto(); ?>">
                     </div>
                     <div class="project-info">
                         <h2><?= $user->getName() . " " . $user->getSurname(); ?></h2>
                         <div class="want-to-go-container">
-                            <div class="want-to-go">Mountain</div>
-                            <div class="want-to-go">Mountain</div>
+                            <div class="want-to-go"><?= $user->getFirstMountain(); ?></div>
+                            <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
                         <p><?= $user->getDescription(); ?></p>
                         <div class="social-section">
-                            <i class="fas fa-heart"><?= $user->getNumberOfHearts(); ?></i>
-                            <i class="fas fa-minus-square"><?= $user->getNumberOfMinuses(); ?></i>
+                            <i class="fas fa-heart"><?= $user->getLikes(); ?></i>
+                            <i class="fas fa-minus-square"><?= $user->getDislikes(); ?></i>
                         </div>
                         <div class="button-container">
                             <button class="join-btn">invite</button>

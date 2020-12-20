@@ -15,24 +15,21 @@ class User
     private $likes;
     private $dislikes;
 
-
-
-    public function __construct(
-        string $email,
-        string $password,
-        string $name,
-        string $surname,
-        string $phone,
-        int $id = null
-    )
+    public function __construct($email, $password, $name, $surname, $phone, $description="Opis", $firstMountain="#1", $secondMountain="#2", $photo="/public/img/uploads/person.svg", $likes=0, $dislikes=0)
     {
         $this->email = $email;
         $this->password = $password;
         $this->name = $name;
         $this->surname = $surname;
         $this->phone = $phone;
-        $this->id = $id;
+        $this->description = $description;
+        $this->firstMountain = $firstMountain;
+        $this->secondMountain = $secondMountain;
+        $this->photo = $photo;
+        $this->likes = $likes;
+        $this->dislikes = $dislikes;
     }
+
 
     /**
      * @return string
