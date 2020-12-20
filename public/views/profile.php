@@ -53,8 +53,8 @@
             <div class="first-line-container">
 
                 <div class="first-line-left-container">
-                    <input class="title" name="title" type="text" placeholder="mountain#1">
-                    <input onkeypress="newPoint(event)" class="point-input" name="point"
+                    <input class="title" name="mountain1" type="text" placeholder="mountain#1">
+                    <input onkeypress="newPoint(event)" class="point-input" name="mountain2"
                            type="text" placeholder="mountain#2">
                 </div>
 

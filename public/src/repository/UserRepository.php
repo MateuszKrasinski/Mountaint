@@ -136,4 +136,36 @@ class UserRepository extends Repository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
+    public function getUserProfileDetailsId(User $user): int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM public.users WHERE email = :email 
+        ');
+        $stmt->bindParam(':email', $user->getEmail(), PDO::PARAM_STR);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data['id_profile_details'];
+    }
+
+    public function setProfile(int $idProfileDetails): void
+    {
+
+        $stmt = $this->database->connect()->prepare('
+            UPDATE public.profile_details
+            SET first_mountain = (?),
+                second_mountain = (?),
+                photo = (?),
+                description = (?)
+            WHERE id = (?)
+        ');
+
+        $stmt->execute([
+            $_POST['mountain1'],
+            $_POST['mountain2'],
+            $_FILES['file']['name'],
+            $_POST['description'],
+            $idProfileDetails
+        ]);
+    }
 }
