@@ -26,7 +26,8 @@ class UserRepository extends Repository
             $user['password'],
             $user['name'],
             $user['surname'],
-            $user['phone']
+            $user['phone'],
+            $user['id']
         );
     }
 
@@ -42,15 +43,8 @@ class UserRepository extends Repository
             $user->getSurname(),
             $user->getPhone()
         ]);
-        $stmt = $this->database->connect()->prepare('
-            SELECT id FROM public.users_details WHERE phone = :phone
-        ');
-        $phone = $user->getPhone();
-        $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
-        $stmt->execute();
 
-        $userID= $stmt->fetch(PDO::FETCH_ASSOC);
-        $idForeignKey = $userID['id'];
+        $idForeignKey = $this->getUserDetailsId($user);
         $stmt = $this->database->connect()->prepare('
             INSERT INTO users (email, password, id_user_details)
             VALUES (?, ?, ?)
@@ -71,6 +65,17 @@ class UserRepository extends Repository
         $stmt->bindParam(':name', $user->getName(), PDO::PARAM_STR);
         $stmt->bindParam(':surname', $user->getSurname(), PDO::PARAM_STR);
         $stmt->bindParam(':phone', $user->getPhone(), PDO::PARAM_STR);
+        $stmt->execute();
+
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data['id'];
+    }
+    public function getUserId(User $user): int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM public.users WHERE email = :email 
+        ');
+        $stmt->bindParam(':email', $user->getEmail(), PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);

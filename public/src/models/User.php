@@ -7,12 +7,16 @@ class User
     private $name;
     private $surname;
     private $phone;
+    private $id;
+
+
     public function __construct(
         string $email,
         string $password,
         string $name,
         string $surname,
-        string $phone
+        string $phone,
+        int $id = null
     )
     {
         $this->email = $email;
@@ -20,6 +24,7 @@ class User
         $this->name = $name;
         $this->surname = $surname;
         $this->phone = $phone;
+        $this->id = $id;
     }
 
     /**
@@ -100,6 +105,21 @@ class User
     public function setPhone(string $phone): void
     {
         $this->phone = $phone;
+    }
+    /**
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
 }

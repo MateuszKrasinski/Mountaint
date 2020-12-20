@@ -59,7 +59,7 @@
                     <img src="public/img/uploads/<?= $trip->getImage()?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= $trip->getTitle() ?></h2>
+                    <h2><?= $_SESSION['email'] ?></h2>
                     <div class="date-container">
                         <div class="date">
                             <?= $trip->getDateStart() ?>

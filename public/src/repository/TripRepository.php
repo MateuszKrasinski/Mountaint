@@ -1,7 +1,7 @@
 <?php
 
 require_once 'Repository.php';
-require_once __DIR__.'/../models/Trip.php';
+require_once __DIR__ . '/../models/Trip.php';
 
 class TripRepository extends Repository
 {
@@ -35,8 +35,7 @@ class TripRepository extends Repository
             VALUES (?, ?, ?, ?, ?)
         ');
 
-        //TODO you should get this value from logged user session
-        $assignedById = 9;
+        $assignedById = $_SESSION['idUser'];
 
         $stmt->execute([
             $trip->getTitle(),
@@ -45,16 +44,22 @@ class TripRepository extends Repository
             $date->format('Y-m-d'),
             $assignedById
         ]);
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO users_trips (id_user, id_trip)
+            VALUES (?, ?)
+        ');
+        $stmt->execute([$_SESSION['idUser'],$this->getTripId($trip)]);
     }
 
-    public function getTrips(): array{
+    public function getTrips(): array
+    {
         $result = [];
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM trips
         ');
         $stmt->execute();
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($trips as $trip){
+        foreach ($trips as $trip) {
             $result[] = new Trip(
                 $trip['title'],
                 $trip['description'],
@@ -64,4 +69,17 @@ class TripRepository extends Repository
 
         return $result;
     }
+
+    public function getTripId(Trip $trip): int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM public.trips WHERE title = :title AND description = :description
+        ');
+        $stmt->bindParam(':title', $trip->getTitle(), PDO::PARAM_STR);
+        $stmt->bindParam(':description', $trip->getDescription(), PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data['id'];
+    }
+
 }

@@ -36,7 +36,8 @@ class TripController extends AppController {
             // TODO create new trip object and save it in database
             $trip = new Trip($_POST['title'], $_POST['description'], $_FILES['file']['name']);
             $this->tripRepository->addTrip($trip);
-
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/trip");
             return $this->render('trip', [
                 'trips' => $this->tripRepository->getTrips(),
                 'messages' => $this->message]);
