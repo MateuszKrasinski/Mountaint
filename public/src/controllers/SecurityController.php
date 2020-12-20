@@ -9,11 +9,18 @@ class SecurityController extends AppController {
 
     private $message = [];
     private $userRepository;
-    static $loggedUser;
     public function __construct()
     {
         parent::__construct();
         $this->userRepository = new UserRepository();
+    }
+
+    public function friend()
+
+    {
+        $users = $this->userRepository->getUsers();
+
+        $this->render('friend', ['users' => $users]);
     }
     public function login()
     {

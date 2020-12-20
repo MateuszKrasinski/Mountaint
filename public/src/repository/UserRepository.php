@@ -30,7 +30,29 @@ class UserRepository extends Repository
             $user['id']
         );
     }
+    public function getUsers(): ?array
+    {
+        $result = [];
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM users u LEFT JOIN users_details ud 
+            ON u.id_user_details = ud.id 
+        ');
+        $stmt->execute();
 
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($users as $user) {
+            $result[] = new User(
+                $user['email'],
+                $user['password'],
+                $user['name'],
+                $user['surname'],
+                $user['phone']
+            );
+        }
+
+        return $result;
+    }
     public function addUser(User $user)
     {
         $stmt2 = $this->database->connect()->prepare('

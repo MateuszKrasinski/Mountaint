@@ -1,9 +1,3 @@
-<?php
-require_once __DIR__.'/../src/repository/UserRepository.php';
-$repository = new UserRepository();
-$users = array($repository->getUser(1),$repository->getUser(2),$repository->getUser(3));
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,67 +48,28 @@ $users = array($repository->getUser(1),$repository->getUser(2),$repository->getU
 
         </header>
         <section class="projects">
-            <div class="project p1">
-                <div class="project-image">
-                    <img src="/public/img/person.svg">
-                </div>
-                <div class="project-info">
-                    <h2><?=  $users[0]->getName(). " " . $users[0]->getSurname(); ?></h2>
-                    <div class="want-to-go-container">
-                        <div class="want-to-go">Mountain</div>
-                        <div class="want-to-go">Mountain</div>
+            <?php foreach ($users as $user): ?>
+                <div class="project p1">
+                    <div class="project-image">
+                        <img src="/public/img/person.svg">
                     </div>
-                    <p><?= $users[0]->getDescription(); ?></p>
-                    <div class="social-section">
-                        <i class="fas fa-heart"><?= $users[0]->getNumberOfHearts(); ?></i>
-                        <i class="fas fa-minus-square"><?= $users[0]->getNumberOfMinuses(); ?></i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">invite</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project p2">
-                <div class="project-image">
-                    <img src="/public/img/person.svg">
-                </div>
-                <div class="project-info">
-                    <h2><?=  $users[2]->getName(). " " . $users[2]->getSurname(); ?></h2>
-                    <div class="want-to-go-container">
-                        <div class="want-to-go">Mountain</div>
-                        <div class="want-to-go">Mountain</div>
-                    </div>
-                    <p><?= $users[2]->getDescription(); ?></p>
-                    <div class="social-section">
-                        <i class="fas fa-heart"><?= $users[2]->getNumberOfHearts(); ?></i>
-                        <i class="fas fa-minus-square"><?= $users[2]->getNumberOfMinuses(); ?></i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">invite</button>
+                    <div class="project-info">
+                        <h2><?= $user->getName() . " " . $user->getSurname(); ?></h2>
+                        <div class="want-to-go-container">
+                            <div class="want-to-go">Mountain</div>
+                            <div class="want-to-go">Mountain</div>
+                        </div>
+                        <p><?= $user->getDescription(); ?></p>
+                        <div class="social-section">
+                            <i class="fas fa-heart"><?= $user->getNumberOfHearts(); ?></i>
+                            <i class="fas fa-minus-square"><?= $user->getNumberOfMinuses(); ?></i>
+                        </div>
+                        <div class="button-container">
+                            <button class="join-btn">invite</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="project p3">
-                <div class="project-image">
-                    <img src="/public/img/person.svg">
-                </div>
-                <div class="project-info">
-                    <h2><?=  $users[1]->getName(). " " . $users[1]->getSurname(); ?></h2>
-                    <div class="want-to-go-container">
-                        <div class="want-to-go">Mountain</div>
-                        <div class="want-to-go">Mountain</div>
-                    </div>
-                    <p><?= $users[1]->getDescription(); ?></p>
-                    <div class="social-section">
-                        <i class="fas fa-heart"><?= $users[1]->getNumberOfHearts(); ?></i>
-                        <i class="fas fa-minus-square"><?= $users[1]->getNumberOfMinuses(); ?></i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">invite</button>
-                    </div>
-                </div>
-            </div>
-
+            <?php endforeach ?>
         </section>
     </main>
 </div>
