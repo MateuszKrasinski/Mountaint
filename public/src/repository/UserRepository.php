@@ -68,6 +68,7 @@ class UserRepository extends Repository
 
         return $result;
     }
+
     public function getUsersByName($searchedName): ?array
     {
         $result = [];
@@ -76,7 +77,7 @@ class UserRepository extends Repository
             ON u.id_user_details = ud.id Left Join profile_details pd on pd.id = u.id_profile_details
             where name = :name
         ');
-        $stmt->bindParam(":name",$searchedName,PDO::PARAM_STR);
+        $stmt->bindParam(":name", $searchedName, PDO::PARAM_STR);
         $stmt->execute();
 
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -157,6 +158,7 @@ class UserRepository extends Repository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
+
     public function getProfileDetailsId(User $user): int
     {
         $stmt = $this->database->connect()->prepare('
@@ -170,6 +172,7 @@ class UserRepository extends Repository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
+
     public function getUserId(User $user): int
     {
         $stmt = $this->database->connect()->prepare('
@@ -181,6 +184,7 @@ class UserRepository extends Repository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
+
     public function getUserProfileDetailsId(User $user): int
     {
         $stmt = $this->database->connect()->prepare('
@@ -193,7 +197,7 @@ class UserRepository extends Repository
         return $data['id_profile_details'];
     }
 
-    public function setProfile(int $idProfileDetails): void
+    public function setProfile(int $idProfileDetails, User $user): void
     {
 
         $stmt = $this->database->connect()->prepare('
@@ -204,11 +208,13 @@ class UserRepository extends Repository
                 description = (?)
             WHERE id = (?)
         ');
-
+        $_POST['mountain1'] != "" ? $mountain1 = $_POST['mountain1'] : $mountain1 = $user->getFirstMountain();
+        $_POST['mountain2'] != "" ? $mountain2 = $_POST['mountain2'] : $mountain2 = $user->getSecondMountain();
+        $_FILES['file']['name'] != "" ? $file = $_FILES['file']['name'] : $file = $user->getPhoto();
         $stmt->execute([
-            $_POST['mountain1'],
-            $_POST['mountain2'],
-            $_FILES['file']['name'],
+            $mountain1,
+            $mountain2,
+            $file,
             $_POST['description'],
             $idProfileDetails
         ]);

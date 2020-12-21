@@ -83,6 +83,8 @@ class SecurityController extends AppController
 
     public function setProfile()
     {
+
+
         if ($this->isPost() && is_uploaded_file($_FILES['file']['tmp_name']) && $this->validate($_FILES['file'])) {
             move_uploaded_file(
                 $_FILES['file']['tmp_name'],
@@ -91,13 +93,18 @@ class SecurityController extends AppController
 
             $user = $this->userRepository->getUser($_SESSION['email']);
             $idProfileDetails = $this->userRepository->getUserProfileDetailsId($user);
-            $this->userRepository->setProfile($idProfileDetails);
-
+            $this->userRepository->setProfile($idProfileDetails,$user);
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/friend");
-            return $this->render('friend');
         }
-        return $this->render('profile', ['messages' => $this->message]);
+        else{
+            $user = $this->userRepository->getUser($_SESSION['email']);
+            $idProfileDetails = $this->userRepository->getUserProfileDetailsId($user);
+            $this->userRepository->setProfile($idProfileDetails, $user);
+            $url = "http://$_SERVER[HTTP_HOST]";
+            header("Location: {$url}/friend");
+        }
+
     }
 
     private function validate(array $file): bool
