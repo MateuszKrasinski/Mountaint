@@ -34,7 +34,8 @@ class TripController extends AppController {
             );
 
             // TODO create new trip object and save it in database
-            $trip = new Trip($_POST['title'], $_POST['description'], $_FILES['file']['name']);
+            $trip = new Trip($_SESSION['userID'],$_POST['title'], $_POST['description'], $_FILES['file']['name'],$_POST['date_start'],
+                $_POST['time_start'],$_POST['date_finish'],$_POST['time_finish']);
             $this->tripRepository->addTrip($trip);
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/trip");

@@ -71,10 +71,12 @@
                 <div class="date-input-container">
                     Start:
                     <input type="date" class="date-input" name="date_start" value="2020-11-1" placeholder="start">
+                    <input type="time" class="date-input" name="time_start" value="0:00">
                 </div>
                 <div class="date-input-container">
                     Finish:
                     <input type="date" class="date-input" name="date_finish" value="2020-11-1" placeholder="finish">
+                    <input type="time" class="date-input" name="time_finish" value="0:00">
 
                 </div>
             </div>

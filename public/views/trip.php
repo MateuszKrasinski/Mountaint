@@ -59,19 +59,19 @@
                     <img src="public/img/uploads/<?= $trip->getImage()?>">
                 </div>
                 <div class="project-info">
-                    <h2><?= $_SESSION['email'] ?></h2>
+                    <h2><?= $trip->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
                             <?= $trip->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= $trip->getDateFinish() ?>
+                            <?= $trip->getTimeStart() ?>
                         </div>
                     </div>
                     <p><?= $trip->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= $trip->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $trip->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart"><?= $trip->getLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $trip->getDislikes() ?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>

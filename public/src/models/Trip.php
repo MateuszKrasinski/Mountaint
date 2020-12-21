@@ -7,92 +7,185 @@ class Trip
     private $image;
     private $date_start;
     private $date_finish;
-    private $numberOfLikes;
-    private $numberOfMinuses;
+    private $time_start;
+    private $time_finish;
+    private $likes;
+    private $dislikes;
+    private $organizer;
 
-    public function getNumberOfLikes()
+    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $likes = 0, $dislikes = 0)
     {
-        return $this->numberOfLikes;
-    }
-
-    public function setNumberOfLikes($numberOfLikes)
-    {
-        $this->numberOfLikes = $numberOfLikes;
-    }
-
-    public function getNumberOfMinuses()
-    {
-        return $this->numberOfMinuses;
-    }
-
-    public function setNumberOfMinuses($numberOfMinuses)
-    {
-        $this->numberOfMinuses = $numberOfMinuses;
-    }
-
-
-    public function getDateStart()
-    {
-        return $this->date_start;
-    }
-
-    public function setDateStart($date_start)
-    {
-        $this->date_start = $date_start;
-    }
-
-
-    public function getDateFinish()
-    {
-        return $this->date_finish;
-    }
-
-
-    public function setDateFinish($date_finish)
-    {
-        $this->date_finish = $date_finish;
-    }
-
-    public function __construct($title, $description, $image = 'public/img/background100x100.png', $date_start=0, $date_finish=0)
-    {
+        $this->organizer = $organizer;
         $this->title = $title;
         $this->description = $description;
         $this->image = $image;
         $this->date_start = $date_start;
         $this->date_finish = $date_finish;
-        $this->numberOfLikes = 0;
-        $this->numberOfMinuses = 0;
-
+        $this->time_start = $time_start;
+        $this->time_finish = $time_finish;
+        $this->likes = $likes;
+        $this->dislikes = $dislikes;
     }
 
-
+    /**
+     * @return mixed
+     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    public function setTitle($title)
+    /**
+     * @param mixed $title
+     */
+    public function setTitle($title): void
     {
         $this->title = $title;
     }
 
+    /**
+     * @return mixed
+     */
     public function getDescription()
     {
         return $this->description;
     }
 
-    public function setDescription($description)
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
     {
         $this->description = $description;
     }
 
+    /**
+     * @return mixed
+     */
     public function getImage()
     {
         return $this->image;
     }
 
-    public function setImage($image)
+    /**
+     * @param mixed $image
+     */
+    public function setImage($image): void
     {
         $this->image = $image;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getDateStart()
+    {
+        return $this->date_start;
+    }
+
+    /**
+     * @param mixed $date_start
+     */
+    public function setDateStart($date_start): void
+    {
+        $this->date_start = $date_start;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateFinish()
+    {
+        return $this->date_finish;
+    }
+
+    /**
+     * @param mixed $date_finish
+     */
+    public function setDateFinish($date_finish): void
+    {
+        $this->date_finish = $date_finish;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeStart()
+    {
+        return $this->time_start;
+    }
+
+    /**
+     * @param mixed $time_start
+     */
+    public function setTimeStart($time_start): void
+    {
+        $this->time_start = $time_start;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeFinish()
+    {
+        return $this->time_finish;
+    }
+
+    /**
+     * @param mixed $time_finish
+     */
+    public function setTimeFinish($time_finish): void
+    {
+        $this->time_finish = $time_finish;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLikes()
+    {
+        return $this->likes;
+    }
+
+    /**
+     * @param mixed $likes
+     */
+    public function setLikes($likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDislikes()
+    {
+        return $this->dislikes;
+    }
+
+    /**
+     * @param mixed $dislikes
+     */
+    public function setDislikes($dislikes): void
+    {
+        $this->dislikes = $dislikes;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getOrganizer()
+    {
+        return $this->organizer;
+    }
+
+    /**
+     * @param mixed $organizer
+     */
+    public function setOrganizer($organizer): void
+    {
+        $this->organizer = $organizer;
+    }
+
+
 }

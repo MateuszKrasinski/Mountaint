@@ -31,8 +31,9 @@ class TripRepository extends Repository
     {
         $date = new DateTime();
         $stmt = $this->database->connect()->prepare('
-            INSERT INTO trips (title, description, image, created_at, id_assigned_by)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO trips (title, description, image, created_at, id_assigned_by, likes, dislikes, date_start,time_start,
+                               date_finish, time_finish)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ');
 
         $assignedById = $_SESSION['idUser'];
@@ -42,13 +43,19 @@ class TripRepository extends Repository
             $trip->getDescription(),
             $trip->getImage(),
             $date->format('Y-m-d'),
-            $assignedById
+            $assignedById,
+            $trip->getLikes(),
+            $trip->getDislikes(),
+            $trip->getDateStart(),
+            $trip->getTimeStart(),
+            $trip->getDateFinish(),
+            $trip->getTimeFinish()
         ]);
         $stmt = $this->database->connect()->prepare('
             INSERT INTO users_trips (id_user, id_trip)
             VALUES (?, ?)
         ');
-        $stmt->execute([$_SESSION['idUser'],$this->getTripId($trip)]);
+        $stmt->execute([$_SESSION['idUser'], $this->getTripId($trip)]);
     }
 
     public function getTrips(): array
@@ -61,9 +68,16 @@ class TripRepository extends Repository
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($trips as $trip) {
             $result[] = new Trip(
+                $trip["id_assigned_by"],
                 $trip['title'],
                 $trip['description'],
-                $trip['image']
+                $trip['image'],
+                $trip['date_start'],
+                $trip['time_start'],
+                $trip['date_finish'],
+                $trip['time_finish'],
+                $trip['likes'],
+                $trip['dislikes']
             );
         }
 
