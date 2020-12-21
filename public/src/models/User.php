@@ -15,7 +15,7 @@ class User
     private $likes;
     private $dislikes;
 
-    public function __construct($email, $password, $name, $surname, $phone, $description="Opis", $firstMountain="#1", $secondMountain="#2", $photo="/public/img/uploads/person.svg", $likes=0, $dislikes=0)
+    public function __construct($email, $password, $name, $surname, $phone, $description="Opis", $firstMountain="mountain#1", $secondMountain="mountain2#2", $photo="/public/img/uploads/person.svg", $likes=0, $dislikes=0)
     {
         $this->email = $email;
         $this->password = $password;

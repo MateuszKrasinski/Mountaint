@@ -11,7 +11,7 @@
     <title>New Trip</title>
 </head>
 
-<body>
+<body onload="loadPhoto('<?=  $user->getPhoto();?>')">
 <div class="base-container">
     <nav>
         <a href="trip"><img src="/public/img/logo2.png"></a>
@@ -53,17 +53,20 @@
             <div class="first-line-container">
 
                 <div class="first-line-left-container">
-                    <input class="title" name="mountain1" type="text" placeholder="mountain#1">
+                    <input class="title" name="mountain1" type="text" placeholder="<?=  $user->getFirstMountain();?>">
                     <input onkeypress="newPoint(event)" class="point-input" name="mountain2"
-                           type="text" placeholder="mountain#2">
+                           type="text" placeholder="<?=  $user->getSecondMountain();?>">
                 </div>
 
                 <div class="file-upload">
-                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input human"/>
+                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"
+                           onload="loadPhoto(<?=  $user->getPhoto();?>)"/>
                 </div>
             </div>
 
-            <textarea name="description" placeholder="description"></textarea>
+            <textarea name="description" placeholder="description">
+                <?=  $user->getDescription();?>
+            </textarea>
 
 
 

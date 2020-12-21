@@ -65,3 +65,8 @@ function noReload(event) {
         event.preventDefault();
     }
 }
+function loadPhoto(photo="xD"){
+    let imgtag = document.querySelector(".custom-file-input");
+    imgtag.style.background = "url(/public/img/uploads/" + photo + ")";
+    console.log("url(/public/img/upload/" + photo + ")");
+}
