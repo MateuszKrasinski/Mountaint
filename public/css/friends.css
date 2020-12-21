@@ -4,12 +4,11 @@ body {
 
 .projects {
     height: 80vh;
-    width: 100%;
-
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
+
 }
 
 .project {
@@ -23,6 +22,7 @@ body {
 }
 
 header {
+    position: sticky;
     display: flex;
     justify-content: space-around;
     padding: 1em 2em;

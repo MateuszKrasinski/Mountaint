@@ -41,8 +41,8 @@
     <main>
         <header>
             <div class="search-bar">
-                <form>
-                    <input placeholder="search friend">
+                <form action="searchFriend" method="POST">
+                    <input type="text" placeholder="search friend" name ="name">
                 </form>
             </div>
 

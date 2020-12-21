@@ -18,6 +18,11 @@ class SecurityController extends AppController
         parent::__construct();
         $this->userRepository = new UserRepository();
     }
+    public function searchFriend(){
+        $users = $this->userRepository->getUsersByName($_POST['name']);
+
+        $this->render('friend', ['users' => $users]);
+    }
 
     public function profile()
 
@@ -63,6 +68,7 @@ class SecurityController extends AppController
         $_SESSION['idUser'] = $userRepository->getUserId($user);
         $_SESSION['idProfileDetails'] = $userRepository->getUserProfileDetailsId($user);
         $_SESSION['idUserDetails'] = $userRepository->getUserDetailsId($user);
+        $_SESSION['user'] = $user;
 
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/trip");

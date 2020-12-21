@@ -60,6 +60,37 @@ class UserRepository extends Repository
 
         return $result;
     }
+    public function getUsersByName($searchedName): ?array
+    {
+        $result = [];
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM users u LEFT JOIN users_details ud 
+            ON u.id_user_details = ud.id Left Join profile_details pd on pd.id = u.id_profile_details
+            where name = :name
+        ');
+        $stmt->bindParam(":name",$searchedName,PDO::PARAM_STR);
+        $stmt->execute();
+
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($users as $user) {
+            $result[] = new User(
+                $user['email'],
+                $user['password'],
+                $user['name'],
+                $user['surname'],
+                $user['phone'],
+                $user['description'],
+                $user['first_mountain'],
+                $user['second_mountain'],
+                $user['photo'],
+                $user['likes'],
+                $user['dislikes']
+            );
+        }
+
+        return $result;
+    }
 
     public function addUser(User $user)
     {

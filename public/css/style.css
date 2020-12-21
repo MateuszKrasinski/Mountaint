@@ -18,10 +18,12 @@ main {
 
 nav {
   display: flex;
+  position: sticky;
+  left: 0;
   flex-direction: column;
   width: 20vw;
   height: 100vh;
-  background: transparent linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
+  background: linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
     0% no-repeat padding-box;
   border: 1px solid #5b0461;
   align-items: center;
