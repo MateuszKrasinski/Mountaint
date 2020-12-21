@@ -71,14 +71,14 @@ class SecurityController extends AppController
         $_SESSION['user'] = $user;
 
         $url = "http://$_SERVER[HTTP_HOST]";
-        header("Location: {$url}/trip");
+        header("Location: {$url}/profile");
     }
 
     public function newUser(): void
     {
         $user = new User($_POST['email'], $_POST['password'], $_POST['name'], $_POST['surname'], $_POST['phone']);
         $this->userRepository->addUser($user);
-        $this->render('friend');
+        $this->render('login');
     }
 
     public function setProfile()

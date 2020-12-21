@@ -8,6 +8,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
+    white-space: nowrap;
 
 }
 
@@ -17,7 +18,7 @@ body {
     justify-content: flex-start;
     align-items: center;
     height: 90%;
-    width: 35%;
+    min-width: 35%;
 
 }
 

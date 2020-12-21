@@ -34,7 +34,7 @@
             </li>
             <li>
                 <i class="fas fa-cog"></i>
-                <a href="#" class="button">Settings</a>
+                <a href="profile" class="button">Profile</a>
             </li>
         </ul>
     </nav>
