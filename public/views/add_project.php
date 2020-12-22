@@ -70,13 +70,13 @@
             <div class="date-container">
                 <div class="date-input-container">
                     Start:
-                    <input type="date" class="date-input" name="date_start" value="2020-11-1" placeholder="start">
-                    <input type="time" class="date-input" name="time_start" value="0:00">
+                    <input type="date" class="date-input" name="date_start"  placeholder="start">
+                    <input type="time" class="date-input" name="time_start" >
                 </div>
                 <div class="date-input-container">
                     Finish:
-                    <input type="date" class="date-input" name="date_finish" value="2020-11-1" placeholder="finish">
-                    <input type="time" class="date-input" name="time_finish" value="0:00">
+                    <input type="date" class="date-input" name="date_finish"  placeholder="finish">
+                    <input type="time" class="date-input" name="time_finish" ">
 
                 </div>
             </div>
@@ -91,5 +91,6 @@
 </div>
 
 </body>
-<script src="/public/js/main.js"></script>
+<script src="/public/js/main.js" defer></script>
+<script src="/public/js/add_trip.js" defer></script>
 </html>

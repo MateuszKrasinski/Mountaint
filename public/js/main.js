@@ -14,23 +14,23 @@ function markValidation(element, condition) {
     !condition ? element.classList.add('no-valid') : element.classList.remove('no-valid')
 }
 
-emailInput.addEventListener('keyup', function () {
-    setTimeout(function () {
-        markValidation(emailInput, isEmail(emailInput.value));
-    }, 1000);
-});
+// emailInput.addEventListener('keyup', function () {
+//     setTimeout(function () {
+//         markValidation(emailInput, isEmail(emailInput.value));
+//     }, 1000);
+// });
 
-confirmedPasswordInput.addEventListener('keyup', function () {
-    setTimeout(function () {
-        console.log('password event')
-        const condition = arePasswordsSame(
-            confirmedPasswordInput.previousElementSibling.value,
-            confirmedPasswordInput.value
-        );
-        console.log(condition);
-        markValidation(confirmedPasswordInput, condition);
-    }, 1000);
-});
+// confirmedPasswordInput.addEventListener('keyup', function () {
+//     setTimeout(function () {
+//         console.log('password event')
+//         const condition = arePasswordsSame(
+//             confirmedPasswordInput.previousElementSibling.value,
+//             confirmedPasswordInput.value
+//         );
+//         console.log(condition);
+//         markValidation(confirmedPasswordInput, condition);
+//     }, 1000);
+// });
 
 // form.addEventListener("submit", e => {
 //     e.preventDefault();
@@ -50,15 +50,7 @@ function onFileSelected(event) {
     reader.readAsDataURL(selectedFile);
 }
 
-function newPoint(event) {
-    if (event.keyCode === 13) {
-        event.preventDefault();
-        let div = document.createElement("div");
-        div.setAttribute('class', 'point');
-        div.innerHTML = '<i class="fas fa-map-marker-alt"></i>' + event.target.value;
-        document.querySelector(".create-trip-container").appendChild(div);
-    }
-}
+
 
 function noReload(event) {
     if (event.keyCode === 13) {
@@ -70,3 +62,4 @@ function loadPhoto(photo="xD"){
     imgtag.style.background = "url(/public/img/uploads/" + photo + ")";
     console.log("url(/public/img/upload/" + photo + ")");
 }
+

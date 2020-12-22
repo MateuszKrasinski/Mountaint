@@ -114,18 +114,16 @@ main > form {
 }
 
 .create-trip-container > i {
+
     display: flex;
     flex-direction: row;
-    width: 20px;
-    height: 20px;
+
     justify-content: center;
     align-items: center;
-    font-size: 20px;
+    font-size: 10px;
 }
 
-.create-trip-container > i {
-    color: #330436;
-}
+
 
 form > textarea, .create-trip-container {
 
@@ -151,22 +149,44 @@ form > textarea::placeholder, .create-trip-container::placeholder {
 
 .point {
     color: #ffffff;
-    padding: 0 2vw;
     margin-top: 2vh;
     margin-left: 2vw;
     display: flex;
     align-items: center;
-    justify-content: center;
-    width: fit-content;
-    max-width: 70%;
+    justify-content: space-between;
+    width: 10%;
     overflow: hidden;
     height: 20%;
     border-radius: 18px;
     background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
     font: normal normal normal 2.5vh Roboto Slab;
-    font-size: 1vh;
+    font-size: 2vh;
+    flex-direction: column;
+    text-align: right;
 }
+.point>i{
+    margin-top: 1vh;
+    margin-right: 1vw;
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    height: 10%;
+    font-size: 7px;
+}
+.marker{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 2vh;
+}
+.marker>i{
+    font-size: 2vh;
 
+}
 
 .date-container {
     margin-top: 2vh;
