@@ -81,6 +81,13 @@ header {
     border-radius: 50%;
     border: #330436 1px solid;
 }
+.project-image > a >img {
+    position: relative;
+    width: 30vh;
+    height: 30vh;
+    border-radius: 50%;
+    border: #330436 1px solid;
+}
 
 .want-to-go-container{
     width: 90%;

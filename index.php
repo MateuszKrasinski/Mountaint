@@ -14,6 +14,7 @@ Router::post('login', 'SecurityController');
 Router::post('newUser', 'SecurityController');
 Router::post('setProfile', 'SecurityController');
 Router::post('searchFriend', 'SecurityController');
+Router::post('friendProfile', 'SecurityController');
 Router::get('register', 'DefaultController');
 
 

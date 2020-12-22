@@ -51,7 +51,9 @@
             <?php foreach ($users as $user): ?>
                 <div class="project p1">
                     <div class="project-image">
-                        <img src="/public/img/<?= $user->getPhoto(); ?>">
+                        <a  href="friendProfile?email=<?php echo $user->getEmail(); ?>">
+                            <img src="/public/img/<?= $user->getPhoto(); ?>">
+                        </a>
                     </div>
                     <div class="project-info">
                         <h2><?= $user->getName() . " " . $user->getSurname(); ?></h2>
