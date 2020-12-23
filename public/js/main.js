@@ -14,29 +14,30 @@ function markValidation(element, condition) {
     !condition ? element.classList.add('no-valid') : element.classList.remove('no-valid')
 }
 
-// emailInput.addEventListener('keyup', function () {
-//     setTimeout(function () {
-//         markValidation(emailInput, isEmail(emailInput.value));
-//     }, 1000);
-// });
+emailInput.addEventListener('keyup', function () {
+    setTimeout(function () {
+        markValidation(emailInput, isEmail(emailInput.value));
+    }, 1000);
+});
 
-// confirmedPasswordInput.addEventListener('keyup', function () {
-//     setTimeout(function () {
-//         console.log('password event')
-//         const condition = arePasswordsSame(
-//             confirmedPasswordInput.previousElementSibling.value,
-//             confirmedPasswordInput.value
-//         );
-//         console.log(condition);
-//         markValidation(confirmedPasswordInput, condition);
-//     }, 1000);
-// });
+confirmedPasswordInput.addEventListener('keyup', function () {
+    setTimeout(function () {
+        console.log('password event')
+        const condition = arePasswordsSame(
+            confirmedPasswordInput.previousElementSibling.value,
+            confirmedPasswordInput.value
+        );
+        console.log(condition);
+        markValidation(confirmedPasswordInput, condition);
+    }, 1000);
+});
 
-// form.addEventListener("submit", e => {
-//     e.preventDefault();
-//
-//     //TODO check again if form is valid after submitting it
-// });
+form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    //TODO check again if form is valid after submitting it
+});
+
 function onFileSelected(event) {
     var selectedFile = event.target.files[0];
     var reader = new FileReader();
@@ -44,6 +45,7 @@ function onFileSelected(event) {
     reader.onload = function (event) {
         let imgtag = document.querySelector(".custom-file-input");
         imgtag.style.background = "url(" + event.target.result + ")";
+        imgtag.style.backgroundSize = "cover";
 
     };
 
@@ -51,15 +53,40 @@ function onFileSelected(event) {
 }
 
 
-
 function noReload(event) {
     if (event.keyCode === 13) {
         event.preventDefault();
     }
 }
-function loadPhoto(photo="xD"){
+
+function loadPhoto(photo = "xD") {
     let imgtag = document.querySelector(".custom-file-input");
     imgtag.style.background = "url(/public/img/uploads/" + photo + ")";
-    console.log("url(/public/img/upload/" + photo + ")");
+    imgtag.style.backgroundSize = "cover";
+    let buttonsInvite = document.querySelectorAll(".join-btn");
+    buttonsInvite.forEach(function (btn) {
+        btn.addEventListener('click', function (btn) {
+            let profile = btn.target.parentElement.parentElement.parentElement;
+            let profiles = profile.parentElement
+            animation(profile);
+
+            profiles.removeChild(profile);
+
+        })
+    })
 }
+
+function animation(element) {
+    element.animate([
+        // keyframes
+        {transform: 'translateY(0px)'},
+        {transform: 'translateY(-500px)'}
+    ], {
+        // timing options
+        duration: 500,
+        iterations: 1
+    })
+}
+
+
 

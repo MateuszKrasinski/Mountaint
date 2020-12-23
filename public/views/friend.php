@@ -7,7 +7,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
-    <title>Trips</title>
+    <script src="/public/js/main.js" defer></script>
+    <script src="/public/js/projects.js" defer></script>
+
+    <title>Friends</title>
 </head>
 
 <body>

@@ -5,13 +5,14 @@
     <link rel="stylesheet" href="/public/css/friends.css">
     <link rel="stylesheet" href="/public/css/add_trip.css">
     <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/public/css/friendProfile.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
     <title>New Trip</title>
 </head>
 
-<body onload="loadPhoto('<?=  $user->getPhoto();?>')">
+<body onload="loadPhoto('<?= $user->getPhoto(); ?>')">
 <div class="base-container">
     <nav>
         <a href="trip"><img src="/public/img/logo2.png"></a>
@@ -40,38 +41,37 @@
         </ul>
     </nav>
     <main>
-        <form onsubmit=noReload() action="setProfile" method="POST" ENCTYPE="multipart/form-data">
-            <div class="messages">
-                <?php
-                if (isset($messages)) {
-                    foreach ($messages as $message) {
-                        echo $message;
-                    }
+        <div class="messages">
+            <?php
+            if (isset($messages)) {
+                foreach ($messages as $message) {
+                    echo $message;
                 }
-                ?>
-            </div>
-            <div class="first-line-container">
+            }
+            ?>
+        </div>
+        <div class="first-line-container">
+            <div class="first-line-left-container">
+                <div class="mountain"><?= $user->getName(); ?>      <?= $user->getSurname(); ?></div>
+                <div class="mountain"><?= $user->getSecondMountain(); ?></div>
+                <div class="mountain"><?= $user->getFirstMountain(); ?></div>
 
-                <div class="first-line-left-container">
-                    <input class="title" name="mountain1" type="text" placeholder="<?=  $user->getFirstMountain();?>">
-                    <input onkeypress="newPoint(event)" class="point-input" name="mountain2"
-                           type="text" placeholder="<?=  $user->getSecondMountain();?>">
-                </div>
-
-                <div class="file-upload">
-                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"
-                           onload="loadPhoto(<?=  $user->getPhoto();?>)"/>
-                </div>
             </div>
 
-            <textarea name="description" placeholder="description">
-                <?=  $user->getDescription();?>
-            </textarea>
+            <div class="photo">
+                <img src="/public/img/uploads/<?= $user->getPhoto(); ?>" alt="profile photo" width="30px">
+                <div class="social-section">
+                    <i class="fas fa-heart"><?= $user->getLikes() ?></i>
+                    <i class="fas fa-minus-square"><?= $user->getDislikes() ?></i>
+                    <i class="fas fa-user-plus"></i>
+                </div>
+            </div>
+        </div>
 
+        <div class="description">
+            <?= $user->getDescription(); ?>
+        </div>
 
-
-            <button type="submit">set</button>
-        </form>
 
 
     </main>
@@ -81,5 +81,6 @@
 </div>
 
 </body>
-<script src="/public/js/main.js"></script>
+<script src="/public/js/main.js" defer></script>
+<script src="/public/js/profileFriend.js" defer></script>
 </html>
