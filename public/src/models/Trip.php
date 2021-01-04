@@ -12,8 +12,9 @@ class Trip
     private $likes;
     private $dislikes;
     private $organizer;
+    private $id;
 
-    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $likes = 0, $dislikes = 0)
+    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $likes = 0, $dislikes = 0, $id=null)
     {
         $this->organizer = $organizer;
         $this->title = $title;
@@ -25,6 +26,7 @@ class Trip
         $this->time_finish = $time_finish;
         $this->likes = $likes;
         $this->dislikes = $dislikes;
+        $this->id = $id;
     }
 
     /**
@@ -185,6 +187,22 @@ class Trip
     public function setOrganizer($organizer): void
     {
         $this->organizer = $organizer;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param mixed|null $id
+     */
+    public function setId($id): void
+    {
+        $this->id = $id;
     }
 
 

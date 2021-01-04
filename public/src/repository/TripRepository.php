@@ -49,7 +49,7 @@ class TripRepository extends Repository
             $trip->getDateStart(),
             $trip->getTimeStart(),
             $trip->getDateFinish(),
-            $trip->getTimeFinish()
+            $trip->getTimeFinish(),
         ]);
         $stmt = $this->database->connect()->prepare('
             INSERT INTO users_trips (id_user, id_trip)
@@ -77,7 +77,8 @@ class TripRepository extends Repository
                 $trip['date_finish'],
                 $trip['time_finish'],
                 $trip['likes'],
-                $trip['dislikes']
+                $trip['dislikes'],
+                $trip['id']
             );
         }
 
@@ -108,5 +109,21 @@ class TripRepository extends Repository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function like(int $id) {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE trips SET "likes" = likes + 1 WHERE id = :id
+         ');
 
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
+
+    public function dislike(int $id) {
+        $stmt = $this->database->connect()->prepare('
+            UPDATE trips SET dislikes = dislikes + 1 WHERE id = :id
+         ');
+
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 }

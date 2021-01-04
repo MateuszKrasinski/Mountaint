@@ -12,6 +12,7 @@
     <script src="/public/js/main.js" defer></script>
 <!--    <script src="/public/js/projects.js" defer></script>-->
     <script  type="text/javascript"  src="/public/js/search.js" defer></script>
+    <script  type="text/javascript"  src="/public/js/statistics.js" defer></script>
 
     <title>Friends</title>
 </head>
@@ -56,7 +57,7 @@
         </header>
         <section class="projects">
             <?php foreach ($trips as $trip): ?>
-            <div class="project p1">
+            <div class="project p1" id="<?= $trip->getId(); ?>">
                 <div class="project-image">
                     <img src="public/img/uploads/<?= $trip->getImage()?>">
                 </div>

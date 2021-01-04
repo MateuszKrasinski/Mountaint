@@ -73,6 +73,16 @@ class TripController extends AppController {
         return true;
     }
 
+    public function like(int $id) {
+        $this->tripRepository->like($id);
+        http_response_code(200);
+    }
+
+    public function dislike(int $id) {
+        $this->tripRepository->dislike($id);
+        http_response_code(200);
+    }
+
 }
 
 
