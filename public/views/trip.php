@@ -10,7 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
     <script src="/public/js/main.js" defer></script>
-    <script src="/public/js/projects.js" defer></script>
+<!--    <script src="/public/js/projects.js" defer></script>-->
+    <script  type="text/javascript"  src="/public/js/search.js" defer></script>
 
     <title>Friends</title>
 </head>
@@ -46,9 +47,7 @@
     <main>
         <header>
             <div class="search-bar">
-                <form>
                     <input placeholder="search project">
-                </form>
             </div>
             <div class="add-project">
                 <a href="addTrip"><i class="fas fa-plus"> </i></a>
@@ -91,3 +90,31 @@
 
 </body>
 </html>
+
+<template id="project-template">
+    <div class="project p1">
+        <div class="project-image">
+            <img src="">
+        </div>
+        <div class="project-info">
+            <h2>info</h2>
+            <div class="date-container">
+                <div class="date">
+                    data
+                </div>
+                <div class="date">
+                    data
+                </div>
+            </div>
+            <p>opis</p>
+            <div class="social-section">
+                <i class="fas fa-heart">0</i>
+                <i class="fas fa-minus-square">0</i>
+            </div>
+            <div class="button-container">
+                <button class="join-btn">join</button>
+            </div>
+        </div>
+    </div>
+
+</template>
