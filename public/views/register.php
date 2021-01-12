@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/css/starter.css">
     <link rel="stylesheet" href="/public/css/login.css">
-    <script type="text/javascript" src="/public/js/main.js" defer></script>
     <title>Login page</title>
 </head>
 <body>

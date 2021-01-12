@@ -68,7 +68,7 @@ class SecurityController extends AppController
             return $this->render('login', ['messages' => ['User with this email not exist!']]);
         }
 
-        if ($user->getPassword() !== $password) {
+        if (!password_verify($password, $user->getPassword())) {
             return $this->render('login', ['messages' => ['Wrong password!']]);
         }
         $_SESSION['email'] = $email;
@@ -83,7 +83,7 @@ class SecurityController extends AppController
 
     public function newUser(): void
     {
-        $user = new User($_POST['email'], $_POST['password'], $_POST['name'], $_POST['surname'], $_POST['phone']);
+        $user = new User($_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['name'], $_POST['surname'], $_POST['phone']);
         $this->userRepository->addUser($user);
         $this->render('login');
     }
