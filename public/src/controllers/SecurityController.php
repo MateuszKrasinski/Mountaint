@@ -33,7 +33,7 @@ class SecurityController extends AppController
     public function profile()
 
     {
-        $user = $this->userRepository->getUser($_SESSION['email']);
+        $user = $this->userRepository->getUserById($_SESSION['idUser']);
 
         $this->render('profile', ['user' => $user]);
     }

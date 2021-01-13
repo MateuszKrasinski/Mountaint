@@ -12,7 +12,15 @@ class TripController extends AppController {
 
     private $message = [];
     private $tripRepository;
+    public function tripProfile()
 
+    {
+        $id = intval($_GET['profile']);
+        $trip = $this->tripRepository->getTrip(($id));
+        $this->render('trip_profile', ['trip' => $trip]);
+
+
+    }
     public function __construct()
     {
         parent::__construct();

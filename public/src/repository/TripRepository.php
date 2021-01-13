@@ -6,6 +6,9 @@ require_once __DIR__ . '/../models/Trip.php';
 class TripRepository extends Repository
 {
 
+    public function tripProfile(){
+
+    }
     public function getTrip(int $id): ?Trip
     {
         $stmt = $this->database->connect()->prepare('
@@ -21,9 +24,17 @@ class TripRepository extends Repository
         }
 
         return new Trip(
+            $trip["id_assigned_by"],
             $trip['title'],
             $trip['description'],
-            $trip['image']
+            $trip['image'],
+            $trip['date_start'],
+            $trip['time_start'],
+            $trip['date_finish'],
+            $trip['time_finish'],
+            $trip['likes'],
+            $trip['dislikes'],
+            $trip['id']
         );
     }
 

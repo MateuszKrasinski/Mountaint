@@ -11,7 +11,7 @@
     <title>New Trip</title>
 </head>
 
-<body>
+<body onload="loadPhoto('<?= $trip->getImage(); ?>')">
 <div class="base-container">
     <nav>
         <a href="trip"><img src="/public/img/logo2.png"></a>
@@ -40,7 +40,7 @@
         </ul>
     </nav>
     <main>
-        <form onsubmit=noReload() action="addTrip" method="POST" ENCTYPE="multipart/form-data">
+        <form onsubmit=noReload() action="joinTrip" method="POST" ENCTYPE="multipart/form-data">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
@@ -52,11 +52,8 @@
             </div>
             <div class="first-line-container">
                 <div class="first-line-left-container">
-                    <input class="title" name="title" type="text" placeholder="title">
-                    <input onkeypress="newPoint(event)" class="point-input" name="point"
-                           type="text" placeholder="next point">
+                    <div><?= $trip->getTitle(); ?></div>
                 </div>
-
                 <div class="file-upload">
                     <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"/>
                 </div>
@@ -64,23 +61,25 @@
             <div class="create-trip-container">
 
             </div>
-            <textarea name="description" placeholder="description"></textarea>
+            <textarea name="description" placeholder="description">
+                <?= $trip->getDescription(); ?>
+            </textarea>
 
 
             <div class="date-container">
                 <div class="date-input-container">
                     Start:
-                    <input type="date" class="date-input" name="date_start"  placeholder="start">
-                    <input type="time" class="date-input" name="time_start" >
+                    <?= $trip->getDateStart(); ?>
+                    <?= $trip->getTimeStart(); ?>
                 </div>
                 <div class="date-input-container">
                     Finish:
-                    <input type="date" class="date-input" name="date_finish"  placeholder="finish">
-                    <input type="time" class="date-input" name="time_finish" ">
+                    <?= $trip->getDateFinish(); ?>
+                    <?= $trip->getTimeFinish(); ?>
 
                 </div>
             </div>
-            <button type="submit">new trip</button>
+            <button type="submit">join</button>
         </form>
 
 

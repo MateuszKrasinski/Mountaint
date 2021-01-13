@@ -60,7 +60,9 @@
             <?php foreach ($trips as $trip): ?>
             <div class="project p1" id="<?= $trip->getId() ?>">
                 <div class="project-image">
-                    <img src="public/img/uploads/<?= $trip->getImage()?>">
+                    <a href="tripProfile?profile=<?php echo $trip->getId(); ?>">
+                        <img src="public/img/uploads/<?= $trip->getImage()?>">
+                    </a>
                 </div>
                 <div class="project-info">
                     <h2><?= $trip->getTitle() ?></h2>
