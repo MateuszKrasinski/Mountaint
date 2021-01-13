@@ -25,9 +25,16 @@ class SecurityController extends AppController
 
     public function searchFriend()
     {
-        $users = $this->userRepository->getUsersByName($_POST['name']);
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+        if ($contentType === "application/json") {
+            $content = trim(file_get_contents("php://input"));
+            $decoded = json_decode($content, true);
 
-        $this->render('friend', ['users' => $users]);
+            header('Content-type: application/json');
+            http_response_code(200);
+
+            echo json_encode($this->userRepository->getUsersByName($decoded['search']));
+        }
     }
 
     public function profile()

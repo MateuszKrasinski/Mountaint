@@ -9,6 +9,7 @@
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
     <script src="/public/js/main.js" defer></script>
     <script src="/public/js/projects.js" defer></script>
+    <script src="/public/js/searchFriend.js" defer></script>
 
     <title>Friends</title>
 </head>
@@ -44,9 +45,7 @@
     <main>
         <header>
             <div class="search-bar">
-                <form action="searchFriend" method="POST">
                     <input type="text" placeholder="search friend" name ="name">
-                </form>
             </div>
 
         </header>
@@ -64,7 +63,7 @@
                             <div class="want-to-go"><?= $user->getFirstMountain(); ?></div>
                             <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
-                        <p>                        <?= var_dump($user)?>
+                        <p>
                             <?= $user->getDescription(); ?></p>
                         <div class="social-section">
                             <i class="fas fa-heart"><?= $user->getLikes(); ?></i>
@@ -86,3 +85,28 @@
 </body>
 
 </html>
+<template id="friend-template">
+    <div class="project p1">
+        <div class="project-image">
+            <a  href="">
+                <img src="">
+            </a>
+        </div>
+        <div class="project-info">
+            <h2></h2>
+            <div class="want-to-go-container">
+                <div class="want-to-go"></div>
+                <div class="want-to-go"></div>
+            </div>
+            <p>
+            </p>
+            <div class="social-section">
+                <i class="fas fa-heart"></i>
+                <i class="fas fa-minus-square"></i>
+            </div>
+            <div class="button-container">
+                <button class="join-btn">invite</button>
+            </div>
+        </div>
+    </div>
+</template>

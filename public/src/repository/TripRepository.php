@@ -107,10 +107,9 @@ class TripRepository extends Repository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
-    public function getProjectByTitle(string $searchString)
+    public function getProjectByTitle(string $searchString): array
     {
         $searchString = '%' . strtolower($searchString) . '%';
-
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM trips WHERE LOWER(title) LIKE :search OR LOWER(description) LIKE :search
         ');
