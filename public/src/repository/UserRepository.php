@@ -35,7 +35,43 @@ class UserRepository extends Repository
             $user['second_mountain'],
             $user['photo'],
             $user['likes'],
-            $user['dislikes']
+            $user['dislikes'],
+            $user['id'],
+
+        );
+    }
+
+    public function getUserById(int $id): ?User
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM users u LEFT JOIN users_details ud 
+            ON u.id_user_details = ud.id
+            Left Join profile_details pd on pd.id = u.id_profile_details
+            WHERE u.id = :id
+
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+        if ($user == false) {
+            return null;
+        }
+        return new User(
+            $user['email'],
+            $user['password'],
+            $user['name'],
+            $user['surname'],
+            $user['phone'],
+            $user['description'],
+            $user['first_mountain'],
+            $user['second_mountain'],
+            $user['photo'],
+            $user['likes'],
+            $user['dislikes'],
+            $user['id']
         );
     }
 
@@ -43,13 +79,12 @@ class UserRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM users u LEFT JOIN users_details ud 
-            ON u.id_user_details = ud.id Left Join profile_details pd on pd.id = u.id_profile_details
+            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
         ');
         $stmt->execute();
-
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         foreach ($users as $user) {
             $result[] = new User(
                 $user['email'],
@@ -62,7 +97,8 @@ class UserRepository extends Repository
                 $user['second_mountain'],
                 $user['photo'],
                 $user['likes'],
-                $user['dislikes']
+                $user['dislikes'],
+                $user['id']
             );
         }
 
@@ -94,7 +130,8 @@ class UserRepository extends Repository
                 $user['second_mountain'],
                 $user['photo'],
                 $user['likes'],
-                $user['dislikes']
+                $user['dislikes'],
+                $user['id'],
             );
         }
 

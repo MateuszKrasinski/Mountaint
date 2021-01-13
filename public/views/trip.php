@@ -58,7 +58,7 @@
         </header>
         <section class="projects">
             <?php foreach ($trips as $trip): ?>
-            <div class="project p1" id="<?= $trip->getId(); ?>">
+            <div class="project p1" id="<?= $trip->getId() ?>">
                 <div class="project-image">
                     <img src="public/img/uploads/<?= $trip->getImage()?>">
                 </div>

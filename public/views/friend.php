@@ -52,9 +52,9 @@
         </header>
         <section class="projects">
             <?php foreach ($users as $user): ?>
-                <div class="project p1">
+                <div class="project p1"  id="<?= $user->getId()?>">
                     <div class="project-image">
-                        <a  href="friendProfile?email=<?php echo $user->getEmail(); ?>">
+                        <a  href="friendProfile?profile=<?php echo $user->getId(); ?>">
                             <img src="/public/img/<?= $user->getPhoto(); ?>">
                         </a>
                     </div>
@@ -64,7 +64,8 @@
                             <div class="want-to-go"><?= $user->getFirstMountain(); ?></div>
                             <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
-                        <p><?= $user->getDescription(); ?></p>
+                        <p>                        <?= var_dump($user)?>
+                            <?= $user->getDescription(); ?></p>
                         <div class="social-section">
                             <i class="fas fa-heart"><?= $user->getLikes(); ?></i>
                             <i class="fas fa-minus-square"><?= $user->getDislikes(); ?></i>

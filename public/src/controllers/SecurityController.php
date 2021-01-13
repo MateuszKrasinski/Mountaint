@@ -41,8 +41,10 @@ class SecurityController extends AppController
     public function friendProfile()
 
     {
-        $user = $this->userRepository->getUser($_GET['email']);
+        $id = intval($_GET['profile']);
+        $user = $this->userRepository->getUserById(($id));
         $this->render('friend_profile', ['user' => $user]);
+
 
     }
 
