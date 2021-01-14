@@ -16,11 +16,20 @@ class TripRepository extends Repository
             $id
         ]);
     }
-
+    public function newParticipant(int $id){
+        $trip=  $this->getTrip($id);
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO public.trips (participants) 
+            values (?)
+        ');
+        $stmt->execute([
+            $trip->getParticipant()
+        ]);
+    }
     public function getTrip(int $id): ?Trip
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM public.trips WHERE id = :id
+            SELECT array_to_json(participants) , * FROM public.trips WHERE id = :id
         ');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -41,6 +50,7 @@ class TripRepository extends Repository
             $trip['date_finish'],
             $trip['time_finish'],
             $trip['places'],
+            json_decode($trip['array_to_json']),
             $trip['likes'],
             $trip['dislikes'],
             $trip['id'],
@@ -71,8 +81,8 @@ class TripRepository extends Repository
         $date = new DateTime();
         $stmt = $this->database->connect()->prepare('
             INSERT INTO trips (title, description, image, created_at, id_assigned_by, likes, dislikes, date_start,time_start,
-                               date_finish, time_finish, places)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               date_finish, time_finish, places, participants)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ');
 
         $assignedById = $_SESSION['idUser'];
@@ -89,7 +99,8 @@ class TripRepository extends Repository
             $trip->getTimeStart(),
             $trip->getDateFinish(),
             $trip->getTimeFinish(),
-            $trip->getPlaces()
+            $trip->getPlaces(),
+            $trip->getParticipant()
         ]);
         $stmt = $this->database->connect()->prepare('
             INSERT INTO users_trips (id_user, id_trip)
@@ -102,7 +113,7 @@ class TripRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM trips
+            SELECT array_to_json(participants) , * FROM trips
         ');
         $stmt->execute();
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -117,6 +128,7 @@ class TripRepository extends Repository
                 $trip['date_finish'],
                 $trip['time_finish'],
                 $trip['places'],
+                json_decode($trip['array_to_json']),
                 $trip['likes'],
                 $trip['dislikes'],
                 $trip['id'],

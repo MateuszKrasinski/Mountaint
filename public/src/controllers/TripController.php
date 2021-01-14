@@ -21,6 +21,7 @@ class TripController extends AppController {
             header('Content-type: application/json');
             http_response_code(200);
             $this->tripRepository->addParticipant($decoded['id_trip']);
+//            $this->tripRepository->newParticipant($decoded['id_trip']);
 
         }
 
@@ -30,7 +31,12 @@ class TripController extends AppController {
     {
         $id = intval($_GET['profile']);
         $trip = $this->tripRepository->getTrip(($id));
-        $participants = $this->tripRepository->getTripParticipants($trip->getId());
+        $participantsId = $trip->getParticipant();
+        $participants = [];
+        $userRepository =  new UserRepository();
+        foreach ($participantsId as $participantId){
+            $participants[] = $userRepository->getUserById($participantId);
+        }
         $this->render('trip_profile', ['trip' => $trip, 'participants' => $participants]);
 
 
@@ -45,7 +51,7 @@ class TripController extends AppController {
     {
         $trips = $this->tripRepository->getTrips();
 
-        $this->render('trip', ['trips' => $trips, 'tripRepository'=>$this->tripRepository]);
+        $this->render('trip', ['trips' => $trips]);
     }
     public function addTrip()
     {

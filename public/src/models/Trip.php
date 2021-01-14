@@ -14,8 +14,14 @@ class Trip
     private $organizer;
     private $id;
     private $places;
+    private $participants = [];
 
-    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish,$places, $likes = 0, $dislikes = 0,$id=null )
+    public function getParticipant()
+    {
+        return $this->participants;
+    }
+
+    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $places,$participants, $likes = 0, $dislikes = 0, $id = null)
     {
         $this->organizer = $organizer;
         $this->title = $title;
@@ -28,13 +34,14 @@ class Trip
         $this->likes = $likes;
         $this->dislikes = $dislikes;
         $this->id = $id;
+        $this->participants = $participants;
         $this->places = $places;
     }
 
     /**
      * @return mixed
      */
-    public function getPlaces():string
+    public function getPlaces(): string
     {
         return $this->places;
     }
