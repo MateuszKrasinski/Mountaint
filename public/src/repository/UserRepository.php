@@ -44,9 +44,9 @@ class UserRepository extends Repository
     public function getUserById(int $id): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM users u LEFT JOIN users_details ud 
-            ON u.id_user_details = ud.id
-            Left Join profile_details pd on pd.id = u.id_profile_details
+            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE u.id = :id
 
         ');

@@ -3,7 +3,7 @@
 
 <head>
     <link rel="stylesheet" href="/public/css/friends.css">
-    <link rel="stylesheet" href="/public/css/add_trip.css">
+    <link rel="stylesheet" href="/public/css/display_trip.css">
     <link rel="stylesheet" href="/public/css/style.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,29 +58,44 @@
                     <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"/>
                 </div>
             </div>
-            <div class="create-trip-container">
-                <?php
-                $places = explode(",", $trip->getPlaces());
-                foreach ($places as $place):?>
-                    <div class="point"><?=$place?></div>
-                <?php endforeach  ?>
-            </div>
-            <textarea name="description" placeholder="description">
+            <div class="info-container">
+                <div class="left">
+                    <div class="create-trip-container">
+                        <?php
+                        $places = explode(",", $trip->getPlaces());
+                        foreach ($places as $place):?>
+                            <div class="point"><?= $place ?></div>
+                        <?php endforeach ?>
+                    </div>
+                    <textarea name="description" placeholder="description">
                 <?= $trip->getDescription(); ?>
             </textarea>
 
 
-            <div class="date-container">
-                <div class="date-input-container">
-                    Start:
-                    <?= $trip->getDateStart(); ?>
-                    <?= $trip->getTimeStart(); ?>
-                </div>
-                <div class="date-input-container">
-                    Finish:
-                    <?= $trip->getDateFinish(); ?>
-                    <?= $trip->getTimeFinish(); ?>
+                    <div class="date-container">
+                        <div class="date-input-container">
+                            Start:
+                            <?= $trip->getDateStart(); ?>
+                            <?= $trip->getTimeStart(); ?>
+                        </div>
+                        <div class="date-input-container">
+                            Finish:
+                            <?= $trip->getDateFinish(); ?>
+                            <?= $trip->getTimeFinish(); ?>
 
+                        </div>
+                    </div>
+                </div>
+                <div class="right">
+                    <?php
+                    foreach ($participants as $participant):?>
+                        <div class="participant">
+                            <a href="friendProfile?profile=<?php echo $participant->getId(); ?>">
+                                <img src="/public/img/<?= $participant->getPhoto(); ?>">
+                                <?= $participant->getName() ?>
+                            </a>
+                        </div>
+                    <?php endforeach ?>
                 </div>
             </div>
             <button type="submit">join</button>
