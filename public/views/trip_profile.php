@@ -59,7 +59,9 @@
                 </div>
             </div>
             <div class="create-trip-container">
-
+                <?php foreach ($participants as $participant){
+                    echo($participant->getName());
+                } ?>
             </div>
             <textarea name="description" placeholder="description">
                 <?= $trip->getDescription(); ?>

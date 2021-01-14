@@ -71,7 +71,7 @@
                             <?= $trip->getDateStart() ?>
                         </div>
                         <div class="date">
-                            <?= $trip->getTimeStart() ?>
+                            <?= count($tripRepository->getTripParticipants($trip->getId())) ?>
                         </div>
                     </div>
                     <p><?= $trip->getDescription() ?></p>

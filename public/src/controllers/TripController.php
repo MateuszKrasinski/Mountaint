@@ -17,7 +17,8 @@ class TripController extends AppController {
     {
         $id = intval($_GET['profile']);
         $trip = $this->tripRepository->getTrip(($id));
-        $this->render('trip_profile', ['trip' => $trip]);
+        $participants = $this->tripRepository->getTripParticipants($trip->getId());
+        $this->render('trip_profile', ['trip' => $trip, 'participants' => $participants]);
 
 
     }
@@ -31,7 +32,7 @@ class TripController extends AppController {
     {
         $trips = $this->tripRepository->getTrips();
 
-        $this->render('trip', ['trips' => $trips]);
+        $this->render('trip', ['trips' => $trips, 'tripRepository'=>$this->tripRepository]);
     }
     public function addTrip()
     {

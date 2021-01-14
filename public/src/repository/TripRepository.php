@@ -6,9 +6,11 @@ require_once __DIR__ . '/../models/Trip.php';
 class TripRepository extends Repository
 {
 
-    public function tripProfile(){
+    public function tripProfile()
+    {
 
     }
+
     public function getTrip(int $id): ?Trip
     {
         $stmt = $this->database->connect()->prepare('
@@ -36,6 +38,25 @@ class TripRepository extends Repository
             $trip['dislikes'],
             $trip['id']
         );
+    }
+
+    public function getTripParticipants(int $id)
+    {
+        $userRepository = new UserRepository();
+        $stmt = $this->database->connect()->prepare('
+            select id_user
+            from users_trips
+            where id_trip = :id
+        ');
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $participantsID = ($stmt->fetchAll(PDO::FETCH_ASSOC));
+        $participants = [];
+        foreach ($participantsID as $participantID) {
+            $participants[] = $userRepository->getUserById($participantID['id_user']);
+
+        }
+        return $participants;
     }
 
     public function addTrip(Trip $trip): void
@@ -107,6 +128,7 @@ class TripRepository extends Repository
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
+
     public function getProjectByTitle(string $searchString): array
     {
         $searchString = '%' . strtolower($searchString) . '%';
@@ -119,7 +141,8 @@ class TripRepository extends Repository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function like(int $id) {
+    public function like(int $id)
+    {
         $stmt = $this->database->connect()->prepare('
             UPDATE trips SET "likes" = likes + 1 WHERE id = :id
          ');
@@ -128,7 +151,8 @@ class TripRepository extends Repository
         $stmt->execute();
     }
 
-    public function dislike(int $id) {
+    public function dislike(int $id)
+    {
         $stmt = $this->database->connect()->prepare('
             UPDATE trips SET dislikes = dislikes + 1 WHERE id = :id
          ');
