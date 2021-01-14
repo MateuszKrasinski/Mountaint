@@ -14,6 +14,7 @@
     <script  type="text/javascript"  src="/public/js/search.js" defer></script>
     <script  type="text/javascript"  src="/public/js/statistics.js" defer></script>
     <script  type="text/javascript"  src="/public/js/projects.js" defer></script>
+    <script  type="text/javascript"  src="/public/js/joinTrip.js" defer></script>
 
     <title>Friends</title>
 </head>

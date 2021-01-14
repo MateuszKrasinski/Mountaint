@@ -16,6 +16,7 @@ Router::post('setProfile', 'SecurityController');
 Router::post('searchFriend', 'SecurityController');
 Router::post('friendProfile', 'SecurityController');
 Router::post('tripProfile', 'TripController');
+Router::post('joinTrip', 'TripController');
 Router::get('register', 'DefaultController');
 Router::post('search', 'TripController');
 Router::get('like', 'TripController');

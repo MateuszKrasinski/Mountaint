@@ -6,9 +6,15 @@ require_once __DIR__ . '/../models/Trip.php';
 class TripRepository extends Repository
 {
 
-    public function tripProfile()
-    {
-
+    public function addParticipant(int $id){
+        $stmt = $this->database->connect()->prepare('
+            INSERT INTO public.users_trips (id_user, id_trip) 
+            values (?,?)
+        ');
+        $stmt->execute([
+            $_SESSION['idUser'],
+            $id
+        ]);
     }
 
     public function getTrip(int $id): ?Trip
