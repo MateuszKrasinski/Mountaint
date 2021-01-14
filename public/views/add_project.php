@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="create-trip-container">
-
+                <input type="hidden"  class="places" name="places" value="whatever" />
             </div>
             <textarea name="description" placeholder="description"></textarea>
 

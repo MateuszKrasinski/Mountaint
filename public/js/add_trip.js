@@ -28,6 +28,8 @@ function getPoints() {
     points.forEach(function (point) {
         pointsArray.push(point.outerText);
     })
-    console.log(pointsArray);
+    // pointsArray = pointsArray.toString().replaceAll(","," ")
+    console.log("Points:"+ pointsArray);
+    document.querySelector(".places").value = pointsArray.toString()
 }
 

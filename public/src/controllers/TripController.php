@@ -55,9 +55,8 @@ class TripController extends AppController {
                 dirname(__DIR__).self::UPLOAD_DIRECTORY.$_FILES['file']['name']
             );
 
-            // TODO create new trip object and save it in database
             $trip = new Trip($_SESSION['userID'],$_POST['title'], $_POST['description'], $_FILES['file']['name'],$_POST['date_start'],
-                $_POST['time_start'],$_POST['date_finish'],$_POST['time_finish']);
+                $_POST['time_start'],$_POST['date_finish'],$_POST['time_finish'],$_POST['places']);
             $this->tripRepository->addTrip($trip);
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/trip");

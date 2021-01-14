@@ -40,9 +40,10 @@ class TripRepository extends Repository
             $trip['time_start'],
             $trip['date_finish'],
             $trip['time_finish'],
+            $trip['places'],
             $trip['likes'],
             $trip['dislikes'],
-            $trip['id']
+            $trip['id'],
         );
     }
 
@@ -70,8 +71,8 @@ class TripRepository extends Repository
         $date = new DateTime();
         $stmt = $this->database->connect()->prepare('
             INSERT INTO trips (title, description, image, created_at, id_assigned_by, likes, dislikes, date_start,time_start,
-                               date_finish, time_finish)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               date_finish, time_finish, places)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ');
 
         $assignedById = $_SESSION['idUser'];
@@ -88,6 +89,7 @@ class TripRepository extends Repository
             $trip->getTimeStart(),
             $trip->getDateFinish(),
             $trip->getTimeFinish(),
+            $trip->getPlaces()
         ]);
         $stmt = $this->database->connect()->prepare('
             INSERT INTO users_trips (id_user, id_trip)
@@ -114,9 +116,10 @@ class TripRepository extends Repository
                 $trip['time_start'],
                 $trip['date_finish'],
                 $trip['time_finish'],
+                $trip['places'],
                 $trip['likes'],
                 $trip['dislikes'],
-                $trip['id']
+                $trip['id'],
             );
         }
 
