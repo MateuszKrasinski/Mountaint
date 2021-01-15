@@ -12,10 +12,15 @@ class User
     private $firstMountain;
     private $secondMountain;
     private $photo;
-    private $likes=[];
-    private $dislikes=[];
+    private $likes = [];
+    private $dislikes = [];
+    private $followers = [];
+    private $following = [];
 
-    public function __construct($email, $password, $name, $surname, $phone, $description="Opis", $firstMountain="mountain#1", $secondMountain="mountain2#2", $photo="/public/img/uploads/person.svg", $likes='{}', $dislikes='{}',$id=null)
+    public function __construct($email, $password, $name, $surname, $phone, $description = "Opis",
+                                $firstMountain = "mountain#1", $secondMountain = "mountain2#2",
+                                $photo = "/public/img/uploads/person.svg", $likes = '{}', $dislikes = '{}',
+                                $followers = '{}', $following = '{}', $id = null)
     {
         $this->email = $email;
         $this->password = $password;
@@ -28,7 +33,41 @@ class User
         $this->photo = $photo;
         $this->likes = $likes;
         $this->dislikes = $dislikes;
+        $this->followers = $followers;
+        $this->following = $following;
         $this->id = $id;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getFollowers():array
+    {
+        return $this->followers;
+    }
+
+    /**
+     * @param mixed|string $followers
+     */
+    public function setFollowers(string $followers): void
+    {
+        $this->followers = $followers;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function getFollowing(): array
+    {
+        return $this->following;
+    }
+
+    /**
+     * @param mixed|string $following
+     */
+    public function setFollowing(string $following): void
+    {
+        $this->following = $following;
     }
 
 
@@ -111,6 +150,7 @@ class User
     {
         $this->phone = $phone;
     }
+
     /**
      * @return mixed
      */

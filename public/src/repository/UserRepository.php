@@ -9,9 +9,11 @@ class UserRepository extends Repository
     public function getUser(string $email): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM users u LEFT JOIN users_details ud 
-            ON u.id_user_details = ud.id
-            Left Join profile_details pd on pd.id = u.id_profile_details
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as fers, array_to_json(following) as fing
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE email = :email
 
         ');
@@ -34,8 +36,10 @@ class UserRepository extends Repository
             $user['first_mountain'],
             $user['second_mountain'],
             $user['photo'],
-            $user['likes'],
-            $user['dislikes'],
+            json_decode($user['like']),
+            json_decode($user['dislike']),
+            json_decode($user['fers']),
+            json_decode($user['fing']),
             $user['id'],
 
         );
@@ -44,7 +48,9 @@ class UserRepository extends Repository
     public function getUserById(int $id): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like, array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as fers, array_to_json(following) as fing
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             where u.id = :id
@@ -71,6 +77,8 @@ class UserRepository extends Repository
             $user['photo'],
             json_decode($user['like']),
             json_decode($user['dislike']),
+            json_decode($user['fers']),
+            json_decode($user['fing']),
             $user['id']
         );
     }
@@ -79,7 +87,9 @@ class UserRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like, array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as fers, array_to_json(following) as fing
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
         ');
@@ -98,6 +108,8 @@ class UserRepository extends Repository
                 $user['photo'],
                 json_decode($user['like']),
                 json_decode($user['dislike']),
+                json_decode($user['fers']),
+                json_decode($user['fing']),
                 $user['id']
             );
         }
@@ -132,8 +144,8 @@ class UserRepository extends Repository
             $user->getPhone()
         ]);
         $stmt3 = $this->database->connect()->prepare('
-            INSERT INTO profile_details (description,likes,dislikes,photo,first_mountain,second_mountain)
-            VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO profile_details (description,likes,dislikes,photo,first_mountain,second_mountain,followers,following)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             returning *
         ');
 
@@ -143,7 +155,9 @@ class UserRepository extends Repository
             $user->getDislikes(),
             $user->getPhoto(),
             $user->getFirstMountain(),
-            $user->getSecondMountain()
+            $user->getSecondMountain(),
+            $user->getFollowers(),
+            $user->getFollowing(),
 
         ]);
         $lastInsertedRow = $stmt3->fetch(PDO::FETCH_ASSOC);
@@ -168,9 +182,12 @@ class UserRepository extends Repository
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM public.users_details WHERE name = :name AND surname = :surname AND phone = :phone
         ');
-        $stmt->bindParam(':name', $user->getName(), PDO::PARAM_STR);
-        $stmt->bindParam(':surname', $user->getSurname(), PDO::PARAM_STR);
-        $stmt->bindParam(':phone', $user->getPhone(), PDO::PARAM_STR);
+        $id1 = $user->getName();
+        $id2 = $user->getSurname();
+        $id3 = $user->getPhone();
+        $stmt->bindParam(':name',$id1 , PDO::PARAM_STR);
+        $stmt->bindParam(':surname',$id2 , PDO::PARAM_STR);
+        $stmt->bindParam(':phone', $id3, PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -182,7 +199,8 @@ class UserRepository extends Repository
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM public.profile_details WHERE description = :description AND second_mountain = :secondMountain AND first_mountain = :firstMountain
         ');
-        $stmt->bindParam(':description', $user->getDescription(), PDO::PARAM_STR);
+        $desc = $user->getDescription();
+        $stmt->bindParam(':description', $desc, PDO::PARAM_STR);
 //        $stmt->bindParam(':firstMountain', $user->getFirstMountain(), PDO::PARAM_STR);
 //        $stmt->bindParam(':secondMountain', $user->getSecondMountain(), PDO::PARAM_STR);
         $stmt->execute();
@@ -196,7 +214,8 @@ class UserRepository extends Repository
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM public.users WHERE email = :email 
         ');
-        $stmt->bindParam(':email', $user->getEmail(), PDO::PARAM_STR);
+        $mail = $user->getEmail();
+        $stmt->bindParam(':email',$mail , PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -208,7 +227,8 @@ class UserRepository extends Repository
         $stmt = $this->database->connect()->prepare('
             SELECT * FROM public.users WHERE email = :email 
         ');
-        $stmt->bindParam(':email', $user->getEmail(), PDO::PARAM_STR);
+        $mail = $user->getEmail();
+        $stmt->bindParam(':email',$mail , PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
