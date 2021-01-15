@@ -141,7 +141,19 @@ class SecurityController extends AppController
         }
 
     }
+    public function likeFriend(int $id) {
+        $this->userRepository->like($id);
+        $user = $this->userRepository->getUserById($id);
+        echo json_encode(count($user->getLikes()));
+        http_response_code(200);
+    }
 
+    public function dislikeFriend(int $id) {
+        $this->userRepository->dislike($id);
+        $user = $this->userRepository->getUserById($id);
+        echo json_encode(count($user->getDislikes()));
+        http_response_code(200);
+    }
     private function validate(array $file): bool
     {
         if ($file['size'] > self::MAX_FILE_SIZE) {

@@ -44,10 +44,10 @@ class UserRepository extends Repository
     public function getUserById(int $id): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like, array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
-            WHERE u.id = :id
+            where u.id = :id
 
         ');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
@@ -69,8 +69,8 @@ class UserRepository extends Repository
             $user['first_mountain'],
             $user['second_mountain'],
             $user['photo'],
-            $user['likes'],
-            $user['dislikes'],
+            json_decode($user['like']),
+            json_decode($user['dislike']),
             $user['id']
         );
     }
@@ -79,7 +79,7 @@ class UserRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like, array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
         ');
@@ -96,8 +96,8 @@ class UserRepository extends Repository
                 $user['first_mountain'],
                 $user['second_mountain'],
                 $user['photo'],
-                $user['likes'],
-                $user['dislikes'],
+                json_decode($user['like']),
+                json_decode($user['dislike']),
                 $user['id']
             );
         }
@@ -236,5 +236,58 @@ class UserRepository extends Repository
             $_POST['description'],
             $idProfileDetails
         ]);
+    }
+
+    public function like(int $id)
+    {
+        $user = $this->getUserById($id);
+        if ((!(in_array($_SESSION['idUser'], $user->getDislikes()))) && (!(in_array($_SESSION['idUser'], $user->getLikes())))) {
+            $stmt = $this->database->connect()->prepare('
+            update profile_details
+            set likes = array_append(likes, :id_user)
+            WHERE profile_details.id = :id;
+         ');
+            $id_det = $this->getUserProfileDetailsId($user);
+            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }else if ((in_array($_SESSION['idUser'], $user->getLikes()))) {
+            $stmt = $this->database->connect()->prepare('
+            update profile_details
+            set likes = array_remove(likes, :id_user)
+            WHERE profile_details.id = :id;
+         ');
+            $id_det = $this->getUserProfileDetailsId($user);
+            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+    }
+
+    public function dislike(int $id)
+    {
+        $user = $this->getUserById($id);
+        if ((!(in_array($_SESSION['idUser'], $user->getDislikes()))) && (!(in_array($_SESSION['idUser'], $user->getLikes())))) {
+            $stmt = $this->database->connect()->prepare('
+            update profile_details
+            set dislikes = array_append(dislikes, :id_user)
+            WHERE profile_details.id = :id;
+         ');
+            $id_det = $this->getUserProfileDetailsId($user);
+            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }else if ((in_array($_SESSION['idUser'], $user->getDislikes()))) {
+            $stmt = $this->database->connect()->prepare('
+            update profile_details
+            set dislikes = array_remove(dislikes, :id_user)
+            WHERE profile_details.id = :id;
+         ');
+            $id_det = $this->getUserProfileDetailsId($user);
+            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
     }
 }

@@ -7,13 +7,12 @@ function giveLike() {
     const container = likes.parentElement.parentElement.parentElement;
     const id = container.getAttribute("id");
     const firstValue = likes.innerHTML;
-    fetch(`/like/${id}`)
+    fetch(`/likeFriend/${id}`)
         .then(function (response) {
             return response.json();
         }).then(function (number) {
-        console.log(number)
-        if (firstValue > number) likes.classList.remove("highlight");
-        else if (firstValue < number) likes.classList.add("highlight");
+        if (firstValue>number) likes.classList.remove("highlight");
+        else if (firstValue<number) likes.classList.add("highlight");
         likes.innerHTML = number;
     });
 }
@@ -23,13 +22,13 @@ function giveDislike() {
     const container = dislikes.parentElement.parentElement.parentElement;
     const id = container.getAttribute("id");
     const firstValue = dislikes.innerHTML;
-    fetch(`/dislike/${id}`)
+    fetch(`/dislikeFriend/${id}`)
         .then(function (response) {
             return response.json();
         }).then(function (number) {
-
-        if (firstValue > number) dislikes.classList.remove("highlight");
-        else if (firstValue < number) dislikes.classList.add("highlight");
+        console.log(number);
+        if (firstValue>number) dislikes.classList.remove("highlight");
+        else if (firstValue<number) dislikes.classList.add("highlight");
         dislikes.innerHTML = number;
     });
 }

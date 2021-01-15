@@ -21,6 +21,8 @@ Router::get('register', 'DefaultController');
 Router::post('search', 'TripController');
 Router::get('like', 'TripController');
 Router::get('dislike', 'TripController');
+Router::get('likeFriend', 'SecurityController');
+Router::get('dislikeFriend', 'SecurityController');
 
 
 

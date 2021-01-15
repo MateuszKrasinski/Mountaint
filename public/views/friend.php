@@ -10,6 +10,7 @@
     <script src="/public/js/main.js" defer></script>
     <script src="/public/js/projects.js" defer></script>
     <script src="/public/js/searchFriend.js" defer></script>
+    <script src="/public/js/statisticsFriend.js" defer></script>
 
     <title>Friends</title>
 </head>
@@ -66,11 +67,11 @@
                         <p>
                             <?= $user->getDescription(); ?></p>
                         <div class="social-section">
-                            <i class="fas fa-heart"><?= $user->getLikes(); ?></i>
-                            <i class="fas fa-minus-square"><?= $user->getDislikes(); ?></i>
+                            <i class="fas fa-heart"><?= count($user->getLikes()) ?></i>
+                            <i class="fas fa-minus-square"><?= count($user->getDislikes()); ?></i>
                         </div>
                         <div class="button-container">
-                            <button class="join-btn">invite</button>
+                            <button class="join-btn">follow</button>
                         </div>
                     </div>
                 </div>

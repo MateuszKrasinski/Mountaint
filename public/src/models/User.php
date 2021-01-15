@@ -12,10 +12,10 @@ class User
     private $firstMountain;
     private $secondMountain;
     private $photo;
-    private $likes;
-    private $dislikes;
+    private $likes=[];
+    private $dislikes=[];
 
-    public function __construct($email, $password, $name, $surname, $phone, $description="Opis", $firstMountain="mountain#1", $secondMountain="mountain2#2", $photo="/public/img/uploads/person.svg", $likes=0, $dislikes=0,$id=null)
+    public function __construct($email, $password, $name, $surname, $phone, $description="Opis", $firstMountain="mountain#1", $secondMountain="mountain2#2", $photo="/public/img/uploads/person.svg", $likes='{}', $dislikes='{}',$id=null)
     {
         $this->email = $email;
         $this->password = $password;
