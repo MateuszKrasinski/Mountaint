@@ -1,3 +1,4 @@
+const buttons= document.querySelectorAll('.join-btn');
 buttons.forEach((button)=>{
     button.addEventListener('click', moveAway);
 })

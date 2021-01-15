@@ -7,26 +7,11 @@ class TripRepository extends Repository
 {
 
 
-    public function newParticipant(int $id){
-            $trip = $this->getTrip($id);
-        if (!(in_array($_SESSION['idUser'],$trip->getParticipant()) )){
-            $stmt = $this->database->connect()->prepare('
-            update trips
-            set participants = array_append(participants, :id_user)
-            WHERE trips.id = :id;
-        ');
-            $stmt->bindParam(':id', $id , PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
-
-
-    }
     public function getTrip(int $id): ?Trip
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) , * FROM public.trips WHERE id = :id
+            SELECT array_to_json(participants) as part, array_to_json(likes) as like, array_to_json(dislikes) as dislike
+                 , * FROM public.trips WHERE id = :id
         ');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -47,14 +32,15 @@ class TripRepository extends Repository
             $trip['date_finish'],
             $trip['time_finish'],
             $trip['places'],
-            json_decode($trip['array_to_json']),
-            $trip['likes'],
-            $trip['dislikes'],
+            json_decode($trip['part']),
+            json_decode($trip['like']),
+            json_decode($trip['dislike']),
             $trip['id'],
         );
     }
 
-    public function getTripParticipants(int $id)
+
+    public function getLikes(int $id)
     {
         $userRepository = new UserRepository();
         $stmt = $this->database->connect()->prepare('
@@ -111,11 +97,18 @@ class TripRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) , * FROM trips
+            SELECT array_to_json(participants) as part, array_to_json(likes) as like, array_to_json(dislikes) as dislike, * FROM trips
         ');
         $stmt->execute();
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        foreach ($trips as $trip) {
+        $array = [];
+        foreach ($trips as $trip){
+            if(!(in_array($_SESSION['idUser'],json_decode($trip['part']) )) ){
+                array_push($array, $trip);
+            }
+        }
+
+        foreach ($array as $trip) {
             $result[] = new Trip(
                 $trip["id_assigned_by"],
                 $trip['title'],
@@ -126,9 +119,9 @@ class TripRepository extends Repository
                 $trip['date_finish'],
                 $trip['time_finish'],
                 $trip['places'],
-                json_decode($trip['array_to_json']),
-                $trip['likes'],
-                $trip['dislikes'],
+                json_decode($trip['part']),
+                json_decode($trip['like']),
+                json_decode($trip['dislike']),
                 $trip['id'],
             );
         }
@@ -162,21 +155,66 @@ class TripRepository extends Repository
 
     public function like(int $id)
     {
-        $stmt = $this->database->connect()->prepare('
-            UPDATE trips SET "likes" = likes + 1 WHERE id = :id
+        $trip = $this->getTrip($id);
+        if ((!(in_array($_SESSION['idUser'], $trip->getDislikes()))) && (!(in_array($_SESSION['idUser'], $trip->getLikes())))) {
+            $stmt = $this->database->connect()->prepare('
+            update trips
+            set likes = array_append(likes, :id_user)
+            WHERE trips.id = :id;
          ');
-
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        } else if ((in_array($_SESSION['idUser'], $trip->getLikes()))) {
+            $stmt = $this->database->connect()->prepare('
+            update trips
+            set likes = array_remove(likes, :id_user)
+            WHERE trips.id = :id;
+         ');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
     }
 
     public function dislike(int $id)
     {
-        $stmt = $this->database->connect()->prepare('
-            UPDATE trips SET dislikes = dislikes + 1 WHERE id = :id
+        $trip = $this->getTrip($id);
+        if ((!(in_array($_SESSION['idUser'], $trip->getDislikes()))) && (!(in_array($_SESSION['idUser'], $trip->getLikes())))) {
+            $stmt = $this->database->connect()->prepare('
+            update trips
+            set dislikes = array_append(dislikes, :id_user)
+            WHERE trips.id = :id;
          ');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }else if ((in_array($_SESSION['idUser'], $trip->getDislikes()))) {
+            $stmt = $this->database->connect()->prepare('
+            update trips
+            set dislikes = array_remove(dislikes, :id_user)
+            WHERE trips.id = :id;
+         ');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+    }
 
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
+    public function newParticipant(int $id)
+    {
+        $trip = $this->getTrip($id);
+        if (!(in_array($_SESSION['idUser'], $trip->getParticipant()))) {
+            $stmt = $this->database->connect()->prepare('
+            update trips
+            set participants = array_append(participants, :id_user)
+            WHERE trips.id = :id;
+        ');
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+
     }
 }

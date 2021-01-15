@@ -9,8 +9,8 @@ class Trip
     private $date_finish;
     private $time_start;
     private $time_finish;
-    private $likes;
-    private $dislikes;
+    private $likes = [];
+    private $dislikes = [];
     private $organizer;
     private $id;
     private $places;
@@ -21,7 +21,7 @@ class Trip
         return $this->participants;
     }
 
-    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $places,$participants, $likes = 0, $dislikes = 0, $id = null)
+    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $places,$participants, $likes = '{}', $dislikes = '{}', $id = null)
     {
         $this->organizer = $organizer;
         $this->title = $title;

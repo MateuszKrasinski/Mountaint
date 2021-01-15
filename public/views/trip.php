@@ -77,8 +77,8 @@
                     </div>
                     <p><?= $trip->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= $trip->getLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $trip->getDislikes() ?></i>
+                        <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$trip->getLikes())){echo("highlight"); } ?>" ><?= count($trip->getLikes()) ?></i>
+                        <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$trip->getDisLikes())){echo("highlight"); } ?>"><?= count($trip->getDislikes())?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>

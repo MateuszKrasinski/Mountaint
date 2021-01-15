@@ -102,11 +102,15 @@ class TripController extends AppController {
 
     public function like(int $id) {
         $this->tripRepository->like($id);
+        $trip = $this->tripRepository->getTrip($id);
+        echo json_encode(count($trip->getLikes()));
         http_response_code(200);
     }
 
     public function dislike(int $id) {
         $this->tripRepository->dislike($id);
+        $trip = $this->tripRepository->getTrip($id);
+        echo json_encode(count($trip->getDislikes()));
         http_response_code(200);
     }
 
