@@ -20,8 +20,8 @@ class TripController extends AppController {
 
             header('Content-type: application/json');
             http_response_code(200);
-            $this->tripRepository->addParticipant($decoded['id_trip']);
-//            $this->tripRepository->newParticipant($decoded['id_trip']);
+            $this->tripRepository->newParticipant($decoded['id_trip']);
+
 
         }
 
@@ -62,8 +62,10 @@ class TripController extends AppController {
             );
 
             $trip = new Trip($_SESSION['userID'],$_POST['title'], $_POST['description'], $_FILES['file']['name'],$_POST['date_start'],
-                $_POST['time_start'],$_POST['date_finish'],$_POST['time_finish'],$_POST['places']);
+                $_POST['time_start'],$_POST['date_finish'],$_POST['time_finish'],$_POST['places'],$_POST['participants']);
             $this->tripRepository->addTrip($trip);
+            $id=$this->tripRepository->getTripId($trip);
+            $this->tripRepository->newParticipant($id);
             $url = "http://$_SERVER[HTTP_HOST]";
             header("Location: {$url}/trip");
             return $this->render('trip', [

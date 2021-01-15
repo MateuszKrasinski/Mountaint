@@ -6,25 +6,22 @@ require_once __DIR__ . '/../models/Trip.php';
 class TripRepository extends Repository
 {
 
-    public function addParticipant(int $id){
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO public.users_trips (id_user, id_trip) 
-            values (?,?)
-        ');
-        $stmt->execute([
-            $_SESSION['idUser'],
-            $id
-        ]);
-    }
+
     public function newParticipant(int $id){
-        $trip=  $this->getTrip($id);
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO public.trips (participants) 
-            values (?)
+            $trip = $this->getTrip($id);
+        if (!(in_array($_SESSION['idUser'],$trip->getParticipant()) )){
+            $stmt = $this->database->connect()->prepare('
+            update trips
+            set participants = array_append(participants, :id_user)
+            WHERE trips.id = :id;
         ');
-        $stmt->execute([
-            $trip->getParticipant()
-        ]);
+            $stmt->bindParam(':id', $id , PDO::PARAM_INT);
+            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->execute();
+        }
+
+
+
     }
     public function getTrip(int $id): ?Trip
     {
@@ -81,8 +78,8 @@ class TripRepository extends Repository
         $date = new DateTime();
         $stmt = $this->database->connect()->prepare('
             INSERT INTO trips (title, description, image, created_at, id_assigned_by, likes, dislikes, date_start,time_start,
-                               date_finish, time_finish, places, participants)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                               date_finish, time_finish, places, participants )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )
         ');
 
         $assignedById = $_SESSION['idUser'];
@@ -100,13 +97,14 @@ class TripRepository extends Repository
             $trip->getDateFinish(),
             $trip->getTimeFinish(),
             $trip->getPlaces(),
-            $trip->getParticipant()
+            (($trip->getParticipant()))
         ]);
-        $stmt = $this->database->connect()->prepare('
-            INSERT INTO users_trips (id_user, id_trip)
-            VALUES (?, ?)
-        ');
-        $stmt->execute([$_SESSION['idUser'], $this->getTripId($trip)]);
+
+//        $stmt = $this->database->connect()->prepare('
+//            INSERT INTO users_trips (id_user, id_trip)
+//            VALUES (?, ?)
+//        ');
+//        $stmt->execute([$_SESSION['idUser'], $this->getTripId($trip)]);
     }
 
     public function getTrips(): array
