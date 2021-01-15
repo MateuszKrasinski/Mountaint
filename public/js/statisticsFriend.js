@@ -1,6 +1,6 @@
 const likeButtons = document.querySelectorAll(".fa-heart");
 const dislikeButtons = document.querySelectorAll(".fa-minus-square");
-
+const followButtons = document.querySelectorAll(".join-btn");
 
 function giveLike() {
     const likes = this;
@@ -33,5 +33,16 @@ function giveDislike() {
     });
 }
 
+function giveFollow(){
+    const follow = this;
+    const container = follow.parentElement.parentElement.parentElement;
+    const id = container.getAttribute('id');
+    const data = {id: id};
+    fetch(`/follow/${id}`)
+        .then();
+}
+
+
+followButtons.forEach(button=>button.addEventListener('click', giveFollow));
 likeButtons.forEach(button => button.addEventListener("click", giveLike));
 dislikeButtons.forEach(button => button.addEventListener("click", giveDislike));

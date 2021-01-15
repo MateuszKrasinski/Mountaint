@@ -290,4 +290,28 @@ class UserRepository extends Repository
             $stmt->execute();
         }
     }
+    public function follow(int $id)
+    {
+        $followedUser = $this->getUserById($id);
+        $followedUserIdDetails = $this->getUserProfileDetailsId($followedUser);
+        $followingUser = $this->getUserById($_SESSION['idUser']);
+        $followingUserIdDetails = $this->getUserProfileDetailsId($followingUser);
+        $stmt = $this->database->connect()->prepare('
+            update profile_details
+            set followers = array_append(followers, :id_user)
+            WHERE profile_details.id = :id;
+         ');
+        $stmt->bindParam(':id',$followedUserIdDetails,PDO::PARAM_INT);
+        $stmt->bindParam(':id_user', $followingUserIdDetails, PDO::PARAM_INT);
+        $stmt->execute();
+
+        $stmt2 = $this->database->connect()->prepare('
+            update profile_details
+            set following = array_append(following, :id_user)
+            WHERE profile_details.id = :id;
+         ');
+        $stmt2->bindParam(':id',$followingUserIdDetails,PDO::PARAM_INT);
+        $stmt2->bindParam(':id_user',$followedUserIdDetails,PDO::PARAM_INT);
+        $stmt2->execute();
+    }
 }

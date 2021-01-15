@@ -23,6 +23,7 @@ Router::get('like', 'TripController');
 Router::get('dislike', 'TripController');
 Router::get('likeFriend', 'SecurityController');
 Router::get('dislikeFriend', 'SecurityController');
+Router::get('follow', 'SecurityController');
 
 
 
