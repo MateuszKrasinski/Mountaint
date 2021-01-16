@@ -1,5 +1,6 @@
 const search = document.querySelector('input[placeholder="search friend"]');
 const projectContainer = document.querySelector(".projects");
+const buttonMyProject = document.querySelector(".my");
 
 search.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
@@ -52,3 +53,14 @@ function createProject(project) {
     projectContainer.appendChild(clone);
 }
 
+
+buttonMyProject.addEventListener('click',function (){
+    alert();
+    fetch('/myFriends').then(function (response) {
+        console.log("Response")
+        return response.json();
+    }).then(function (projects) {
+        projectContainer.innerHTML = "";
+        loadProjects(projects)
+    });
+})

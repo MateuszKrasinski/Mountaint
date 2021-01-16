@@ -5,13 +5,21 @@ require_once __DIR__ . '/../models/User.php';
 
 class UserRepository extends Repository
 {
+    public function getUsersFromIdArray(array $usersId){
+        $result = [];
+        foreach ($usersId as $userId){
+            $user =  $this->getUserById($userId);
+            array_push($result,$user);
+        }
+        return $result;
+    }
 
     public function getUser(string $email): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as fers, array_to_json(following) as fing
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as likes,
+                   array_to_json(dislikes) as dislikes, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as followers, array_to_json(following) as following
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE email = :email
@@ -36,10 +44,10 @@ class UserRepository extends Repository
             $user['first_mountain'],
             $user['second_mountain'],
             $user['photo'],
-            json_decode($user['like']),
-            json_decode($user['dislike']),
-            json_decode($user['fers']),
-            json_decode($user['fing']),
+            json_decode($user['likes']),
+            json_decode($user['dislikes']),
+            json_decode($user['followers']),
+            json_decode($user['following']),
             $user['id'],
 
         );
@@ -54,7 +62,6 @@ class UserRepository extends Repository
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             where u.id = :id
-
         ');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -144,8 +151,8 @@ class UserRepository extends Repository
             $user->getPhone()
         ]);
         $stmt3 = $this->database->connect()->prepare('
-            INSERT INTO profile_details (description,likes,dislikes,photo,first_mountain,second_mountain,followers,following)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO profile_details (description,likes,dislikes,photo,first_mountain,second_mountain)
+            VALUES (?, ?, ?, ?, ?, ?)
             returning *
         ');
 
@@ -156,8 +163,6 @@ class UserRepository extends Repository
             $user->getPhoto(),
             $user->getFirstMountain(),
             $user->getSecondMountain(),
-            $user->getFollowers(),
-            $user->getFollowing(),
 
         ]);
         $lastInsertedRow = $stmt3->fetch(PDO::FETCH_ASSOC);
@@ -180,14 +185,14 @@ class UserRepository extends Repository
     public function getUserDetailsId(User $user): int
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM public.users_details WHERE name = :name AND surname = :surname AND phone = :phone
+            SELECT * FROM public.users_details WHERE name = :name AND surname = :surname 
         ');
         $id1 = $user->getName();
         $id2 = $user->getSurname();
-        $id3 = $user->getPhone();
+//        $id3 = $user->getPhone();
         $stmt->bindParam(':name',$id1 , PDO::PARAM_STR);
         $stmt->bindParam(':surname',$id2 , PDO::PARAM_STR);
-        $stmt->bindParam(':phone', $id3, PDO::PARAM_STR);
+//        $stmt->bindParam(':phone', $id3, PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);

@@ -46,6 +46,7 @@
     <main>
         <header>
             <div class="search-bar">
+                    <button class="my">my</button>
                     <input type="text" placeholder="search friend" name ="name">
             </div>
 

@@ -50,6 +50,7 @@
     <main>
         <header>
             <div class="search-bar">
+                    <button class="my">my</button>
                     <input placeholder="search project">
             </div>
             <div class="add-project">
@@ -70,6 +71,7 @@
                     <div class="date-container">
                         <div class="date">
                             <?= $trip->getDateStart() ?>
+
                         </div>
                         <div class="date">
                             <?= count($trip->getParticipant())?>

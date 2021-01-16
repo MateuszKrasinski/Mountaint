@@ -116,6 +116,13 @@ class SecurityController extends AppController
         $this->userRepository->addUser($user);
         $this->render('login');
     }
+    public function myFriends(){
+
+            http_response_code(200);
+            $user  = $this->userRepository->getUserById($_SESSION['idUser']);
+            $followers = $user->getFollowers();
+            echo json_encode($this->userRepository->getUsersByName($followers));
+    }
 
     public function setProfile()
     {
