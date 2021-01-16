@@ -11,7 +11,6 @@ main {
 main > form {
     display: flex;
     flex-direction: column;
-    align-items: center;
     width: 90%;
     height: 100%;
 }
@@ -19,22 +18,30 @@ main > form {
 .first-line-container {
     display: flex;
     flex-direction: row;
-    width: 100%;
+    width: 80%;
     height: 20vh;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
 }
-
+.title{
+    padding:5vh;
+    border-radius: 32px;
+    font-size: 2vw;
+    display: flex;
+}
 .first-line-left-container {
     color: #330436;
 }
 
 .first-line-left-container {
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border: 1px solid #330436;
+    background: #DA4AC21A;
+    border-radius: 18px;
 }
 
 .first-line-left-container > input {
@@ -149,20 +156,21 @@ form > textarea::placeholder, .create-trip-container::placeholder {
 
 .point {
     color: #ffffff;
-    margin-top: 2vh;
-    margin-left: 2vw;
+    margin-top: 1vh;
+    margin-left: 1vw;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 10%;
+    width: fit-content;
     overflow: hidden;
     height: 20%;
     border-radius: 18px;
     background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
     font: normal normal normal 2.5vh Roboto Slab;
     font-size: 2vh;
-    flex-direction: column;
+    flex-direction: row;
     text-align: right;
+    padding: 5px;
 }
 .point>i{
     margin-top: 1vh;
@@ -192,21 +200,28 @@ form > textarea::placeholder, .create-trip-container::placeholder {
     margin-top: 2vh;
     margin-left: 0;
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 10vh;
 }
 .date-input-container{
+    border-radius: 18px;
+
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    width: 45%;
+    width: 50%;
     font-size: 3vh;
     font-weight: 800;
     color: #330436;
+}
+.date-display>i{
 
+    color: #330436;
+    font-size: 15px;
 }
 
 .date-input-container>input{
@@ -217,9 +232,19 @@ form > textarea::placeholder, .create-trip-container::placeholder {
     height: 6vh;
     color: #330436;
 }
+.date-display{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 32px;
+    border: 1px solid #330436;
+    background-color: #DA4AC21A;
+    font-size: 2.5vh;
+    padding: 1vw;
+    width: 30%;
+}
 
-
-form > button {
+button {
     width: 12vw;
     height: 6vh;
     color: white;
@@ -271,9 +296,7 @@ input::-webkit-calendar-picker-indicator:hover {
         padding: 0 5vw;
     }
 
-    .title {
-        padding: 0 5vw;
-    }
+
 
     form textarea, .create-trip-container {
         width: 90%;
@@ -307,8 +330,11 @@ input::-webkit-calendar-picker-indicator:hover {
     height: 100%;
 }
 .right{
+    margin-top: 2vw;
     margin-left: 5vw;
-    border-radius: 32px;
+    /*border-radius: 32px;*/
+    /*border: 1px solid #330436;*/
+    /*background: #DA4AC21A 0% 0% no-repeat padding-box;*/
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -316,24 +342,68 @@ input::-webkit-calendar-picker-indicator:hover {
     height: 80vh;
     width: 15vw;
 }
-
-.participant{
+.right-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    height: 60%;
+    border-radius: 12px;
+    border: 1px solid #330436;
     background: #DA4AC21A 0% 0% no-repeat padding-box;
-    border: #220214 1px solid;
-    border-radius: 32px;
+}
+.owner{
+    margin-top: 1vh;
     display: flex;
     flex-direction: row;
     align-items: center;
     width: 15vw;
     height: 7vh;
-    justify-content: space-evenly;
+    justify-content: center;
     color: #220214;
 }
-.participant>a>img{
+
+.participant{
+    margin-top: 1vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 15vw;
+    height: 7vh;
+    justify-content: center;
+    color: #220214;
+}
+.participant>a, .owner>a{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+    align-items: center;
+    color: #330436;
+    width: 90%;
+}
+.participant>a>img, .owner>a>img{
+    display: flex;
+    flex-direction: row;
     border-radius: 100%;
     width: 6vh;
     height: 6vh;
+    margin-right: 2vw;
 }
 .participant:first-child{
-    margin-top: 2vh;
+    margin-top: 1vh;
+}
+.participant:hover{
+    background-color: #C949B10A;
+}
+.btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.create-trip-container>.places{
+    font-weight: 900;
+    color: #330436;
 }

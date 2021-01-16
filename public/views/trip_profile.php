@@ -52,7 +52,8 @@
             </div>
             <div class="first-line-container">
                 <div class="first-line-left-container">
-                    <div><?= $trip->getTitle(); ?></div>
+                    <div class="title"><?= $trip->getTitle(); ?></div>
+
                 </div>
                 <div class="file-upload">
                     <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"/>
@@ -64,7 +65,7 @@
                         <?php
                         $places = explode(",", $trip->getPlaces());
                         foreach ($places as $place):?>
-                            <div class="point"><?= $place ?></div>
+                            <div class="point"><i class="fas fa-map-marker-alt"></i><?= $place ?></div>
                         <?php endforeach ?>
                     </div>
                     <textarea name="description" placeholder="description">
@@ -75,30 +76,42 @@
                     <div class="date-container">
                         <div class="date-input-container">
                             Start:
-                            <?= $trip->getDateStart(); ?>
-                            <?= $trip->getTimeStart(); ?>
+                            <div class="date-display">
+                                <i class="far fa-calendar"></i><?= $trip->getDateStart(); ?></div>
+                            <div class="date-display">
+                                <i class="far fa-clock"></i><?= $trip->getTimeStart(); ?></div>
+
                         </div>
                         <div class="date-input-container">
                             Finish:
-                            <?= $trip->getDateFinish(); ?>
-                            <?= $trip->getTimeFinish(); ?>
+                            <div class="date-display">
+                                <i class="far fa-calendar"></i><?= $trip->getDateFinish(); ?></div>
+                            <div class="date-display">
+                                <i class="far fa-clock"></i><?= $trip->getTimeFinish(); ?></div>
 
                         </div>
                     </div>
+                    <div class="btn-container">
+                        <button type="submit">join</button>
+                    </div>
+
                 </div>
                 <div class="right">
-                    <?php
-                    foreach ($participants as $participant):?>
-                        <div class="participant">
-                            <a href="friendProfile?profile=<?php echo $participant->getId(); ?>">
-                                <img src="/public/img/<?= $participant->getPhoto(); ?>">
-                                <?= $participant->getName() ?>
-                            </a>
-                        </div>
-                    <?php endforeach ?>
+                    <div class="right-container">
+                        Participants
+                        <?php
+                        foreach ($participants as $participant):?>
+                            <div class="participant">
+                                <a href="friendProfile?profile=<?php echo $participant->getId(); ?>">
+                                    <img src="/public/img/<?= $participant->getPhoto(); ?>">
+                                    <?= $participant->getName() ?>
+                                </a>
+                            </div>
+                        <?php endforeach ?>
+                    </div>
                 </div>
+
             </div>
-            <button type="submit">join</button>
         </form>
 
 
