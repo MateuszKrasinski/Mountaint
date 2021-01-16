@@ -50,7 +50,7 @@
     <main>
         <header>
             <div class="search-bar">
-                    <button class="my">my</button>
+
                     <input placeholder="search project">
             </div>
             <div class="add-project">
@@ -58,6 +58,12 @@
                 <a href="addTrip"><span>add project</span></a>
             </div>
         </header>
+        <select name="filter" class="filter" >
+            <option value="my-trips">My Trips</option>
+            <option value="joined-trips">Joined Trips</option>
+            <option value="other-trips">Other Trips</option>
+            <option value="all-trips">All Trips</option>
+        </select>
         <section class="projects">
             <?php foreach ($trips as $trip): ?>
             <div class="project p1" id="<?= $trip->getId() ?>">

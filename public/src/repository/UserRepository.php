@@ -123,7 +123,43 @@ class UserRepository extends Repository
 
         return $result;
     }
+    public function getMyUsers(): ?array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as fers, array_to_json(following) as fing
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+        ');
+        $stmt->execute();
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+        foreach ($users as $user){
+            $following = $this->getUserById($_SESSION['idUser'])->getFollowing() ;
+            if(!in_array($user['id'], $following)) array_push($result,$user);
+        }
+        foreach ($result as $user) {
+            $result[] = new User(
+                $user['email'],
+                $user['password'],
+                $user['name'],
+                $user['surname'],
+                $user['phone'],
+                $user['description'],
+                $user['first_mountain'],
+                $user['second_mountain'],
+                $user['photo'],
+                json_decode($user['like']),
+                json_decode($user['dislike']),
+                json_decode($user['fers']),
+                json_decode($user['fing']),
+                $user['id']
+            );
+        }
 
+        return $result;
+    }
     public function getUsersByName($searchString): ?array
     {
         $searchString = '%' . strtolower($searchString) . '%';

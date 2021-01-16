@@ -243,7 +243,17 @@ header {
 
 
 
+.filter{
+    margin-left: 3vw;
+    border-radius: 32px;
+    background: transparent linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0% 0% no-repeat padding-box;;
+    color: white;
+    font-weight: 700;
+}
 
-
+.filter option{
+    background-color: #DA4AC21A;
+    color: #330436;
+}
 
 

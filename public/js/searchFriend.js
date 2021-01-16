@@ -25,13 +25,11 @@ search.addEventListener("keyup", function (event) {
 });
 function loadProjects(projects) {
     projects.forEach(project => {
-        console.log(project);
         createProject(project);
     });
 }
 
 function createProject(project) {
-    console.log(project)
     const template = document.querySelector("#friend-template");
 
     const clone = template.content.cloneNode(true);
@@ -44,9 +42,9 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.likes;
+    like.innerText = project.like;
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislikes;
+    dislike.innerText = project.dislike;
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText= project.first_mountain;
     wantToGo[1].innerText= project.second_mountain;
@@ -55,9 +53,7 @@ function createProject(project) {
 
 
 buttonMyProject.addEventListener('click',function (){
-    alert();
     fetch('/myFriends').then(function (response) {
-        console.log("Response")
         return response.json();
     }).then(function (projects) {
         projectContainer.innerHTML = "";

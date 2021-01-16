@@ -46,11 +46,15 @@
     <main>
         <header>
             <div class="search-bar">
-                    <button class="my">my</button>
                     <input type="text" placeholder="search friend" name ="name">
             </div>
 
         </header>
+        <select name="filter" class="filter" >
+            <option value="my-followed">Followed</option>
+            <option value="other-user">Others</option>
+            <option value="all-users">All</option>
+        </select>
         <section class="projects">
             <?php foreach ($users as $user): ?>
                 <div class="project p1"  id="<?= $user->getId()?>">
