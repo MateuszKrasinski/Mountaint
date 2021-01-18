@@ -1,6 +1,6 @@
 const search = document.querySelector('input[placeholder="search project"]');
 const projectContainer = document.querySelector(".projects");
-const buttonMyProject = document.querySelector(".my");
+const buttonMyProject = document.querySelector("select.filter");
 search.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
         event.preventDefault();

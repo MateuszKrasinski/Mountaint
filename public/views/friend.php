@@ -70,7 +70,7 @@
                             <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
                         <p>
-                            <?= $user->getFollowing()?></p>
+                            <?= $user->getDescription()?></p>
                         <div class="social-section">
                             <i class="fas fa-heart"><?= count($user->getLikes()) ?></i>
                             <i class="fas fa-minus-square"><?= count($user->getDislikes()); ?></i>

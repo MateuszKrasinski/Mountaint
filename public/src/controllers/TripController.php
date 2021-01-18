@@ -73,7 +73,6 @@ class TripController extends AppController {
             $id=$this->tripRepository->getTripId($trip);
             $this->tripRepository->newParticipant($id);
             $url = "http://$_SERVER[HTTP_HOST]";
-            header("Location: {$url}/trip");
             return $this->render('trip', [
                 'trips' => $this->tripRepository->getTrips(),
                 'messages' => $this->message]);
