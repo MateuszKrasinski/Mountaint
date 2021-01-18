@@ -89,3 +89,14 @@ button:hover{
 .no-valid{
     border-bottom: 1px solid red !important;
 }
+
+/* Change the white to any color ;) */
+
+/*Change text in autofill textbox*/
+input:-webkit-autofill {
+    -webkit-text-fill-color: white !important;
+}
+
+input:-webkit-autofill {
+    -webkit-background-clip: text;
+}

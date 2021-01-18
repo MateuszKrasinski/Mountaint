@@ -42,35 +42,38 @@
         </ul>
     </nav>
     <main>
-        <div class="messages">
-            <?php
-            if (isset($messages)) {
-                foreach ($messages as $message) {
-                    echo $message;
+        <div class="contet-container">
+            <div class="messages">
+                <?php
+                if (isset($messages)) {
+                    foreach ($messages as $message) {
+                        echo $message;
+                    }
                 }
-            }
-            ?>
-        </div>
-        <div class="first-line-container">
-            <div class="first-line-left-container">
-                <div class="mountain"><?= $user->getName(); ?>      <?= $user->getSurname(); ?></div>
-                <div class="mountain"><?= $user->getSecondMountain(); ?></div>
-                <div class="mountain"><?= $user->getFirstMountain(); ?></div>
-
+                ?>
             </div>
+            <div class="first-line-container">
+                <div class="first-line-left-container">
+                    <div class="mountain"><i class="fas fa-user"></i> <?= $user->getName(); ?>      <?= $user->getSurname(); ?></div>
+                    <div class="mountain"><i class="fas fa-mountain"></i><?= $user->getSecondMountain(); ?></div>
+                    <div class="mountain"><i class="fas fa-mountain"></i><?= $user->getFirstMountain(); ?></div>
 
-            <div class="photo">
-                <img src="/public/img/uploads/<?= $user->getPhoto(); ?>" alt="profile photo" width="30px">
-                <div class="social-section">
-                    <i class="fas fa-heart"><?= count($user->getLikes()) ?></i>
-                    <i class="fas fa-minus-square"><?= count($user->getDislikes()) ?></i>
-                    <i class="fas fa-user-plus"><?= (count($user->getFollowers())) ?></i>
                 </div>
-            </div>
-        </div>
 
-        <div class="description">
-            <?= $user->getDescription(); ?>
+                <div class="photo">
+                    <img src="/public/img/uploads/<?= $user->getPhoto(); ?>" alt="profile photo" width="30px">
+                    <div class="social-section">
+                        <i class="fas fa-heart"><?= count($user->getLikes()) ?></i>
+                        <i class="fas fa-minus-square"><?= count($user->getDislikes()) ?></i>
+                        <i class="fas fa-user-plus"><?= (count($user->getFollowers())) ?></i>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="description">
+                <p><?= $user->getDescription(); ?></p>
+            </div>
         </div>
 
 

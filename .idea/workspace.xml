@@ -29,6 +29,11 @@
     <list default="true" id="e9a7818e-0042-45e4-a0cc-3b49ae52cc39" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/display_trip.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/display_trip.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/friendProfile.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/friendProfile.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/login.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/login.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/views/friend_profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/friend_profile.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/views/login.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/login.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/views/trip_profile.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/trip_profile.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -137,7 +142,8 @@
       <workItem from="1610650796675" duration="15583000" />
       <workItem from="1610704984974" duration="28443000" />
       <workItem from="1610745915442" duration="10278000" />
-      <workItem from="1610801698188" duration="10464000" />
+      <workItem from="1610801698188" duration="10609000" />
+      <workItem from="1610965947911" duration="15639000" />
     </task>
     <servers />
   </component>

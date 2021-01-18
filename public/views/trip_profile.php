@@ -55,12 +55,10 @@
                     <div class="title"><?= $trip->getTitle(); ?></div>
 
                 </div>
-                <div class="file-upload">
-                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"/>
+                <div class="display-image">
+                    <img class="display-image" src="public/img/uploads/<?= $trip->getImage()?>">
                 </div>
             </div>
-            <div class="info-container">
-                <div class="left">
                     <div class="create-trip-container">
                         <?php
                         $places = explode(",", $trip->getPlaces());
@@ -95,25 +93,23 @@
                         <button type="submit">join</button>
                     </div>
 
-                </div>
-                <div class="right">
-                    <div class="right-container">
-                        Participants
-                        <?php
-                        foreach ($participants as $participant):?>
-                            <div class="participant">
-                                <a href="friendProfile?profile=<?php echo $participant->getId(); ?>">
-                                    <img src="/public/img/<?= $participant->getPhoto(); ?>">
-                                    <?= $participant->getName() ?>
-                                </a>
-                            </div>
-                        <?php endforeach ?>
-                    </div>
-                </div>
 
-            </div>
+
         </form>
-
+        <div class="right">
+            <div class="right-container">
+                <i class="fas fa-users"></i>
+                <?php
+                foreach ($participants as $participant):?>
+                    <div class="participant">
+                        <a href="friendProfile?profile=<?php echo $participant->getId(); ?>">
+                            <img src="/public/img/<?= $participant->getPhoto(); ?>">
+                            <?= $participant->getName() ?>
+                        </a>
+                    </div>
+                <?php endforeach ?>
+            </div>
+        </div>
 
     </main>
 </div>

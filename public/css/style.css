@@ -83,15 +83,14 @@ li i {
   justify-content: space-around;
   align-items: center;
   flex-direction: row;
-  font: normal normal normal 20px/29px Roboto Slab;
+  font: normal normal normal 18px/27px Roboto Slab;
   background: transparent linear-gradient(180deg, #330436 0%, #7c3e72b3 100%) 0%
     0% no-repeat padding-box;
   border-radius: 2em;
-  width: 20vw;
-  height: 8vh;
+  width: 12vw;
+  height: 6vh;
   color: white;
   text-align: center;
-  padding: 1vh 1vh
 }
 
 .add-project > i {

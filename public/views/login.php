@@ -15,7 +15,7 @@
     </div>
 
     <div class="login-container">
-        <form class="login" action="login" method="POST">
+        <form class="login" action="login" method="POST" autocomplete="off">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
@@ -25,8 +25,8 @@
                 }
                 ?>
             </div>
-            <input type="text" name="email" placeholder="login">
-            <input type="password" name="password" placeholder="password">
+            <input type="text" name="email" placeholder="login" autocomplete="off">
+            <input type="password" name="password" placeholder="password" autocomplete="off">
             <button TYPE="submit">LOGIN</button>
         </form>
     </div>
