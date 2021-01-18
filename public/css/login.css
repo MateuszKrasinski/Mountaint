@@ -71,12 +71,18 @@ button:hover{
 @media only screen and (max-device-width: 420px) {
  .login-container{
    margin-top: 20vh;
-  width: 100%;
-  height: 50%;
-  border-radius: 18px;
+  width: 80%;
+  height: 40%;
+  border-radius: 32px;
  }
- .login-container>button{
-  font-size: 3vh;
+    .register-container{
+        margin-top: 20vh;
+        width: 80%;
+        height: 40%;
+        border-radius: 32px;
+    }
+ .login-container>button, .register-container>button{
+  font-size: 2vh;
  }
  .login-container>form>input{
   font-size: 2vh;

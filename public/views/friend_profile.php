@@ -74,6 +74,7 @@
             <div class="description">
                 <p><?= $user->getDescription(); ?></p>
             </div>
+            <button class="join-btn">follow</button>
         </div>
 
 

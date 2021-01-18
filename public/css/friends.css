@@ -9,6 +9,7 @@ body {
     align-items: center;
     flex-direction: row;
     white-space: nowrap;
+    overflow-x: scroll;
 
 }
 
@@ -23,23 +24,7 @@ body {
 }
 
 
-@keyframes my-animation {
-    from{
-        opacity: 1.0;
-    }
-    to{
-        opacity: 0;
-    }
-}
 
-.animation{
-    position: relative;
-    transform: translateY(-80vh);
-    transition-duration: 1s;
-    transition-timing-function: ease-out;
-    animation-name: my-animation;
-    animation-duration: 1s;
-}
 
 
 header {
@@ -110,21 +95,22 @@ header {
     border: 1px solid #330436;
     border-radius: 76px 76px 0px 0px;
 }
-
-
-.project-image > img {
-    position: relative;
-    width: 30vh;
-    height: 30vh;
-    border-radius: 50%;
-    border: #330436 1px solid;
+.project-image>a>img{
+    border-radius: 100%;
+    width: 100%;
+    height: 100%;
 }
-.project-image > a >img {
-    position: relative;
-    width: 30vh;
-    height: 30vh;
+
+
+.project-image > a{
+    margin: 0 !important;
+    display: flex;
+    width: 80%;
+    height: 80%;
     border-radius: 50%;
     border: #330436 1px solid;
+    justify-content: center;
+    align-items: center;
 }
 
 .want-to-go-container{
@@ -257,3 +243,43 @@ header {
 }
 
 
+@keyframes my-animation {
+    from{
+        opacity: 1.0;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+.animation{
+    position: relative;
+    transform: translateY(-80vh);
+    transition-duration: 1s;
+    transition-timing-function: ease-out;
+    animation-name: my-animation;
+    animation-duration: 1s;
+}
+
+/* width */
+::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #DA4AC21A 0% 0% no-repeat padding-box;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%;
+    border-radius:12px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
+    0% no-repeat padding-box;
+}

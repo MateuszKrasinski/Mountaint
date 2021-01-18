@@ -234,7 +234,7 @@ class TripRepository extends Repository
     public function newParticipant(int $id)
     {
         $trip = $this->getTrip($id);
-        if (!(in_array($_SESSION['idUser'], $trip->getParticipant()))) {
+        if (($trip->getParticipant()!= null)&&!(in_array($_SESSION['idUser'], $trip->getParticipant()))) {
             $stmt = $this->database->connect()->prepare('
             update trips
             set participants = array_append(participants, :id_user)

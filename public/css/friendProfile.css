@@ -3,13 +3,13 @@
     justify-content: center;
     align-items: center;
 }
-.contet-container{
+.contet-container, form{
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     height: 100%;
-    width: 70%;
+    width: 70% !important;
 }
 .first-line-container{
     height: 30vh;
@@ -41,7 +41,7 @@
     background: #DA4AC21A;
     opacity: 0.8;
     margin-top: 1vh;
-    width: 80%;
+    width: 70%;
     padding: 0 5vh;
     height: 7vh;
     font-size: 4.5vh;
@@ -57,8 +57,8 @@
     height: 25vh;
 }
 .photo>img{
-    width: 25vh;
-    height: 25vh;
+    width: 15vw;
+    height: 15vw;
     border-radius: 32px;
     border: 2px solid #330436;
 }
@@ -129,3 +129,44 @@
     color: white !important;
 
 }
+
+.file-upload{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width:  30%;
+    height: 25vh;
+}
+
+@media only screen and (max-device-width: 1400px) {
+    .contet-container, form{
+        height: 100%;
+        width: 80% !important;
+    }
+}@media only screen and (max-device-width: 1200px) {
+    .contet-container, form{
+        height: 100%;
+        width: 90% !important;
+    }
+
+    .mountain{
+        font-size: 2vh;
+        width: 50%;
+    }
+    .photo{
+        flex-direction: column;
+    }
+    .social-section{
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        width: fit-content;
+        height: fit-content;
+    }
+    .photo>img{
+        width: 30vw;
+        height: 30vw;
+    }
+}
+
