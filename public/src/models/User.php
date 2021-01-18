@@ -54,17 +54,13 @@ class User
         $this->followers = $followers;
     }
 
-    /**
-     * @return mixed|string
-     */
+
     public function getFollowing(): array
     {
         return $this->following;
     }
 
-    /**
-     * @param mixed|string $following
-     */
+
     public function setFollowing(string $following): void
     {
         $this->following = $following;

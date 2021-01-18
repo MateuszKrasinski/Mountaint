@@ -51,7 +51,7 @@
 
         </header>
         <select name="filter" class="filter" >
-            <option value="my-followed">Followed</option>
+            <option value="myFriends">Followed</option>
             <option value="other-user">Others</option>
             <option value="all-users">All</option>
         </select>
@@ -70,7 +70,7 @@
                             <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
                         <p>
-                            <?= $user->getDescription(); ?></p>
+                            <?= $user->getFollowing()?></p>
                         <div class="social-section">
                             <i class="fas fa-heart"><?= count($user->getLikes()) ?></i>
                             <i class="fas fa-minus-square"><?= count($user->getDislikes()); ?></i>

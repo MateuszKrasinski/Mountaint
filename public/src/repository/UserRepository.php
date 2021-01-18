@@ -136,29 +136,15 @@ class UserRepository extends Repository
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
         foreach ($users as $user){
-            $following = $this->getUserById($_SESSION['idUser'])->getFollowing() ;
-            if(!in_array($user['id'], $following)) array_push($result,$user);
+            if(in_array($_SESSION['idUser'], json_decode($user['fers'])))
+            {
+                $user['like'] = json_decode($user['like']);
+                $user['dislike'] = json_decode($user['dislike']);
+                array_push($result, $user);
+            }
         }
-        foreach ($result as $user) {
-            $result[] = new User(
-                $user['email'],
-                $user['password'],
-                $user['name'],
-                $user['surname'],
-                $user['phone'],
-                $user['description'],
-                $user['first_mountain'],
-                $user['second_mountain'],
-                $user['photo'],
-                json_decode($user['like']),
-                json_decode($user['dislike']),
-                json_decode($user['fers']),
-                json_decode($user['fing']),
-                $user['id']
-            );
-        }
-
         return $result;
+
     }
     public function getUsersByName($searchString): ?array
     {

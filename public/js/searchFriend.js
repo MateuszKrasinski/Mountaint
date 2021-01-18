@@ -1,6 +1,6 @@
 const search = document.querySelector('input[placeholder="search friend"]');
 const projectContainer = document.querySelector(".projects");
-const buttonMyProject = document.querySelector(".my");
+const buttonMyProject = document.querySelector("select.filter");
 
 search.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
@@ -15,7 +15,6 @@ search.addEventListener("keyup", function (event) {
             },
             body: JSON.stringify(data)
         }).then(function (response) {
-            console.log("Response")
             return response.json();
         }).then(function (projects) {
             projectContainer.innerHTML = "";
@@ -24,6 +23,7 @@ search.addEventListener("keyup", function (event) {
     }
 });
 function loadProjects(projects) {
+    console.log(projects)
     projects.forEach(project => {
         createProject(project);
     });
@@ -31,7 +31,6 @@ function loadProjects(projects) {
 
 function createProject(project) {
     const template = document.querySelector("#friend-template");
-
     const clone = template.content.cloneNode(true);
     const div = clone.querySelector("div");
     div.id = project.id;
@@ -42,9 +41,10 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.like;
+    like.innerText = project.like.length
+
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislike;
+    dislike.innerText = project.dislike.length;
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText= project.first_mountain;
     wantToGo[1].innerText= project.second_mountain;
@@ -52,7 +52,7 @@ function createProject(project) {
 }
 
 
-buttonMyProject.addEventListener('click',function (){
+buttonMyProject.addEventListener('change',function (){
     fetch('/myFriends').then(function (response) {
         return response.json();
     }).then(function (projects) {
@@ -60,3 +60,4 @@ buttonMyProject.addEventListener('click',function (){
         loadProjects(projects)
     });
 })
+
