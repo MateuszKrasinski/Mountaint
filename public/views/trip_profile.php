@@ -15,7 +15,8 @@
 <div class="base-container">
     <?PHP include('public/views/nav.php') ?>
     <main>
-        <form onsubmit=noReload() action="joinTrip" method="POST" ENCTYPE="multipart/form-data">
+        <form onsubmit=noReload() action="joinTripFromProfile" method="POST" ENCTYPE="multipart/form-data">
+            <input type="hidden" name="id" value="<?= $trip->getId(); ?>">
             <div class="messages">
                 <?php
                 if (isset($messages)) {

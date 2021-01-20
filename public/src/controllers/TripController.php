@@ -1,18 +1,21 @@
 <?php
 
 require_once 'AppController.php';
-require_once __DIR__ .'/../models/Trip.php';
-require_once __DIR__.'/../repository/TripRepository.php';
+require_once __DIR__ . '/../models/Trip.php';
+require_once __DIR__ . '/../repository/TripRepository.php';
 
-class TripController extends AppController {
+class TripController extends AppController
+{
 
-    const MAX_FILE_SIZE = 1024*1024;
+    const MAX_FILE_SIZE = 1024 * 1024;
     const SUPPORTED_TYPES = ['image/png', 'image/jpeg'];
     const UPLOAD_DIRECTORY = '/../img/uploads/';
 
     private $message = [];
     private $tripRepository;
-    public function joinTrip(){
+
+    public function joinTrip()
+    {
         $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
         if ($contentType === "application/json") {
             $content = trim(file_get_contents("php://input"));
@@ -26,6 +29,16 @@ class TripController extends AppController {
         }
 
     }
+
+    public function joinTripFromProfile()
+    {
+        http_response_code(200);
+        $this->tripRepository->newParticipant($_POST['id']);
+        $trips = $this->tripRepository->getTrips();
+
+        $this->render('trip', ['trips' => $trips]);
+    }
+
     public function tripProfile()
 
     {
@@ -33,27 +46,35 @@ class TripController extends AppController {
         $trip = $this->tripRepository->getTrip(($id));
         $participantsId = $trip->getParticipant();
         $participants = [];
-        $userRepository =  new UserRepository();
-        foreach ($participantsId as $participantId){
+        $userRepository = new UserRepository();
+        foreach ($participantsId as $participantId) {
             $participants[] = $userRepository->getUserById($participantId);
         }
         $this->render('trip_profile', ['trip' => $trip, 'participants' => $participants]);
 
 
     }
-    public function myTrips(){
+
+    public function myTrips()
+    {
         http_response_code(200);
         echo json_encode($this->tripRepository->myTrips());
     }
-    public function otherTrips(){
+
+    public function otherTrips()
+    {
         http_response_code(200);
         echo json_encode($this->tripRepository->getOtherTrips());
     }
-    public function allTrips(){
+
+    public function allTrips()
+    {
         http_response_code(200);
         echo json_encode($this->tripRepository->allTrips());
     }
-    public function joinedTrips(){
+
+    public function joinedTrips()
+    {
         http_response_code(200);
         echo json_encode($this->tripRepository->getJoinedTrips());
     }
@@ -63,6 +84,7 @@ class TripController extends AppController {
         parent::__construct();
         $this->tripRepository = new TripRepository();
     }
+
     public function trip()
 
     {
@@ -70,18 +92,19 @@ class TripController extends AppController {
 
         $this->render('trip', ['trips' => $trips]);
     }
+
     public function addTrip()
     {
         if ($this->isPost() && is_uploaded_file($_FILES['file']['tmp_name']) && $this->validate($_FILES['file'])) {
             move_uploaded_file(
                 $_FILES['file']['tmp_name'],
-                dirname(__DIR__).self::UPLOAD_DIRECTORY.$_FILES['file']['name']
+                dirname(__DIR__) . self::UPLOAD_DIRECTORY . $_FILES['file']['name']
             );
 
-            $trip = new Trip($_SESSION['userID'],$_POST['title'], $_POST['description'], $_FILES['file']['name'],$_POST['date_start'],
-                $_POST['time_start'],$_POST['date_finish'],$_POST['time_finish'],$_POST['places'],$_POST['participants']);
+            $trip = new Trip($_SESSION['userID'], $_POST['title'], $_POST['description'], $_FILES['file']['name'], $_POST['date_start'],
+                $_POST['time_start'], $_POST['date_finish'], $_POST['time_finish'], $_POST['places'], $_POST['participants']);
             $this->tripRepository->addTrip($trip);
-            $id=$this->tripRepository->getTripId($trip);
+            $id = $this->tripRepository->getTripId($trip);
             $this->tripRepository->newParticipant($id);
             $url = "http://$_SERVER[HTTP_HOST]";
             return $this->render('trip', [
@@ -90,6 +113,7 @@ class TripController extends AppController {
         }
         return $this->render('add_project', ['messages' => $this->message]);
     }
+
     public function search()
     {
         $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
@@ -102,6 +126,7 @@ class TripController extends AppController {
             echo json_encode($this->tripRepository->getProjectByTitle($decoded['search']));
         }
     }
+
     private function validate(array $file): bool
     {
         if ($file['size'] > self::MAX_FILE_SIZE) {
@@ -116,14 +141,16 @@ class TripController extends AppController {
         return true;
     }
 
-    public function like(int $id) {
+    public function like(int $id)
+    {
         $this->tripRepository->like($id);
         $trip = $this->tripRepository->getTrip($id);
         echo json_encode(count($trip->getLikes()));
         http_response_code(200);
     }
 
-    public function dislike(int $id) {
+    public function dislike(int $id)
+    {
         $this->tripRepository->dislike($id);
         $trip = $this->tripRepository->getTrip($id);
         echo json_encode(count($trip->getDislikes()));
