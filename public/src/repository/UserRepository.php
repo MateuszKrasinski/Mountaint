@@ -99,6 +99,7 @@ class UserRepository extends Repository
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($users as $user) {
+            if($user['id']!= $_SESSION['idUser'])
             $result[] = new User(
                 $user['email'],
                 $user['password'],
@@ -194,14 +195,24 @@ class UserRepository extends Repository
     {
         $searchString = '%' . strtolower($searchString) . '%';
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like, array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE LOWER(name) LIKE :search OR LOWER(surname) LIKE :search
         ');
         $stmt->bindParam(':search', $searchString, PDO::PARAM_STR);
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+        foreach ($users as $user){
+            if( ($user['id'] != $_SESSION['idUser']))
+            {
+                $user['like'] = json_decode($user['like']);
+                $user['dislike'] = json_decode($user['dislike']);
+                array_push($result, $user);
+            }
+        }
+        return $result;
     }
 
     public function addUser(User $user)

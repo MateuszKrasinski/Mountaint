@@ -196,5 +196,12 @@ class SecurityController extends AppController
         if(!in_array($_SESSION['idUser'], $followedUser->getFollowers()))
             $this->userRepository->follow($id);
     }
+    public function follow2(){
+        $followedUser = $this->userRepository->getUserById($_GET['id']);
+        if(!in_array($_SESSION['idUser'], $followedUser->getFollowers()))
+            $this->userRepository->follow($_GET['id']);
+        $users = $this->userRepository->getUsers();
+        $this->render('friend', ['users' => $users]);
+    }
 
 }

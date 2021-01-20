@@ -1,6 +1,8 @@
 const search = document.querySelector('input[placeholder="search project"]');
 const projectContainer = document.querySelector(".projects");
 const buttonMyProject = document.querySelector("select.filter");
+const followButtons = document.querySelectorAll(".join-btn");
+
 search.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -41,9 +43,9 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.likes.length;
+    like.innerText = project.like.length;
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislikes.length;
+    dislike.innerText = project.dislike.length;
     const dateStart = clone.querySelectorAll(".date")[0];
     dateStart.innerText = project.date_start + "\n" + project.time_start;
     const dateFinish= clone.querySelectorAll(".date")[1];

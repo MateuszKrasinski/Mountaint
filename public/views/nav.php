@@ -7,7 +7,7 @@
         </li>
         <li>
             <a href="friend">
-                <i class="fas fa-user-friends highlight"></i></a>
+                <i class="fas fa-user-friends "></i></a>
             <a href="friend" class="button">Friend</a>
         </li>
         <li>

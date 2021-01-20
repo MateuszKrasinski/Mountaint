@@ -76,17 +76,5 @@ function loadPhoto(photo = "xD") {
     })
 }
 
-function animation(element) {
-    element.animate([
-        // keyframes
-        {transform: 'translateY(0px)'},
-        {transform: 'translateY(-500px)'}
-    ], {
-        // timing options
-        duration: 500,
-        iterations: 1
-    })
-}
-
 
 

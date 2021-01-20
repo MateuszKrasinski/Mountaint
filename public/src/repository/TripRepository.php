@@ -127,8 +127,8 @@ class TripRepository extends Repository
     public function getOtherTrips()
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes,* FROM trips 
+            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike,* FROM trips 
         ');
         $stmt->execute();
 
@@ -148,8 +148,8 @@ class TripRepository extends Repository
     public function getJoinedTrips()
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes,* FROM trips 
+            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike,* FROM trips 
         ');
         $stmt->execute();
 
@@ -183,12 +183,20 @@ class TripRepository extends Repository
     {
         $searchString = '%' . strtolower($searchString) . '%';
         $stmt = $this->database->connect()->prepare('
-            SELECT * FROM trips WHERE LOWER(title) LIKE :search OR LOWER(description) LIKE :search
+            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike,* FROM trips  WHERE LOWER(title) LIKE :search OR LOWER(description) LIKE :search
         ');
         $stmt->bindParam(':search', $searchString, PDO::PARAM_STR);
         $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $trips =  $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+        foreach ($trips as $trip){
+                $trip['participants']=json_decode($trip['parti']);
+                $trip['like'] = json_decode($trip['like']);
+                $trip['dislike'] = json_decode($trip['dislike']);
+                array_push($result,$trip);
+            }
+        return $result;
     }
 
     public function like(int $id)
@@ -259,8 +267,8 @@ class TripRepository extends Repository
     public function myTrips(): array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes,* FROM trips 
+            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike,* FROM trips 
         ');
         $stmt->execute();
 
@@ -279,8 +287,8 @@ class TripRepository extends Repository
     }
     public function allTrips(){
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes,* FROM trips 
+            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike,* FROM trips 
         ');
         $stmt->execute();
 

@@ -42,7 +42,7 @@
                 </div>
 
                 <textarea class="description" name="description" placeholder="description">
-                <?=  $user->getDescription();?>
+                <?=$user->getDescription();?>
             </textarea>
 
 

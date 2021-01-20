@@ -86,7 +86,7 @@
                 <i class="fas fa-minus-square"></i>
             </div>
             <div class="button-container">
-                <button class="join-btn">invite</button>
+                <button class="join-btn">follow</button>
             </div>
         </div>
     </div>

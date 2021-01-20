@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="/public/css/friends.css">
     <link rel="stylesheet" href="/public/css/add_trip.css">
     <link rel="stylesheet" href="/public/css/style.css">
-    <script src="/public/js/goProfile.js" defer></script>
+    <script src="/public/js/statisticsFriend.js" defer></script>
     <link rel="stylesheet" href="/public/css/friendProfile.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -42,7 +42,8 @@
         </ul>
     </nav>
     <main>
-        <div class="contet-container">
+        <form action="follow2">
+            <input type="hidden" name="id"  value="<?= $user->getId()?>">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
@@ -74,8 +75,8 @@
             <div class="description">
                 <p><?= $user->getDescription(); ?></p>
             </div>
-            <button class="join-btn">follow</button>
-        </div>
+            <button  type="submit" class="join-btn">follow</button>
+        </form>
 
 
 
