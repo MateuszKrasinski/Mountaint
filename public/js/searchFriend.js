@@ -41,10 +41,10 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.like.length
+    like.innerText = project.like.length-2
 
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislike.length;
+    dislike.innerText = project.dislike.length-2;
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText= project.first_mountain;
     wantToGo[1].innerText= project.second_mountain;

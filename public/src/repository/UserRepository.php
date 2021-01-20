@@ -132,7 +132,7 @@ class UserRepository extends Repository
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
         foreach ($users as $user){
-            if(in_array($_SESSION['idUser'], json_decode($user['fers'])))
+            if(!in_array($_SESSION['idUser'], json_decode($user['fers'])))
             {
                 $user['like'] = json_decode($user['like']);
                 $user['dislike'] = json_decode($user['dislike']);

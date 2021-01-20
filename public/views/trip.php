@@ -80,9 +80,11 @@
 
 <template id="project-template">
     <div class="project p1">
-        <div class="project-image">
-            <img src="">
-        </div>
+            <div class="project-image">
+                <a  href="tripProfile?profile=<?php echo $trip->getId(); ?>">
+                    <img src="">
+                </a>
+            </div>
         <div class="project-info">
             <h2>info</h2>
             <div class="date-container">

@@ -43,8 +43,6 @@ class TripController extends AppController {
     }
     public function myTrips(){
         http_response_code(200);
-
-//        echo json_encode($this->tripRepository->userTrips($_SESSION['userID']));
         echo json_encode($this->tripRepository->userTrips());
     }
     public function __construct()

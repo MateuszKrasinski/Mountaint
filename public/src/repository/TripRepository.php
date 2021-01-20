@@ -252,7 +252,8 @@ class TripRepository extends Repository
     public function userTrips(): array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti , * FROM trips 
+            SELECT array_to_json(participants) as parti ,array_to_json(likes) as likes,
+                   array_to_json(dislikes) as dislikes,* FROM trips 
         ');
         $stmt->execute();
 
@@ -260,7 +261,11 @@ class TripRepository extends Repository
         $result = [];
         foreach ($trips as $trip){
             $participants = json_decode($trip['parti']);
-            if (in_array($_SESSION['idUser'],$participants))array_push($result,$trip);
+            if (in_array($_SESSION['idUser'],$participants)){
+                $trip['like'] = json_decode($trip['like']);
+                $trip['dislike'] = json_decode($trip['dislike']);
+                array_push($result,$trip);
+            }
         }
         return $result;
     }
