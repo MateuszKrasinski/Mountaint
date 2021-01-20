@@ -43,8 +43,21 @@ class TripController extends AppController {
     }
     public function myTrips(){
         http_response_code(200);
-        echo json_encode($this->tripRepository->userTrips());
+        echo json_encode($this->tripRepository->myTrips());
     }
+    public function otherTrips(){
+        http_response_code(200);
+        echo json_encode($this->tripRepository->getOtherTrips());
+    }
+    public function allTrips(){
+        http_response_code(200);
+        echo json_encode($this->tripRepository->allTrips());
+    }
+    public function joinedTrips(){
+        http_response_code(200);
+        echo json_encode($this->tripRepository->getJoinedTrips());
+    }
+
     public function __construct()
     {
         parent::__construct();

@@ -48,11 +48,12 @@ function createProject(project) {
     const dateStart = clone.querySelectorAll(".date")[0];
     dateStart.innerText = project.date_start + "\n" + project.time_start;
     const dateFinish= clone.querySelectorAll(".date")[1];
-    dateFinish.innerText = project.participants.length-2
+    dateFinish.innerText = project.participants.length
     projectContainer.appendChild(clone);
 }
-buttonMyProject.addEventListener('click',function (){
-    fetch('/myTrips').then(function (response) {
+buttonMyProject.addEventListener('change',function (event){
+    let selectedOption = buttonMyProject.value;
+    fetch(`/${selectedOption}`).then(function (response) {
         return response.json();
     }).then(function (projects) {
         projectContainer.innerHTML = "";

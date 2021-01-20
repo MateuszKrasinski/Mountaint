@@ -27,6 +27,9 @@ Router::get('dislikeFriend', 'SecurityController');
 Router::get('follow', 'SecurityController');
 Router::get('myFriends', 'SecurityController');
 Router::get('myTrips', 'TripController');
+Router::get('allTrips', 'TripController');
+Router::get('joinedTrips', 'TripController');
+Router::get('otherTrips', 'TripController');
 
 
 
