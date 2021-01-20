@@ -30,8 +30,10 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/index.php" beforeDir="false" afterPath="$PROJECT_DIR$/index.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/src/controllers/TripController.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/src/controllers/TripController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/src/repository/TripRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/src/repository/TripRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/js/searchFriend.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/searchFriend.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/controllers/SecurityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/src/controllers/SecurityController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/src/repository/UserRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/src/repository/UserRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/views/friend.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/friend.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/views/trip.php" beforeDir="false" afterPath="$PROJECT_DIR$/public/views/trip.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -153,7 +155,7 @@
       <workItem from="1611052511238" duration="29000" />
       <workItem from="1611148187081" duration="760000" />
       <workItem from="1611156377454" duration="5060000" />
-      <workItem from="1611164206330" duration="6138000" />
+      <workItem from="1611164206330" duration="10413000" />
     </task>
     <servers />
   </component>

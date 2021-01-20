@@ -122,11 +122,23 @@ class SecurityController extends AppController
         $this->userRepository->addUser($user);
         $this->render('login');
     }
-    public function myFriends(){
+    public function followed(){
 
             http_response_code(200);
 
-            echo json_encode($this->userRepository->getMyUsers());
+            echo json_encode($this->userRepository->getMyFollowed());
+    }
+    public function notFollowed(){
+
+        http_response_code(200);
+
+        echo json_encode($this->userRepository->getNotMyFollowed());
+    }
+    public function allFriends(){
+
+        http_response_code(200);
+
+        echo json_encode($this->userRepository->getAllFriends());
     }
 
     public function setProfile()
@@ -180,16 +192,9 @@ class SecurityController extends AppController
         return true;
     }
     public function follow(int $id){
-//        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
-//        if ($contentType === "application/json") {
-//            $content = trim(file_get_contents("php://input"));
-//            $decoded = json_decode($content, true);
-//
-//            header('Content-type: application/json');
-//            http_response_code(200);
-//            echo json_encode($this->tripRepository->getProjectByTitle($decoded['search']));
-//        }
-        $this->userRepository->follow($id);
+        $followedUser = $this->userRepository->getUserById($id);
+        if(!in_array($_SESSION['idUser'], $followedUser->getFollowers()))
+            $this->userRepository->follow($id);
     }
 
 }

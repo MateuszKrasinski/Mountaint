@@ -33,10 +33,10 @@
             </div>
         </header>
         <select name="filter" class="filter" >
+            <option value="AllTrips">My Trips</option>
             <option value="myTrips">My Trips</option>
             <option value="joinedTrips">Joined Trips</option>
             <option value="otherTrips">Other Trips</option>
-            <option value="allTrips">All Trips</option>
         </select>
         <section class="projects">
             <?php foreach ($trips as $trip): ?>

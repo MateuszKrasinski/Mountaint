@@ -29,7 +29,6 @@ function loadProjects(projects) {
 }
 
 function createProject(project) {
-    console.log([project])
     const template = document.querySelector("#project-template");
 
     const clone = template.content.cloneNode(true);
@@ -42,9 +41,9 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.likes.length-2;
+    like.innerText = project.likes.length;
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislikes.length-2;
+    dislike.innerText = project.dislikes.length;
     const dateStart = clone.querySelectorAll(".date")[0];
     dateStart.innerText = project.date_start + "\n" + project.time_start;
     const dateFinish= clone.querySelectorAll(".date")[1];

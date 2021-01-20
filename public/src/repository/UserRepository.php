@@ -119,7 +119,7 @@ class UserRepository extends Repository
 
         return $result;
     }
-    public function getMyUsers(): ?array
+    public function getMyFollowed(): ?array
     {
         $stmt = $this->database->connect()->prepare('
             SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
@@ -132,7 +132,55 @@ class UserRepository extends Repository
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
         foreach ($users as $user){
-            if(!in_array($_SESSION['idUser'], json_decode($user['fers'])))
+            $followers = json_decode($user['fers']);
+            if(in_array($_SESSION['idUser'], $followers))
+            {
+                $user['like'] = json_decode($user['like']);
+                $user['dislike'] = json_decode($user['dislike']);
+                array_push($result, $user);
+            }
+        }
+        return $result;
+
+    }
+    public function getNotMyFollowed(): ?array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as fers, array_to_json(following) as fing
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+        ');
+        $stmt->execute();
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+        foreach ($users as $user){
+            $followers = json_decode($user['fers']);
+            if((!in_array($_SESSION['idUser'], $followers) && ($user['id'] != $_SESSION['idUser'])))
+            {
+                $user['like'] = json_decode($user['like']);
+                $user['dislike'] = json_decode($user['dislike']);
+                array_push($result, $user);
+            }
+        }
+        return $result;
+
+    }
+    public function getAllFriends(): ?array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
+                       as fers, array_to_json(following) as fing
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+        ');
+        $stmt->execute();
+        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+        foreach ($users as $user){
+            if( ($user['id'] != $_SESSION['idUser']))
             {
                 $user['like'] = json_decode($user['like']);
                 $user['dislike'] = json_decode($user['dislike']);
@@ -335,6 +383,7 @@ class UserRepository extends Repository
     }
     public function follow(int $id)
     {
+        $idLogged = $_SESSION['idUser'];
         $followedUser = $this->getUserById($id);
         $followedUserIdDetails = $this->getUserProfileDetailsId($followedUser);
         $followingUser = $this->getUserById($_SESSION['idUser']);
@@ -345,7 +394,7 @@ class UserRepository extends Repository
             WHERE profile_details.id = :id;
          ');
         $stmt->bindParam(':id',$followedUserIdDetails,PDO::PARAM_INT);
-        $stmt->bindParam(':id_user', $followingUserIdDetails, PDO::PARAM_INT);
+        $stmt->bindParam(':id_user', $idLogged, PDO::PARAM_INT);
         $stmt->execute();
 
         $stmt2 = $this->database->connect()->prepare('
@@ -354,7 +403,7 @@ class UserRepository extends Repository
             WHERE profile_details.id = :id;
          ');
         $stmt2->bindParam(':id',$followingUserIdDetails,PDO::PARAM_INT);
-        $stmt2->bindParam(':id_user',$followedUserIdDetails,PDO::PARAM_INT);
+        $stmt2->bindParam(':id_user',$id,PDO::PARAM_INT);
         $stmt2->execute();
     }
 }

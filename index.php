@@ -30,6 +30,9 @@ Router::get('myTrips', 'TripController');
 Router::get('allTrips', 'TripController');
 Router::get('joinedTrips', 'TripController');
 Router::get('otherTrips', 'TripController');
+Router::get('followed', 'SecurityController');
+Router::get('notFollowed', 'SecurityController');
+Router::get('allFriends', 'SecurityController');
 
 
 

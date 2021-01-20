@@ -26,9 +26,9 @@
 
         </header>
         <select name="filter" class="filter" >
-            <option value="myFriends">Followed</option>
-            <option value="other-user">Others</option>
-            <option value="all-users">All</option>
+            <option value="followed">Followed</option>
+            <option value="notFollowed">Others</option>
+            <option value="allFriends">All</option>
         </select>
         <section class="projects">
             <?php foreach ($users as $user): ?>
@@ -69,7 +69,7 @@
 <template id="friend-template">
     <div class="project p1">
         <div class="project-image">
-            <a  href="">
+            <a  href="friendProfile?profile=<?php echo $user->getId(); ?>">
                 <img src="">
             </a>
         </div>

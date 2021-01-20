@@ -41,10 +41,10 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.like.length-2
+    like.innerText = project.like.length
 
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislike.length-2;
+    dislike.innerText = project.dislike.length;
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText= project.first_mountain;
     wantToGo[1].innerText= project.second_mountain;
@@ -52,12 +52,12 @@ function createProject(project) {
 }
 
 
-buttonMyProject.addEventListener('change',function (){
-    fetch('/myFriends').then(function (response) {
+buttonMyProject.addEventListener('change',function (event){
+    let selectedOption = buttonMyProject.value;
+    fetch(`/${selectedOption}`).then(function (response) {
         return response.json();
     }).then(function (projects) {
         projectContainer.innerHTML = "";
         loadProjects(projects)
     });
 })
-
