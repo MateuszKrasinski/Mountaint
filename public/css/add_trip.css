@@ -25,9 +25,6 @@ main > form {
     justify-content: space-around;
 }
 
-.first-line-left-container {
-    color: #330436;
-}
 
 .first-line-left-container {
     width: 60%;
@@ -35,6 +32,8 @@ main > form {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    color: #330436;
+
 }
 
 .first-line-left-container > input {

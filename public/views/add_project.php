@@ -8,37 +8,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
+    <script src="/public/js/main.js" defer></script>
+    <script src="/public/js/add_trip.js" defer></script>
     <title>New Trip</title>
 </head>
 
 <body>
 <div class="base-container">
-    <nav>
-        <a href="trip"><img src="/public/img/logo2.png"></a>
-        <ul>
-            <li>
-                <a href="trip"><i class="fas fa-hiking"></i></a>
-                <a href="trip" class="button">Trips</a>
-            </li>
-            <li>
-                <a href="friend">
-                    <i class="fas fa-user-friends"></i></a>
-                <a href="friend" class="button">Friend</a>
-            </li>
-            <li>
-                <a href="messages"><i class="fas fa-envelope-open "></i></a>
-                <a href="messages" class="button">Messages</a>
-            </li>
-            <li>
-                <a href="notifications"><i class="fas fa-bell"></i></a>
-                <a href="notifications" class="button">Notifications</a>
-            </li>
-            <li>
-                <i class="fas fa-cog"></i>
-                <a href="profile" class="button">Profile</a>
-            </li>
-        </ul>
-    </nav>
+    <?PHP include('public/views/nav.php') ?>
     <main>
         <form onsubmit=noReload() action="addTrip" method="POST" ENCTYPE="multipart/form-data">
             <div class="messages">
@@ -91,6 +68,5 @@
 </div>
 
 </body>
-<script src="/public/js/main.js" defer></script>
-<script src="/public/js/add_trip.js" defer></script>
+
 </html>

@@ -7,6 +7,7 @@ Router::get('friend', 'SecurityController');
 Router::get('starter', 'DefaultController');
 Router::get('trip', 'TripController');
 Router::get('profile', 'SecurityController');
+Router::get('logout', 'SecurityController');
 Router::get('addTrip', 'TripController');
 Router::get('messages', 'DefaultController');
 Router::get('notifications', 'DefaultController');

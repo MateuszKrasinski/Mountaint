@@ -94,11 +94,7 @@ class UserRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as fers, array_to_json(following) as fing
-            FROM users u INNER JOIN users_details ud
-            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+            SELECT * from all_users
         ');
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);

@@ -109,6 +109,12 @@ class SecurityController extends AppController
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/profile");
     }
+    public function logout(): void{
+        session_destroy();
+        setcookie("host", "", time() -3600, '/');
+        setcookie("device", "", time() -3600, '/');
+        $this->render('login');
+    }
 
     public function newUser(): void
     {

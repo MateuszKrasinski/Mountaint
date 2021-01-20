@@ -161,7 +161,6 @@ header {
     display: block;
     margin: 0px;
     padding: 0.5em;
-    height: fit-content;
     height: 45%;
     width: 90%;
     flex-wrap: wrap;
