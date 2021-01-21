@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,113 +9,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
+    <script src="/public/js/fileSelect.js" defer></script>
+    <script type="text/javascript" src="/public/js/trip.js" defer></script>
+
     <title>Friends</title>
 </head>
 <body>
 <div class="base-container">
-    <nav>
-
-        <a href="trip"><img src="/public/img/logo2.png"></a>
-        <ul>
-            <li>
-                <a href="trip"><i class="fas fa-hiking highlight"></i></a>
-                <a href="trip" class="button">Trips</a>
-            </li>
-            <li>
-                <a href="friend">
-                    <i class="fas fa-user-friends"></i></a>
-                <a href="friend" class="button">Friend</a>
-            </li>
-            <li>
-                <a href="messages"><i class="fas fa-envelope-open "></i></a>
-                <a href="messages" class="button">Messages</a>
-            </li>
-            <li>
-                <a href="notifications"><i class="fas fa-bell"></i></a>
-                <a href="notifications" class="button">Notifications</a>
-            </li>
-            <li>
-                <i class="fas fa-cog"></i>
-                <a href="#" class="button">Settings</a>
-            </li>
-        </ul>
-    </nav>
+    <?PHP include('public/views/nav.php') ?>
     <main>
         <header>
             <div class="search-bar">
-                <form>
+
                     <input placeholder="search project">
-                </form>
             </div>
             <div class="add-project">
                 <a href="addTrip"><i class="fas fa-plus"> </i></a>
                 <a href="addTrip"><span>add project</span></a>
             </div>
         </header>
+        <select name="filter" class="filter" >
+            <option value="AllTrips">All Trips</option>
+            <option value="myTrips">My Trips</option>
+            <option value="joinedTrips">Joined Trips</option>
+            <option value="otherTrips">Other Trips</option>
+        </select>
         <section class="projects">
-            <div class="project 1">
+            <?php foreach ($trips as $trip): ?>
+            <div class="project p1" id="<?= $trip->getId() ?>">
                 <div class="project-image">
-                    <img src="/public/img/background.png">
+                    <a href="tripProfile?profile=<?php echo $trip->getId(); ?>">
+                        <img src="public/img/uploads/<?= $trip->getImage()?>">
+                    </a>
                 </div>
                 <div class="project-info">
-                    <h2>Giewont</h2>
-                    <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Possimus, repellendus totam ab soluta
-                        sunt architecto eos distinctio vitae. Ab eius maxime harum quis quia alias reprehenderit
-                        perferendis totam eaque provident? </p>
-                    <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">join</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project p2">
-                <div class="project-image">
-                    <img src="/public/img/background.png">
-                </div>
-                <div class="project-info">
-                    <h2>Giewont</h2>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut
-                        tempora sapiente sunt quasi.</p>
-                    <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">join</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project p3">
-                <div class="project-image">
-                    <img src="/public/img/uploads/<?= $project->getImage() ?>">
-                </div>
-                <div class="project-info">
-                    <h2><?= $project->getTitle() ?></h2>
+                    <h2><?= $trip->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= $project->getDateStart() ?>
+                            <?= $trip->getDateStart()."<br>".$trip->getTimeStart() ?>
+
                         </div>
-                        <div class="date">
-                            <?= $project->getDateFinish() ?>
+                        <div class="users">
+                            <i class="fas fa-users"></i>
+                            <?= count($trip->getParticipant())?>
                         </div>
                     </div>
-                    <p>
-                        <?= $project->getDescription() ?>
-                    </p>
+                    <p><?= $trip->getDescription() ?></p>
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= $project->getNumberOfLikes() ?></i>
-                        <i class="fas fa-minus-square"><?= $project->getNumberOfMinuses() ?></i>
+                        <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$trip->getLikes())){echo("highlight"); } ?>" ><?= count($trip->getLikes()) ?></i>
+                        <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$trip->getDisLikes())){echo("highlight"); } ?>"><?= count($trip->getDislikes())?></i>
                     </div>
                     <div class="button-container">
                         <button class="join-btn">join</button>
                     </div>
                 </div>
             </div>
-
+            <?php endforeach  ?>
         </section>
     </main>
 </div>
@@ -124,3 +74,33 @@
 
 </body>
 </html>
+
+<template id="project-template">
+    <div class="project p1">
+            <div class="project-image">
+                <a  href="tripProfile?profile=<?php echo $trip->getId(); ?>">
+                    <img src="">
+                </a>
+            </div>
+        <div class="project-info">
+            <h2>info</h2>
+            <div class="date-container">
+                <div class="date">
+                    data
+                </div>
+                <div class="users">
+
+                </div>
+            </div>
+            <p>opis</p>
+            <div class="social-section">
+                <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$trip->getLikes())){echo("highlight"); } ?>" ><?= count($trip->getLikes()) ?></i>
+                <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$trip->getDisLikes())){echo("highlight"); } ?>"><?= count($trip->getDislikes())?></i>
+            </div>
+            <div class="button-container">
+                <button class="join-btn">join</button>
+            </div>
+        </div>
+    </div>
+
+</template>

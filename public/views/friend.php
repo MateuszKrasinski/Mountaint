@@ -7,120 +7,55 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
-    <title>Trips</title>
+    <script src="/public/js/fileSelect.js" defer></script>
+    <script src="/public/js/projects.js" defer></script>
+    <script src="/public/js/friends.js" defer></script>
+
+    <title>Friends</title>
 </head>
 
 <body>
 <div class="base-container">
-    <nav>
-        <a href="trip"><img src="/public/img/logo2.png"></a>
-        <ul>
-            <li>
-                <a href="trip"><i class="fas fa-hiking"></i></a>
-                <a href="trip" class="button">Trips</a>
-            </li>
-            <li>
-                <a href="friend">
-                    <i class="fas fa-user-friends highlight"></i></a>
-                <a href="friend" class="button">Friend</a>
-            </li>
-            <li>
-                <a href="messages"><i class="fas fa-envelope-open "></i></a>
-                <a href="messages" class="button">Messages</a>
-            </li>
-            <li>
-                <a href="notifications"><i class="fas fa-bell"></i></a>
-                <a href="notifications" class="button">Notifications</a>
-            </li>
-            <li>
-                <i class="fas fa-cog"></i>
-                <a href="#" class="button">Settings</a>
-            </li>
-        </ul>
-    </nav>
+    <?PHP include('public/views/nav.php') ?>
     <main>
         <header>
             <div class="search-bar">
-                <form>
-                    <input placeholder="search friend">
-                </form>
+                    <input type="text" placeholder="search friend" name ="name">
             </div>
 
         </header>
+        <select name="filter" class="filter" >
+            <option value="followed">Followed</option>
+            <option value="notFollowed">Others</option>
+            <option value="allFriends">All</option>
+        </select>
         <section class="projects">
-            <div class="project p1">
-                <div class="project-image">
-                    <img src="/public/img/person3.svg">
-                </div>
-                <div class="project-info">
-                    <h2>Name Surname</h2>
-                    <div class="want-to-go-container">
-                        <div class="want-to-go">Mountain</div>
-                        <div class="want-to-go">Mountain</div>
+            <?php foreach ($users as $user): ?>
+                <div class="project p1"  id="<?= $user->getId()?>">
+                    <div class="project-image">
+                        <a  href="friendProfile?profile=<?php echo $user->getId(); ?>">
+                            <img src="/public/img/<?= $user->getPhoto(); ?>">
+                        </a>
                     </div>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde
-                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
-                        sapiente sunt
-                        quasi.</p>
-                    <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">invite</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project p2">
-                <div class="project-image">
-                    <img src="/public/img/person.svg">
-                </div>
-                <div class="project-info">
-                    <h2>Name Surname</h2>
-                    <div class="want-to-go-container">
-                        <div class="want-to-go">Mountain</div>
-                        <div class="want-to-go">Mountain</div>
-                    </div>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde
-                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
-                        sapiente sunt
-                        quasi.</p>
-                    <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">invite</button>
-                    </div>
-                </div>
-            </div>
-            <div class="project p3">
-                <div class="project-image">
-                    <img src="/public/img/person2.svg">
-                </div>
-                <div class="project-info">
-                    <h2>Name Surname</h2>
-                    <div class="want-to-go-container">
-                        <div class="want-to-go">Mountain</div>
-                        <div class="want-to-go">Mountain</div>
-                    </div>
-                    <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Animi cupiditate nisi fuga iure porro
-                        odio unde
-                        beatae sit aspernatur quidem. Beatae consectetur, necessitatibus voluptatum labore aut tempora
-                        sapiente sunt
-                        quasi.</p>
-                    <div class="social-section">
-                        <i class="fas fa-heart">600</i>
-                        <i class="fas fa-minus-square">600</i>
-                    </div>
-                    <div class="button-container">
-                        <button class="join-btn">invite</button>
-                    </div>
-                </div>
-            </div>
+                    <div class="project-info">
+                        <h2><?= $user->getName() . " " . $user->getSurname(); ?></h2>
+                        <div class="want-to-go-container">
+                            <div class="want-to-go"><?= $user->getFirstMountain(); ?></div>
+                            <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
+                        </div>
+                        <p>
+                            <?= $user->getDescription()?></p>
+                        <div class="social-section">
+                            <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$user->getLikes())){echo("highlight"); } ?>" ><?= count($user->getLikes()) ?></i>
+                            <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$user->getDisLikes())){echo("highlight"); } ?>"><?= count($user->getDislikes())?></i>
 
+                        </div>
+                        <div class="button-container">
+                            <button class="join-btn">follow</button>
+                        </div>
+                    </div>
+                </div>
+            <?php endforeach ?>
         </section>
     </main>
 </div>
@@ -131,3 +66,28 @@
 </body>
 
 </html>
+<template id="friend-template">
+    <div class="project p1">
+        <div class="project-image">
+            <a  href="friendProfile?profile=<?php echo $user->getId(); ?>">
+                <img src="">
+            </a>
+        </div>
+        <div class="project-info">
+            <h2></h2>
+            <div class="want-to-go-container">
+                <div class="want-to-go"></div>
+                <div class="want-to-go"></div>
+            </div>
+            <p>
+            </p>
+            <div class="social-section">
+                <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$user->getLikes())){echo("highlight"); } ?>" ><?= count($user->getLikes()) ?></i>
+                <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$user->getDisLikes())){echo("highlight"); } ?>"><?= count($user->getDislikes())?></i>
+            </div>
+            <div class="button-container">
+                <button class="join-btn">follow</button>
+            </div>
+        </div>
+    </div>
+</template>

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/public/css/starter.css">
     <link rel="stylesheet" href="/public/css/login.css">
-
+    <script type="text/javascript" src="/public/js/valid.js" defer></script>
     <title>Login page</title>
 </head>
 <body>
@@ -14,8 +14,8 @@
         <a href="starter"><img src="/public/img/logo2.png"></a>
     </div>
 
-    <div class="login-container">
-        <form class="login" action="login" method="POST" autocomplete="off">
+    <div class="register-container">
+        <form class="login" action="newUser" method="POST">
             <div class="messages">
                 <?php
                 if (isset($messages)) {
@@ -25,9 +25,13 @@
                 }
                 ?>
             </div>
-            <input type="text" name="email" placeholder="login" autocomplete="off">
-            <input type="password" name="password" placeholder="password" autocomplete="off">
-            <button TYPE="submit">LOGIN</button>
+            <input name="email" type="text" placeholder="email@email.com">
+            <input name="password" type="password" placeholder="password">
+            <input name="confirmedPassword" type="password" placeholder="confirm password">
+            <input name="name" type="text" placeholder="name">
+            <input name="surname" type="text" placeholder="surname">
+            <input name="phone" type="text" placeholder="phone">
+            <button type="submit">REGISTER</button>
         </form>
     </div>
 </body>

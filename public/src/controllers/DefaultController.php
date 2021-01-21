@@ -1,11 +1,13 @@
 <?php
 require_once 'AppController.php';
+require_once __DIR__ . '/../models/Trip.php';
+require_once __DIR__ . '/../repository/UserRepository.php';
 
 class DefaultController extends AppController
 {
     public function index()
     {
-        $this->render('login', ['message']);
+        $this->render('starter', ['message']);
     }
 
     public function friend()
@@ -17,22 +19,28 @@ class DefaultController extends AppController
     {
         $this->render('starter');
     }
-
-    public function trip()
+    public function register()
     {
-        $this->render('trip');
+        $this->render('register');
     }
 
     public function add_project()
     {
         $this->render('add_project');
     }
+
     public function messages()
     {
         $this->render('messages');
     }
+
     public function notifications()
     {
         $this->render('notifications');
+    }
+
+    public function profile()
+    {
+        $this->render('profile');
     }
 }

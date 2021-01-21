@@ -1,6 +1,7 @@
 body {
   margin: 0px;
   background-color: rgba(250, 250, 250, 0.8);
+  overflow: hidden;
 }
 
 .base-container {
@@ -18,10 +19,12 @@ main {
 
 nav {
   display: flex;
+  position: sticky;
+  left: 0;
   flex-direction: column;
   width: 20vw;
   height: 100vh;
-  background: transparent linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
+  background: linear-gradient(180deg, #5b0461 0%, #7c3e72b3 100%) 0%
     0% no-repeat padding-box;
   border: 1px solid #5b0461;
   align-items: center;
@@ -81,15 +84,14 @@ li i {
   justify-content: space-around;
   align-items: center;
   flex-direction: row;
-  font: normal normal normal 20px/29px Roboto Slab;
+  font: normal normal normal 15px/22px Roboto Slab;
   background: transparent linear-gradient(180deg, #330436 0%, #7c3e72b3 100%) 0%
     0% no-repeat padding-box;
   border-radius: 2em;
-  width: 20vw;
-  height: 8vh;
+  width: 12vw;
+  height: 6vh;
   color: white;
   text-align: center;
-  padding: 1vh 1vh
 }
 
 .add-project > i {
@@ -118,21 +120,12 @@ a {
   width: 60%;
 }
 
-@media only screen and (max-device-width: 1120px) {
-  .p3 {
-    display: none;
-  }
-  .project {
-    width: 50%;
-  }
-}
+
 
 @media only screen and (max-device-width: 1120px) {
-  .p3 {
-    display: none;
-  }
+
   .project {
-    width: 40vw;
+    min-width: 40vw;
   }
 
 }
@@ -162,7 +155,8 @@ a {
     width: 100%;
   }
   .project {
-    height: 100%;
+    height: 90%;
+    min-width: 100vw;
   }
   a.button {
     display: none;
@@ -179,12 +173,8 @@ a {
     flex-direction: row;
     justify-content: space-around;
   }
-  .p2 {
-    display: none;
-  }
-  .project {
-    width: 100%;
-  }
+
+
   .add-project > a > span {
     display: none;
   }
