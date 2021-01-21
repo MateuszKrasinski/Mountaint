@@ -80,7 +80,11 @@
                     <div class="participant">
                         <a href="friendProfile?profile=<?php echo $participant->getId(); ?>">
                             <img src="/public/img/<?= $participant->getPhoto(); ?>">
-                            <?= $participant->getName() ?>
+                            <?= $participant->getName()."  ";
+                                if ($participant == $participants[0])
+                                echo ('<i class="fas fa-pen"></i>');
+                            ?>
+
                         </a>
                     </div>
                 <?php endforeach ?>

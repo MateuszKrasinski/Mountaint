@@ -48,10 +48,11 @@
                     <h2><?= $trip->getTitle() ?></h2>
                     <div class="date-container">
                         <div class="date">
-                            <?= $trip->getDateStart() ?>
+                            <?= $trip->getDateStart()."<br>".$trip->getTimeStart() ?>
 
                         </div>
-                        <div class="date">
+                        <div class="users">
+                            <i class="fas fa-users"></i>
                             <?= count($trip->getParticipant())?>
                         </div>
                     </div>
@@ -89,14 +90,14 @@
                 <div class="date">
                     data
                 </div>
-                <div class="date">
-                    data
+                <div class="users">
+
                 </div>
             </div>
             <p>opis</p>
             <div class="social-section">
-                <i class="fas fa-heart">0</i>
-                <i class="fas fa-minus-square">0</i>
+                <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$trip->getLikes())){echo("highlight"); } ?>" ><?= count($trip->getLikes()) ?></i>
+                <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$trip->getDisLikes())){echo("highlight"); } ?>"><?= count($trip->getDislikes())?></i>
             </div>
             <div class="button-container">
                 <button class="join-btn">join</button>

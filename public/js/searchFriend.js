@@ -2,6 +2,8 @@ const search = document.querySelector('input[placeholder="search friend"]');
 const projectContainer = document.querySelector(".projects");
 const buttonMyProject = document.querySelector("select.filter");
 const followButtons = document.querySelectorAll(".join-btn");
+const likeButtons = document.querySelectorAll(".fa-heart");
+const dislikeButtons = document.querySelectorAll(".fa-minus-square");
 search.addEventListener("keyup", function (event) {
     if (event.key === "Enter") {
         event.preventDefault();
@@ -116,3 +118,6 @@ function moveAway() {
     project.addEventListener("animationend", ()=>{projectContainer.removeChild(project)})
 
 }
+
+likeButtons.forEach(button => button.addEventListener("click", giveLike));
+dislikeButtons.forEach(button => button.addEventListener("click", giveDislike));

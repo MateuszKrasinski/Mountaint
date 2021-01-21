@@ -32,15 +32,11 @@ confirmedPasswordInput.addEventListener('keyup', function () {
     }, 1000);
 });
 
-form.addEventListener("submit", e => {
-    e.preventDefault();
 
-    //TODO check again if form is valid after submitting it
-});
 
 function onFileSelected(event) {
-    var selectedFile = event.target.files[0];
-    var reader = new FileReader();
+    let selectedFile = event.target.files[0];
+    let reader = new FileReader();
 
     reader.onload = function (event) {
         let imgtag = document.querySelector(".custom-file-input");

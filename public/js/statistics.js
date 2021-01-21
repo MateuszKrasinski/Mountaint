@@ -98,10 +98,10 @@ function createProject(project) {
     like.innerText = project.like.length;
     const dislike = clone.querySelector(".fa-minus-square");
     dislike.innerText = project.dislike.length;
-    const dateStart = clone.querySelectorAll(".date")[0];
+    const dateStart = clone.querySelector(".date");
     dateStart.innerText = project.date_start + "\n" + project.time_start;
-    const dateFinish = clone.querySelectorAll(".date")[1];
-    dateFinish.innerText = project.participants.length
+    const dateFinish = clone.querySelector(".users");
+    dateFinish.innerHTML =  '<i class="fas fa-users"></i>'+project.participants.length;
     const join = clone.querySelector(".join-btn");
 
     like.addEventListener('click',giveLike);

@@ -57,8 +57,8 @@
     height: 25vh;
 }
 .photo>img{
-    width: 15vw;
-    height: 15vw;
+    width: 13vw;
+    height: 11vw;
     border-radius: 32px;
     border: 2px solid #330436;
 }
@@ -167,6 +167,10 @@
     .photo>img{
         width: 30vw;
         height: 30vw;
+    }
+    .join-btn{
+        width: fit-content;
+        padding: 2vh;
     }
 }
 

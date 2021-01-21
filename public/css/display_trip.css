@@ -268,6 +268,13 @@ button {
     background: transparent linear-gradient(180deg, #5B0461 0%, #7C3E72B3 100%) 0% 0% no-repeat padding-box;
 }
 
+.participant>a>i{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0.5vw;
+    font-size: 2vh;
+}
 
 @media only screen and (max-device-width: 800px) {
     .create-trip-container {
