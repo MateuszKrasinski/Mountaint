@@ -214,7 +214,17 @@ class UserRepository extends Repository
         }
         return $result;
     }
-
+    public function emailInBase($mail){
+        $stmt = $this->database->connect()->prepare('
+            select * from users
+            where email = :email
+        ');
+        $stmt->bindParam(':email',$mail , PDO::PARAM_STR);
+        $isEmailInBase=$stmt->execute();
+        if ($isEmailInBase)
+            return true;
+        return false;
+    }
     public function addUser(User $user)
     {
         $stmt2 = $this->database->connect()->prepare('

@@ -98,6 +98,6 @@
 </div>
 
 </body>
-<script src="/public/js/main.js" defer></script>
-<script src="/public/js/add_trip.js" defer></script>
+<script src="/public/js/fileSelect.js" defer></script>
+<script src="/public/js/addTrip.js" defer></script>
 </html>

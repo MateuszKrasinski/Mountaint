@@ -87,6 +87,6 @@
 </div>
 
 </body>
-<script src="/public/js/main.js" defer></script>
+<script src="/public/js/fileSelect.js" defer></script>
 <script src="/public/js/profileFriend.js" defer></script>
 </html>

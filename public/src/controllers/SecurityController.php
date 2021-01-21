@@ -119,8 +119,14 @@ class SecurityController extends AppController
     public function newUser(): void
     {
         $user = new User($_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['name'], $_POST['surname'], $_POST['phone']);
-        $this->userRepository->addUser($user);
-        $this->render('login');
+        $condition = $this->userRepository->emailInBase($_POST['email']);
+        if(!$condition){
+            $this->userRepository->addUser($user);
+            $this->render('login');
+        }
+        else{
+            $this->render('register', ['messages' => ['User with this email  exists!']]);
+        }
     }
     public function followed(){
 

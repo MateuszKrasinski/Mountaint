@@ -12,43 +12,43 @@
     <title>New Trip</title>
 </head>
 
-<body onload="loadPhoto('<?=  $user->getPhoto();?>')">
+<body onload="loadPhoto('<?= $user->getPhoto(); ?>')">
 <div class="base-container">
     <?PHP include('public/views/nav.php') ?>
     <main>
-            <form onsubmit=noReload() action="setProfile" method="POST" ENCTYPE="multipart/form-data">
-                <div class="messages">
-                    <?php
-                    if (isset($messages)) {
-                        foreach ($messages as $message) {
-                            echo $message;
-                        }
+        <form onsubmit=noReload() action="setProfile" method="POST" ENCTYPE="multipart/form-data">
+            <div class="messages">
+                <?php
+                if (isset($messages)) {
+                    foreach ($messages as $message) {
+                        echo $message;
                     }
-                    ?>
-                </div>
-                <div class="first-line-container">
+                }
+                ?>
+            </div>
+            <div class="first-line-container">
 
-                    <div class="first-line-left-container">
-                        <input class="mountain" name="name" type="text" placeholder="<?=  $user->getName().'  '.$user->getSurname();?>">
-                        <input class="mountain" name="mountain1" type="text" placeholder="<?=  $user->getFirstMountain();?>">
-                        <input onkeypress="newPoint(event)" class="mountain" name="mountain2"
-                               type="text" placeholder="<?=  $user->getSecondMountain();?>">
-                    </div>
-
-                    <div class="file-upload">
-                        <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"
-                               onload="loadPhoto(<?=  $user->getPhoto();?>)"/>
-                    </div>
+                <div class="first-line-left-container">
+                    <input class="mountain" name="name" type="text"
+                           placeholder="<?= $user->getName() . '  ' . $user->getSurname(); ?>">
+                    <input class="mountain" name="mountain1" type="text"
+                           placeholder="<?= $user->getFirstMountain(); ?>">
+                    <input onkeypress="newPoint(event)" class="mountain" name="mountain2"
+                           type="text" placeholder="<?= $user->getSecondMountain(); ?>">
                 </div>
 
-                <textarea class="description" name="description" placeholder="description">
-                <?=$user->getDescription();?>
-            </textarea>
+                <div class="file-upload">
+                    <input type="file" name="file" onchange="onFileSelected(event)" class="custom-file-input"
+                           onload="loadPhoto(<?= $user->getPhoto(); ?>)"/>
+                </div>
+            </div>
+
+            <textarea class="description" name="description"
+                      placeholder="description"><?= $user->getDescription(); ?></textarea>
 
 
-
-                <button type="submit">set</button>
-            </form>
+            <button type="submit">set</button>
+        </form>
 
 
     </main>
@@ -58,5 +58,5 @@
 </div>
 
 </body>
-<script src="/public/js/main.js"></script>
+<script src="/public/js/fileSelect.js"></script>
 </html>
