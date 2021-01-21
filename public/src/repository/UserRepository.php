@@ -5,11 +5,12 @@ require_once __DIR__ . '/../models/User.php';
 
 class UserRepository extends Repository
 {
-    public function getUsersFromIdArray(array $usersId){
+    public function getUsersFromIdArray(array $usersId)
+    {
         $result = [];
-        foreach ($usersId as $userId){
-            $user =  $this->getUserById($userId);
-            array_push($result,$user);
+        foreach ($usersId as $userId) {
+            $user = $this->getUserById($userId);
+            array_push($result, $user);
         }
         return $result;
     }
@@ -99,27 +100,28 @@ class UserRepository extends Repository
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($users as $user) {
-            if($user['id']!= $_SESSION['idUser'])
-            $result[] = new User(
-                $user['email'],
-                $user['password'],
-                $user['name'],
-                $user['surname'],
-                $user['phone'],
-                $user['description'],
-                $user['first_mountain'],
-                $user['second_mountain'],
-                $user['photo'],
-                json_decode($user['like']),
-                json_decode($user['dislike']),
-                json_decode($user['fers']),
-                json_decode($user['fing']),
-                $user['id']
-            );
+            if ($user['id'] != $_SESSION['idUser'])
+                $result[] = new User(
+                    $user['email'],
+                    $user['password'],
+                    $user['name'],
+                    $user['surname'],
+                    $user['phone'],
+                    $user['description'],
+                    $user['first_mountain'],
+                    $user['second_mountain'],
+                    $user['photo'],
+                    json_decode($user['like']),
+                    json_decode($user['dislike']),
+                    json_decode($user['fers']),
+                    json_decode($user['fing']),
+                    $user['id']
+                );
         }
 
         return $result;
     }
+
     public function getMyFollowed(): ?array
     {
         $stmt = $this->database->connect()->prepare('
@@ -132,10 +134,9 @@ class UserRepository extends Repository
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $followers = json_decode($user['fers']);
-            if(in_array($_SESSION['idUser'], $followers))
-            {
+            if (in_array($_SESSION['idUser'], $followers)) {
                 $user['like'] = json_decode($user['like']);
                 $user['dislike'] = json_decode($user['dislike']);
                 array_push($result, $user);
@@ -144,6 +145,7 @@ class UserRepository extends Repository
         return $result;
 
     }
+
     public function getNotMyFollowed(): ?array
     {
         $stmt = $this->database->connect()->prepare('
@@ -156,10 +158,9 @@ class UserRepository extends Repository
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
-        foreach ($users as $user){
+        foreach ($users as $user) {
             $followers = json_decode($user['fers']);
-            if((!in_array($_SESSION['idUser'], $followers) && ($user['id'] != $_SESSION['idUser'])))
-            {
+            if ((!in_array($_SESSION['idUser'], $followers) && ($user['id'] != $_SESSION['idUser']))) {
                 $user['like'] = json_decode($user['like']);
                 $user['dislike'] = json_decode($user['dislike']);
                 array_push($result, $user);
@@ -168,6 +169,7 @@ class UserRepository extends Repository
         return $result;
 
     }
+
     public function getAllFriends(): ?array
     {
         $stmt = $this->database->connect()->prepare('
@@ -180,9 +182,8 @@ class UserRepository extends Repository
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
-        foreach ($users as $user){
-            if( ($user['id'] != $_SESSION['idUser']))
-            {
+        foreach ($users as $user) {
+            if (($user['id'] != $_SESSION['idUser'])) {
                 $user['like'] = json_decode($user['like']);
                 $user['dislike'] = json_decode($user['dislike']);
                 array_push($result, $user);
@@ -191,6 +192,7 @@ class UserRepository extends Repository
         return $result;
 
     }
+
     public function getUsersByName($searchString): ?array
     {
         $searchString = '%' . strtolower($searchString) . '%';
@@ -204,9 +206,8 @@ class UserRepository extends Repository
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
-        foreach ($users as $user){
-            if( ($user['id'] != $_SESSION['idUser']))
-            {
+        foreach ($users as $user) {
+            if (($user['id'] != $_SESSION['idUser'])) {
                 $user['like'] = json_decode($user['like']);
                 $user['dislike'] = json_decode($user['dislike']);
                 array_push($result, $user);
@@ -214,17 +215,18 @@ class UserRepository extends Repository
         }
         return $result;
     }
-    public function emailInBase($mail){
-        $stmt = $this->database->connect()->prepare('
-            select * from users
-            where email = :email
-        ');
-        $stmt->bindParam(':email',$mail , PDO::PARAM_STR);
-        $isEmailInBase=$stmt->execute();
-        if ($isEmailInBase)
-            return true;
+
+    public function emailInBase($mail)
+    {
+
+        $users = $this->getUsers();
+        foreach ($users as$user){
+            if($user->getEmail() === $mail)
+                return true;
+        }
         return false;
     }
+
     public function addUser(User $user)
     {
         $stmt2 = $this->database->connect()->prepare('
@@ -277,8 +279,8 @@ class UserRepository extends Repository
         $id1 = $user->getName();
         $id2 = $user->getSurname();
 //        $id3 = $user->getPhone();
-        $stmt->bindParam(':name',$id1 , PDO::PARAM_STR);
-        $stmt->bindParam(':surname',$id2 , PDO::PARAM_STR);
+        $stmt->bindParam(':name', $id1, PDO::PARAM_STR);
+        $stmt->bindParam(':surname', $id2, PDO::PARAM_STR);
 //        $stmt->bindParam(':phone', $id3, PDO::PARAM_STR);
         $stmt->execute();
 
@@ -307,7 +309,7 @@ class UserRepository extends Repository
             SELECT * FROM public.users WHERE email = :email 
         ');
         $mail = $user->getEmail();
-        $stmt->bindParam(':email',$mail , PDO::PARAM_STR);
+        $stmt->bindParam(':email', $mail, PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -320,7 +322,7 @@ class UserRepository extends Repository
             SELECT * FROM public.users WHERE email = :email 
         ');
         $mail = $user->getEmail();
-        $stmt->bindParam(':email',$mail , PDO::PARAM_STR);
+        $stmt->bindParam(':email', $mail, PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -363,7 +365,7 @@ class UserRepository extends Repository
             $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
             $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
             $stmt->execute();
-        }else if ((in_array($_SESSION['idUser'], $user->getLikes()))) {
+        } else if ((in_array($_SESSION['idUser'], $user->getLikes()))) {
             $stmt = $this->database->connect()->prepare('
             update profile_details
             set likes = array_remove(likes, :id_user)
@@ -390,7 +392,7 @@ class UserRepository extends Repository
             $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
             $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
             $stmt->execute();
-        }else if ((in_array($_SESSION['idUser'], $user->getDislikes()))) {
+        } else if ((in_array($_SESSION['idUser'], $user->getDislikes()))) {
             $stmt = $this->database->connect()->prepare('
             update profile_details
             set dislikes = array_remove(dislikes, :id_user)
@@ -402,6 +404,7 @@ class UserRepository extends Repository
             $stmt->execute();
         }
     }
+
     public function follow(int $id)
     {
         $idLogged = $_SESSION['idUser'];
@@ -414,7 +417,7 @@ class UserRepository extends Repository
             set followers = array_append(followers, :id_user)
             WHERE profile_details.id = :id;
          ');
-        $stmt->bindParam(':id',$followedUserIdDetails,PDO::PARAM_INT);
+        $stmt->bindParam(':id', $followedUserIdDetails, PDO::PARAM_INT);
         $stmt->bindParam(':id_user', $idLogged, PDO::PARAM_INT);
         $stmt->execute();
 
@@ -423,8 +426,8 @@ class UserRepository extends Repository
             set following = array_append(following, :id_user)
             WHERE profile_details.id = :id;
          ');
-        $stmt2->bindParam(':id',$followingUserIdDetails,PDO::PARAM_INT);
-        $stmt2->bindParam(':id_user',$id,PDO::PARAM_INT);
+        $stmt2->bindParam(':id', $followingUserIdDetails, PDO::PARAM_INT);
+        $stmt2->bindParam(':id_user', $id, PDO::PARAM_INT);
         $stmt2->execute();
     }
 }
