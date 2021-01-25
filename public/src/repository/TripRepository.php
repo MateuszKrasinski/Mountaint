@@ -129,7 +129,7 @@ class TripRepository extends Repository
             where id in (select id_trip as entity
              from users_trips
                       left join trips t on t.id = users_trips.id_trip
-             where  owner = false AND id_trip not in (select id_trip
+             where   id_trip not in (select id_trip
                                    from users_trips
                                    where id_user = :id_user)
              GROUP BY id_trip)

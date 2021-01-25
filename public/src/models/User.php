@@ -20,7 +20,7 @@ class User
     public function __construct($email, $password, $name, $surname, $phone, $description = "Opis",
                                 $firstMountain = "mountain#1", $secondMountain = "mountain2#2",
                                 $photo = "/public/img/uploads/person.svg", $likes = '{}', $dislikes = '{}',
-                                $followers = [], $following = [], $id = null)
+                                 $id = null)
     {
         $this->email = $email;
         $this->password = $password;
@@ -33,8 +33,6 @@ class User
         $this->photo = $photo;
         $this->likes = $likes;
         $this->dislikes = $dislikes;
-        $this->followers = $followers;
-        $this->following = $following;
         $this->id = $id;
     }
 

@@ -44,10 +44,10 @@ function createProject(project) {
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
     const like = clone.querySelector(".fa-heart");
-    like.innerText = project.like.length
+    like.innerText = 0;
     like.addEventListener('click',giveLike);
     const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislike.length;
+    dislike.innerText = 0;
     dislike.addEventListener('click', giveDislike);
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText= project.first_mountain;
@@ -118,6 +118,7 @@ function moveAway() {
     project.addEventListener("animationend", ()=>{projectContainer.removeChild(project)})
 
 }
-
+followButtons.forEach(button => button.addEventListener('click', giveFollow));
+followButtons.forEach(button => button.addEventListener('click', moveAway));
 likeButtons.forEach(button => button.addEventListener("click", giveLike));
 dislikeButtons.forEach(button => button.addEventListener("click", giveDislike));

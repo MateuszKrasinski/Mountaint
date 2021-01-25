@@ -19,8 +19,7 @@ class UserRepository extends Repository
     {
         $stmt = $this->database->connect()->prepare('
             SELECT u.id , email, password, name, surname, description, array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as followers, array_to_json(following) as following
+                   array_to_json(dislikes) as dislikes, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE email = :email
@@ -47,8 +46,7 @@ class UserRepository extends Repository
             $user['photo'],
             json_decode($user['likes']),
             json_decode($user['dislikes']),
-            json_decode($user['followers']),
-            json_decode($user['following']),
+
             $user['id'],
 
         );
@@ -58,8 +56,7 @@ class UserRepository extends Repository
     {
         $stmt = $this->database->connect()->prepare('
             SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as fers, array_to_json(following) as fing
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             where u.id = :id
@@ -85,8 +82,6 @@ class UserRepository extends Repository
             $user['photo'],
             json_decode($user['like']),
             json_decode($user['dislike']),
-            json_decode($user['fers']),
-            json_decode($user['fing']),
             $user['id']
         );
     }
@@ -95,7 +90,10 @@ class UserRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT * from all_users
+            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            FROM users u INNER JOIN users_details ud
+            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
         ');
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -113,8 +111,6 @@ class UserRepository extends Repository
                     $user['photo'],
                     json_decode($user['like']),
                     json_decode($user['dislike']),
-                    json_decode($user['fers']),
-                    json_decode($user['fing']),
                     $user['id']
                 );
         }
@@ -125,48 +121,34 @@ class UserRepository extends Repository
     public function getMyFollowed(): ?array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as fers, array_to_json(following) as fing
-            FROM users u INNER JOIN users_details ud
-            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+            select * from user_following_user
+                  inner join users u on u.id = user_following_user.id_user_followed
+                  INNER JOIN users_details ud
+                             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+                where user_following_user.id_user_following = :id
+
         ');
+        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($users as $user) {
-            $followers = json_decode($user['fers']);
-            if (in_array($_SESSION['idUser'], $followers)) {
-                $user['like'] = json_decode($user['like']);
-                $user['dislike'] = json_decode($user['dislike']);
-                array_push($result, $user);
-            }
-        }
-        return $result;
+        return $users;
 
     }
 
     public function getNotMyFollowed(): ?array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as fers, array_to_json(following) as fing
-            FROM users u INNER JOIN users_details ud
-            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+            select * from user_following_user
+                  inner join users u on u.id = user_following_user.id_user_followed
+                  INNER JOIN users_details ud
+                             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+                where user_following_user.id_user_following != :id
+
         ');
+        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($users as $user) {
-            $followers = json_decode($user['fers']);
-            if ((!in_array($_SESSION['idUser'], $followers) && ($user['id'] != $_SESSION['idUser']))) {
-                $user['like'] = json_decode($user['like']);
-                $user['dislike'] = json_decode($user['dislike']);
-                array_push($result, $user);
-            }
-        }
-        return $result;
+        return $users;
 
     }
 
@@ -174,22 +156,16 @@ class UserRepository extends Repository
     {
         $stmt = $this->database->connect()->prepare('
             SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain, array_to_json(followers)
-                       as fers, array_to_json(following) as fing
+                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+            where u.id != :id
         ');
+        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($users as $user) {
-            if (($user['id'] != $_SESSION['idUser'])) {
-                $user['like'] = json_decode($user['like']);
-                $user['dislike'] = json_decode($user['dislike']);
-                array_push($result, $user);
-            }
-        }
-        return $result;
+
+        return $users;
 
     }
 
@@ -220,8 +196,8 @@ class UserRepository extends Repository
     {
 
         $users = $this->getUsers();
-        foreach ($users as$user){
-            if($user->getEmail() === $mail)
+        foreach ($users as $user) {
+            if ($user->getEmail() === $mail)
                 return true;
         }
         return false;
@@ -408,26 +384,26 @@ class UserRepository extends Repository
     public function follow(int $id)
     {
         $idLogged = $_SESSION['idUser'];
-        $followedUser = $this->getUserById($id);
-        $followedUserIdDetails = $this->getUserProfileDetailsId($followedUser);
-        $followingUser = $this->getUserById($_SESSION['idUser']);
-        $followingUserIdDetails = $this->getUserProfileDetailsId($followingUser);
         $stmt = $this->database->connect()->prepare('
-            update profile_details
-            set followers = array_append(followers, :id_user)
-            WHERE profile_details.id = :id;
-         ');
-        $stmt->bindParam(':id', $followedUserIdDetails, PDO::PARAM_INT);
-        $stmt->bindParam(':id_user', $idLogged, PDO::PARAM_INT);
-        $stmt->execute();
-
+            INSERT INTO user_following_user(id_user_following, id_user_followed)
+             VALUES (?,?)
+            ');
+        $stmt->execute([$idLogged, $id]);
         $stmt2 = $this->database->connect()->prepare('
-            update profile_details
-            set following = array_append(following, :id_user)
-            WHERE profile_details.id = :id;
-         ');
-        $stmt2->bindParam(':id', $followingUserIdDetails, PDO::PARAM_INT);
-        $stmt2->bindParam(':id_user', $id, PDO::PARAM_INT);
+            update profile_details set followers = followers+1
+            where id = :id;
+            ');
+        $followed = $this->getUserProfileDetailsId($this->getUserById($id));
+        $stmt2->bindParam(":id", $followed, PDO::PARAM_INT);
         $stmt2->execute();
+        $stmt3 = $this->database->connect()->prepare('
+            update profile_details set followed = followed+1
+            where id = :id;
+            ');
+        $followed = $this->getUserProfileDetailsId($this->getUserById($id));
+        $logged = $this->getUserProfileDetailsId($this->getUserById($_SESSION['idUser']));
+        $stmt3->bindParam(":id", $logged, PDO::PARAM_INT);
+        $stmt3->execute();
+
     }
 }

@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
     <script src="/public/js/fileSelect.js" defer></script>
-    <script src="/public/js/projects.js" defer></script>
     <script src="/public/js/friends.js" defer></script>
 
     <title>Friends</title>
