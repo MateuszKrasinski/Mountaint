@@ -10,8 +10,7 @@ class TripRepository extends Repository
     public function getTrip(int $id): ?Trip
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as part, array_to_json(likes) as like, array_to_json(dislikes) as dislike
-                 , * FROM public.trips WHERE id = :id
+            SELECT  * FROM public.trips WHERE id = :id
         ');
         $stmt->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
@@ -32,9 +31,7 @@ class TripRepository extends Repository
             $trip['date_finish'],
             $trip['time_finish'],
             $trip['places'],
-            json_decode($trip['part']),
-            json_decode($trip['like']),
-            json_decode($trip['dislike']),
+            $this->getTripParticipants($id),
             $trip['id'],
         );
     }
@@ -63,9 +60,9 @@ class TripRepository extends Repository
     {
         $date = new DateTime();
         $stmt = $this->database->connect()->prepare('
-            INSERT INTO trips (title, description, image, created_at, id_assigned_by, likes, dislikes, date_start,time_start,
-                               date_finish, time_finish, places, participants )
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,? )
+            INSERT INTO trips (title, description, image, created_at, id_assigned_by,  date_start,time_start,
+                               date_finish, time_finish, places,participants)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
         ');
 
         $assignedById = $_SESSION['idUser'];
@@ -76,32 +73,23 @@ class TripRepository extends Repository
             $trip->getImage(),
             $date->format('Y-m-d'),
             $assignedById,
-            $trip->getLikes(),
-            $trip->getDislikes(),
             $trip->getDateStart(),
             $trip->getTimeStart(),
             $trip->getDateFinish(),
             $trip->getTimeFinish(),
             $trip->getPlaces(),
-            (($trip->getParticipant()))
+            $trip->getParticipants(),
         ]);
-
-//        $stmt = $this->database->connect()->prepare('
-//            INSERT INTO users_trips (id_user, id_trip)
-//            VALUES (?, ?)
-//        ');
-//        $stmt->execute([$_SESSION['idUser'], $this->getTripId($trip)]);
     }
 
     public function getTrips(): array
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as part, array_to_json(likes) as like, array_to_json(dislikes) as dislike, * FROM trips
+            SELECT * FROM trips
         ');
         $stmt->execute();
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 
         foreach ($trips as $trip) {
             $result[] = new Trip(
@@ -114,9 +102,7 @@ class TripRepository extends Repository
                 $trip['date_finish'],
                 $trip['time_finish'],
                 $trip['places'],
-                json_decode($trip['part']),
-                json_decode($trip['like']),
-                json_decode($trip['dislike']),
+                $trip['participants'],
                 $trip['id'],
             );
         }
@@ -124,47 +110,47 @@ class TripRepository extends Repository
         return $result;
     }
 
+    public function getTripParticipants($tripId): array
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT id_user FROM users_trips where id_trip = :id_trip
+        ');
+        $stmt->bindParam(':id_trip', $tripId, PDO::PARAM_INT);
+        $stmt->execute();
+        $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $participants;
+    }
+
     public function getOtherTrips()
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike,* FROM trips 
+            select *
+            from trips
+            where id in (select id_trip as entity
+             from users_trips
+                      left join trips t on t.id = users_trips.id_trip
+             where  owner = false AND id_trip not in (select id_trip
+                                   from users_trips
+                                   where id_user = :id_user)
+             GROUP BY id_trip)
         ');
+        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
-
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($trips as $trip){
-            $participants = json_decode($trip['parti']);
-            if (!in_array($_SESSION['idUser'],$participants)){
-                $trip['participants']=json_decode($trip['parti']);
-                $trip['like'] = json_decode($trip['like']);
-                $trip['dislike'] = json_decode($trip['dislike']);
-                array_push($result,$trip);
-            }
-        }
-        return $result;
+        return $trips;
     }
+
     public function getJoinedTrips()
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike,* FROM trips 
+            SELECT * FROM users_trips
+            inner join trips t on t.id = users_trips.id_trip
+            where id_user = :id_user AND owner = false
         ');
+        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
-
         $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($trips as $trip){
-            $participants = json_decode($trip['parti']);
-            if ((in_array($_SESSION['idUser'],$participants)&& $_SESSION['idUser'] != $participants[0])){
-                $trip['participants']=json_decode($trip['parti']);
-                $trip['like'] = json_decode($trip['like']);
-                $trip['dislike'] = json_decode($trip['dislike']);
-                array_push($result,$trip);
-            }
-        }
-        return $result;
+        return $trips;
     }
 
     public function getTripId(Trip $trip): int
@@ -183,20 +169,13 @@ class TripRepository extends Repository
     {
         $searchString = '%' . strtolower($searchString) . '%';
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike,* FROM trips  WHERE LOWER(title) LIKE :search OR LOWER(description) LIKE :search
+            SELECT * FROM trips  WHERE LOWER(title) LIKE :search OR LOWER(description) LIKE :search
         ');
         $stmt->bindParam(':search', $searchString, PDO::PARAM_STR);
         $stmt->execute();
-        $trips =  $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($trips as $trip){
-                $trip['participants']=json_decode($trip['parti']);
-                $trip['like'] = json_decode($trip['like']);
-                $trip['dislike'] = json_decode($trip['dislike']);
-                array_push($result,$trip);
-            }
-        return $result;
+        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $trips;
     }
 
     public function like(int $id)
@@ -247,79 +226,55 @@ class TripRepository extends Repository
         }
     }
 
-    public function newParticipant(int $id)
+    public function newParticipant(int $id, $iSOwner = "false")
     {
-        $trip = $this->getTrip($id);
-        $participants = ($trip->getParticipant())?$trip->getParticipant():[];
-        if (!(in_array($_SESSION['idUser'], $participants))) {
-            $stmt = $this->database->connect()->prepare('
-            update trips
-            set participants = array_append(participants, :id_user)
-            WHERE trips.id = :id;
-        ');
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
+                $stmt2 = $this->database->connect()->prepare('
+                INSERT INTO  users_trips (id_user, id_trip, owner)
+                 VALUES (?,?,?)');
+            $stmt2->execute([$_SESSION['idUser'], $id, $iSOwner]);
+            $stmt3 = $stmt = $this->database->connect()->prepare('
+                update trips set  participants =  participants + 1
+                where id = :id
 
+        ');
+            $stmt3->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt3->execute();
 
     }
+
     public function myTrips(): array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike,* FROM trips 
+            select * from users_trips
+            left join trips t on t.id = users_trips.id_trip
+            where id_user = :id_user and owner = true
         ');
+        $stmt->bindParam(':id_user',$_SESSION['idUser'],PDO::PARAM_INT);
         $stmt->execute();
-
-        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($trips as $trip){
-            $participants = json_decode($trip['parti']);
-            if ($_SESSION['idUser'] == $participants[0]){
-                $trip['participants']=json_decode($trip['parti']);
-                $trip['like'] = json_decode($trip['like']);
-                $trip['dislike'] = json_decode($trip['dislike']);
-                array_push($result,$trip);
-            }
-        }
-        return $result;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);;
     }
-    public function allTrips(){
-        $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike,* FROM trips 
-        ');
-        $stmt->execute();
 
-        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($trips as $trip){
-                $trip['participants'] = json_decode($trip['parti']);
-                $trip['like'] = json_decode($trip['like']);
-                $trip['dislike'] = json_decode($trip['dislike']);
-                array_push($result,$trip);
-        }
-        return $result;
-    }
-    public function userTrips(): array
+    public function allTrips()
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT array_to_json(participants) as parti ,array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes,* FROM trips 
+            SELECT * FROM trips 
         ');
         $stmt->execute();
 
-        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($trips as $trip){
-            $participants = json_decode($trip['parti']);
-            if (in_array($_SESSION['idUser'],$participants)){
-                $trip['like'] = json_decode($trip['like']);
-                $trip['dislike'] = json_decode($trip['dislike']);
-                array_push($result,$trip);
-            }
-        }
-        return $result;
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function isParticipant($id_user, $id_trip)
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT count(*) FROM users_trips
+            where id_trip = :id_trip AND id_user = :id_user 
+        ');
+        $stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
+        $stmt->bindParam(':id_trip', $id_trip, PDO::PARAM_INT);
+        if ($stmt->execute() == 0) return true;
+        return false;
+    }
+
+
 }

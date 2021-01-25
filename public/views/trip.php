@@ -29,7 +29,7 @@
             </div>
         </header>
         <select name="filter" class="filter" >
-            <option value="AllTrips">All Trips</option>
+            <option value="allTrips">All Trips</option>
             <option value="myTrips">My Trips</option>
             <option value="joinedTrips">Joined Trips</option>
             <option value="otherTrips">Other Trips</option>
@@ -51,14 +51,11 @@
                         </div>
                         <div class="users">
                             <i class="fas fa-users"></i>
-                            <?= count($trip->getParticipant())?>
+                            <?= $trip->getParticipant()?>
                         </div>
                     </div>
                     <p><?= $trip->getDescription() ?></p>
-                    <div class="social-section">
-                        <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$trip->getLikes())){echo("highlight"); } ?>" ><?= count($trip->getLikes()) ?></i>
-                        <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$trip->getDisLikes())){echo("highlight"); } ?>"><?= count($trip->getDislikes())?></i>
-                    </div>
+
                     <div class="button-container">
                         <button class="join-btn">join</button>
                     </div>
@@ -67,7 +64,6 @@
             <?php endforeach  ?>
         </section>
     </main>
-</div>
 
 
 </div>
@@ -93,10 +89,7 @@
                 </div>
             </div>
             <p>opis</p>
-            <div class="social-section">
-                <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$trip->getLikes())){echo("highlight"); } ?>" ><?= count($trip->getLikes()) ?></i>
-                <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$trip->getDisLikes())){echo("highlight"); } ?>"><?= count($trip->getDislikes())?></i>
-            </div>
+
             <div class="button-container">
                 <button class="join-btn">join</button>
             </div>

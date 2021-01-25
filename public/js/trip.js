@@ -94,18 +94,12 @@ function createProject(project) {
     title.innerHTML = project.title;
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
-    const like = clone.querySelector(".fa-heart");
-    like.innerText = project.like.length;
-    const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislike.length;
     const dateStart = clone.querySelector(".date");
     dateStart.innerText = project.date_start + "\n" + project.time_start;
     const dateFinish = clone.querySelector(".users");
-    dateFinish.innerHTML =  '<i class="fas fa-users"></i>'+project.participants.length;
+    dateFinish.innerHTML =  '<i class="fas fa-users"></i>'+project.participants;
     const join = clone.querySelector(".join-btn");
 
-    like.addEventListener('click',giveLike);
-    dislike.addEventListener('click', giveDislike);
     join.addEventListener('click', joinTrip);
     join.addEventListener('click', moveAway);
     projectContainer.appendChild(clone);

@@ -24,8 +24,6 @@ class TripController extends AppController
             header('Content-type: application/json');
             http_response_code(200);
             $this->tripRepository->newParticipant($decoded['id_trip']);
-
-
         }
 
     }
@@ -44,11 +42,11 @@ class TripController extends AppController
     {
         $id = intval($_GET['profile']);
         $trip = $this->tripRepository->getTrip(($id));
-        $participantsId = $trip->getParticipant();
+        $participantsId = $this->tripRepository->getTripParticipants($id);
         $participants = [];
         $userRepository = new UserRepository();
         foreach ($participantsId as $participantId) {
-            $participants[] = $userRepository->getUserById($participantId);
+            $participants[] = $userRepository->getUserById($participantId['id_user']);
         }
         $this->render('trip_profile', ['trip' => $trip, 'participants' => $participants]);
 
@@ -102,10 +100,10 @@ class TripController extends AppController
             );
 
             $trip = new Trip($_SESSION['userID'], $_POST['title'], $_POST['description'], $_FILES['file']['name'], $_POST['date_start'],
-                $_POST['time_start'], $_POST['date_finish'], $_POST['time_finish'], $_POST['places'], $_POST['participants']);
+                $_POST['time_start'], $_POST['date_finish'], $_POST['time_finish'], $_POST['places']);
             $this->tripRepository->addTrip($trip);
             $id = $this->tripRepository->getTripId($trip);
-            $this->tripRepository->newParticipant($id);
+            $this->tripRepository->newParticipant($id,"true");
             $url = "http://$_SERVER[HTTP_HOST]";
             return $this->render('trip', [
                 'trips' => $this->tripRepository->getTrips(),

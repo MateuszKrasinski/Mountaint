@@ -9,19 +9,17 @@ class Trip
     private $date_finish;
     private $time_start;
     private $time_finish;
-    private $likes = [];
-    private $dislikes = [];
     private $organizer;
     private $id;
     private $places;
-    private $participants = [];
+    private $participants;
 
     public function getParticipant()
     {
         return $this->participants;
     }
 
-    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $places,$participants, $likes = '{}', $dislikes = '{}', $id = null)
+    public function __construct($organizer, $title, $description, $image, $date_start, $time_start, $date_finish, $time_finish, $places,$participants=0 , $id = null)
     {
         $this->organizer = $organizer;
         $this->title = $title;
@@ -31,11 +29,25 @@ class Trip
         $this->date_finish = $date_finish;
         $this->time_start = $time_start;
         $this->time_finish = $time_finish;
-        $this->likes = $likes;
-        $this->dislikes = $dislikes;
         $this->id = $id;
         $this->participants = $participants;
         $this->places = $places;
+    }
+
+    /**
+     * @return array
+     */
+    public function getParticipants()
+    {
+        return $this->participants;
+    }
+
+    /**
+     * @param array $participants
+     */
+    public function setParticipants(array $participants): void
+    {
+        $this->participants = $participants;
     }
 
     /**
