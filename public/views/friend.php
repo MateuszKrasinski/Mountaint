@@ -24,9 +24,9 @@
 
         </header>
         <select name="filter" class="filter" >
+            <option value="allFriends">All</option>
             <option value="followed">Followed</option>
             <option value="notFollowed">Others</option>
-            <option value="allFriends">All</option>
         </select>
         <section class="projects">
             <?php foreach ($users as $user): ?>

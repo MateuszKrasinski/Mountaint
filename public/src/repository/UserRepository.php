@@ -126,6 +126,7 @@ class UserRepository extends Repository
                   INNER JOIN users_details ud
                              ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
                 where user_following_user.id_user_following = :id
+                group by  id_user_following,id_user_followed, u.id, ud.id,pd.id
 
         ');
         $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
@@ -138,11 +139,15 @@ class UserRepository extends Repository
     public function getNotMyFollowed(): ?array
     {
         $stmt = $this->database->connect()->prepare('
-            select * from user_following_user
-                  inner join users u on u.id = user_following_user.id_user_followed
-                  INNER JOIN users_details ud
-                             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
-                where user_following_user.id_user_following != :id
+            select * from users
+    inner join profile_details p on p.id = users.id_profile_details
+inner join users_details ud on ud.id = users.id_user_details
+where users.id!=:id and  users.id not  in (select id_user_followed from user_following_user
+                                                                inner join users u on u.id = user_following_user.id_user_followed
+                                                                INNER JOIN users_details ud
+                                                                           ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
+                               where user_following_user.id_user_following = :id
+                               group by id_user_following, id_user_followed,u.id, ud.id,pd.id)
 
         ');
         $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
