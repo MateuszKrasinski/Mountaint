@@ -43,10 +43,9 @@
                             <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
                         <p>
-                            <?= $user->getDescription()?></p>
                         <div class="social-section">
-                            <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$user->getLikes())){echo("highlight"); } ?>" ><?= count($user->getLikes()) ?></i>
-                            <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$user->getDisLikes())){echo("highlight"); } ?>"><?= count($user->getDislikes())?></i>
+                            <i class="fas fa-heart <?php if(in_array($user->getId(), $liked))echo("highlight"); ?> "><?= $user->getLikes() ?></i>
+                            <i class="fas fa-minus-square <?php if(in_array($user->getId(), $disliked))echo("highlight"); ?> "><?=$user->getDislikes()?></i>
 
                         </div>
                         <div class="button-container">

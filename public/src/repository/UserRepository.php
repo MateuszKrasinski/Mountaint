@@ -18,8 +18,7 @@ class UserRepository extends Repository
     public function getUser(string $email): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as likes,
-                   array_to_json(dislikes) as dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, likes,dislikes, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE email = :email
@@ -55,8 +54,7 @@ class UserRepository extends Repository
     public function getUserById(int $id): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             where u.id = :id
@@ -80,8 +78,8 @@ class UserRepository extends Repository
             $user['first_mountain'],
             $user['second_mountain'],
             $user['photo'],
-            json_decode($user['like']),
-            json_decode($user['dislike']),
+            $user['likes'],
+            $user['dislikes'],
             $user['id']
         );
     }
@@ -90,8 +88,7 @@ class UserRepository extends Repository
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
         ');
@@ -109,8 +106,10 @@ class UserRepository extends Repository
                     $user['first_mountain'],
                     $user['second_mountain'],
                     $user['photo'],
-                    json_decode($user['like']),
-                    json_decode($user['dislike']),
+                    $user['likes'],
+                    $user['dislikes'],
+                    $user['followers'],
+                    $user['followed'],
                     $user['id']
                 );
         }
@@ -160,8 +159,7 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
     public function getAllFriends(): ?array
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like,
-                   array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             where u.id != :id
@@ -189,8 +187,6 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
         $result = [];
         foreach ($users as $user) {
             if (($user['id'] != $_SESSION['idUser'])) {
-                $user['like'] = json_decode($user['like']);
-                $user['dislike'] = json_decode($user['dislike']);
                 array_push($result, $user);
             }
         }
@@ -283,7 +279,24 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
-
+    public function getLikedUsers(){
+        $stmt = $this->database->connect()->prepare('
+            select id_liked from user_liking_user
+            where id_liking=:id
+        ');
+        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+    public function getDisLikedUsers(){
+        $stmt = $this->database->connect()->prepare('
+            select id_disliked from user_disliking_user
+            where id_disliking=:id
+        ');
+        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
     public function getUserId(User $user): int
     {
         $stmt = $this->database->connect()->prepare('
@@ -336,56 +349,76 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
     public function like(int $id)
     {
         $user = $this->getUserById($id);
-        if ((!(in_array($_SESSION['idUser'], $user->getDislikes()))) && (!(in_array($_SESSION['idUser'], $user->getLikes())))) {
-            $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database->connect()->prepare('
             update profile_details
-            set likes = array_append(likes, :id_user)
+            set likes = likes+1
             WHERE profile_details.id = :id;
          ');
-            $id_det = $this->getUserProfileDetailsId($user);
-            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        } else if ((in_array($_SESSION['idUser'], $user->getLikes()))) {
-            $stmt = $this->database->connect()->prepare('
+        $id_det = $this->getUserProfileDetailsId($user);
+        $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt2 = $this->database->connect()->prepare('
+            insert into user_liking_user(id_liking, id_liked)
+            values (?,?)
+         ');
+        $stmt2->execute([$_SESSION['idUser'], $id]);
+    }
+    public function unlike(int $id)
+    {
+        $user = $this->getUserById($id);
+        $stmt = $this->database->connect()->prepare('
             update profile_details
-            set likes = array_remove(likes, :id_user)
+            set likes = likes-1
             WHERE profile_details.id = :id;
          ');
-            $id_det = $this->getUserProfileDetailsId($user);
-            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-
+        $id_det = $this->getUserProfileDetailsId($user);
+        $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt2 = $this->database->connect()->prepare('
+            delete from  user_liking_user
+            where id_liked = :id_liked AND id_liking = :id_liking
+         ');
+        $stmt2->bindParam('id_liked', $id);
+        $stmt2->bindParam('id_liking', $_SESSION['idUser']);
+        $stmt2->execute();
     }
 
     public function dislike(int $id)
     {
         $user = $this->getUserById($id);
-        if ((!(in_array($_SESSION['idUser'], $user->getDislikes()))) && (!(in_array($_SESSION['idUser'], $user->getLikes())))) {
-            $stmt = $this->database->connect()->prepare('
+        $stmt = $this->database->connect()->prepare('
             update profile_details
-            set dislikes = array_append(dislikes, :id_user)
+            set dislikes = dislikes+1
             WHERE profile_details.id = :id;
          ');
-            $id_det = $this->getUserProfileDetailsId($user);
-            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        } else if ((in_array($_SESSION['idUser'], $user->getDislikes()))) {
-            $stmt = $this->database->connect()->prepare('
-            update profile_details
-            set dislikes = array_remove(dislikes, :id_user)
-            WHERE profile_details.id = :id;
+        $id_det = $this->getUserProfileDetailsId($user);
+        $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt2 = $this->database->connect()->prepare('
+            insert into user_disliking_user(id_disliking, id_disliked)
+            values (?,?)
          ');
-            $id_det = $this->getUserProfileDetailsId($user);
-            $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
+        $stmt2->execute([$_SESSION['idUser'], $id]);
     }
-
+    public function undislike(int $id)
+    {
+        $user = $this->getUserById($id);
+        $stmt = $this->database->connect()->prepare('
+            update profile_details
+            set dislikes = dislikes-1
+            WHERE profile_details.id = :id;
+         ');
+        $id_det = $this->getUserProfileDetailsId($user);
+        $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+        $stmt->execute();
+        $stmt2 = $this->database->connect()->prepare('
+            delete from  user_disliking_user
+            where id_disliked = :id_disliked AND id_disliking = :id_disliking
+         ');
+        $stmt2->bindParam('id_disliked', $id);
+        $stmt2->bindParam('id_disliking', $_SESSION['idUser']);
+        $stmt2->execute();
+    }
     public function follow(int $id)
     {
         $idLogged = $_SESSION['idUser'];

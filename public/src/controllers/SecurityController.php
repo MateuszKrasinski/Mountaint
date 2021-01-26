@@ -59,8 +59,10 @@ class SecurityController extends AppController
 
     {
         $users = $this->userRepository->getUsers();
+        $liked = $this->userRepository->getLikedUsers();
+        $disliked = $this->userRepository->getDisLikedUsers();
 
-        $this->render('friend', ['users' => $users]);
+        $this->render('friend', ['users' => $users, 'liked' => $liked, 'disliked' => $disliked]);
 
     }
 
@@ -173,15 +175,19 @@ class SecurityController extends AppController
     }
     public function likeFriend(int $id) {
         $this->userRepository->like($id);
-        $user = $this->userRepository->getUserById($id);
-        echo json_encode(count($user->getLikes()));
+
         http_response_code(200);
     }
-
+    public function unlikeFriend(int $id){
+        $this->userRepository->unlike($id);
+        http_response_code(200);
+    }
     public function dislikeFriend(int $id) {
         $this->userRepository->dislike($id);
-        $user = $this->userRepository->getUserById($id);
-        echo json_encode(count($user->getDislikes()));
+        http_response_code(200);
+    }
+    public function undislikeFriend(int $id) {
+        $this->userRepository->undislike($id);
         http_response_code(200);
     }
     private function validate(array $file): bool

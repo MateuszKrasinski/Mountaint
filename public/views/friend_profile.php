@@ -64,9 +64,9 @@
                 <div class="photo">
                     <img src="/public/img/uploads/<?= $user->getPhoto(); ?>" alt="profile photo" width="30px">
                     <div class="social-section">
-                        <i class="fas fa-heart"><?= count($user->getLikes()) ?></i>
-                        <i class="fas fa-minus-square"><?= count($user->getDislikes()) ?></i>
-                        <i class="fas fa-user-plus"><?= (count($user->getFollowers())) ?></i>
+                        <i class="fas fa-heart"><?= $user->getLikes() ?></i>
+                        <i class="fas fa-minus-square"><?= $user->getDislikes() ?></i>
+                        <i class="fas fa-user-plus"><?= $user->getFollowers()?></i>
                     </div>
                 </div>
 

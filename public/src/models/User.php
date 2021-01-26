@@ -12,15 +12,16 @@ class User
     private $firstMountain;
     private $secondMountain;
     private $photo;
-    private $likes = [];
-    private $dislikes = [];
-    private $followers = [];
-    private $following = [];
+    private $likes;
+    private $dislikes;
+    private $followers;
+    private $following;
 
     public function __construct($email, $password, $name, $surname, $phone, $description = "Opis",
                                 $firstMountain = "mountain#1", $secondMountain = "mountain2#2",
-                                $photo = "/public/img/uploads/person.svg", $likes = '{}', $dislikes = '{}',
-                                 $id = null)
+                                $photo = "/public/img/uploads/person.svg", $likes = 0, $dislikes = 0,
+                                $followers = 0, $following = 0,
+                                $id = null)
     {
         $this->email = $email;
         $this->password = $password;
@@ -33,13 +34,15 @@ class User
         $this->photo = $photo;
         $this->likes = $likes;
         $this->dislikes = $dislikes;
+        $this->followers= $followers;
+        $this->following = $following;
         $this->id = $id;
     }
 
     /**
      * @return mixed|string
      */
-    public function getFollowers():array
+    public function getFollowers():int
     {
         return $this->followers;
     }
@@ -53,7 +56,7 @@ class User
     }
 
 
-    public function getFollowing(): array
+    public function getFollowing(): int
     {
         return $this->following;
     }
