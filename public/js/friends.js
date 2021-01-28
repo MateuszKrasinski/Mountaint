@@ -27,13 +27,14 @@ search.addEventListener("keyup", function (event) {
 });
 
 function loadProjects(projects) {
-    console.log(projects)
-    projects.forEach(project => {
-        createProject(project);
+    projects['users'].forEach(project => {
+        createProject(project, projects['liked'], projects['disliked']);
     });
 }
 
-function createProject(project) {
+function createProject(project, liked, disliked) {
+    console.log(liked);
+    console.log(disliked);
     const template = document.querySelector("#friend-template");
     const clone = template.content.cloneNode(true);
     const div = clone.querySelector("div");
@@ -47,9 +48,11 @@ function createProject(project) {
     const like = clone.querySelector(".fa-heart");
     like.innerText = project.likes;
     like.addEventListener('click', giveLike);
+    if (liked.includes(project.id)) like.classList.add('highlight');
     const dislike = clone.querySelector(".fa-minus-square");
     dislike.innerText = project.dislikes;
     dislike.addEventListener('click', giveDislike);
+    if (disliked.includes(project.id)) dislike.classList.add('highlight');
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText = project.first_mountain;
     wantToGo[1].innerText = project.second_mountain;
@@ -63,7 +66,7 @@ function createProject(project) {
 
 buttonMyProject.addEventListener('change', function (event) {
     let selectedOption = buttonMyProject.value;
-    fetch(`/${selectedOption}`).then(function (response) {
+    fetch(`/filter/${selectedOption}`).then(function (response) {
         return response.json();
     }).then(function (projects) {
         projectContainer.innerHTML = "";
@@ -74,23 +77,47 @@ buttonMyProject.addEventListener('change', function (event) {
 
 function giveFollow() {
     const follow = this;
+    console.log(this.innerText)
     const container = follow.parentElement.parentElement.parentElement;
     const id = container.getAttribute('id');
     const data = {id: id};
-    fetch(`/follow/${id}`)
-        .then();
+    if(follow.innerText === "follow"){
+        fetch(`/follow/${id}`)
+            .then();
+        console.log('followed')
+    }
+    else{
+        fetch(`/unfollow/${id}`)
+            .then();
+        console.log('unfollowed');
+    }
 }
 
 function giveLike() {
     const likes = this;
     const container = likes.parentElement.parentElement.parentElement;
+    const dislikes = container.querySelector(".fa-minus-square")
     const id = container.getAttribute("id");
     const firstValue = likes.innerHTML;
-    if (!likes.classList.contains("highlight")) {
+    if (!likes.classList.contains("highlight") && (!dislikes.classList.contains("highlight"))) {
         likes.innerHTML = +likes.innerHTML + 1;
         likes.classList.add("highlight");
         console.log("liked");
         fetch(`/likeFriend/${id}`)
+            .then()
+    } else if (!likes.classList.contains("highlight") && (dislikes.classList.contains("highlight"))) {
+        dislikes.innerHTML = +dislikes.innerHTML - 1;
+        dislikes.classList.remove("highlight");
+        likes.innerHTML = +likes.innerHTML + 1;
+        likes.classList.add('highlight');
+        fetch(`/undislikeFriend/${id}`)
+            .then()
+        fetch(`/likeFriend/${id}`)
+            .then()
+    } else if (likes.classList.contains("highlight")) {
+        likes.classList.remove("highlight");
+        likes.innerHTML = +likes.innerHTML - 1;
+        fetch(`/unlikeFriend/${id}`)
             .then()
     } else {
         likes.innerHTML = +likes.innerHTML - 1;
@@ -104,17 +131,33 @@ function giveLike() {
 function giveDislike() {
     const dislikes = this;
     const container = dislikes.parentElement.parentElement.parentElement;
+    const likes = container.querySelector(".fa-heart")
     const id = container.getAttribute("id");
-    const firstValue = dislikes.innerHTML;
-    fetch(`/dislikeFriend/${id}`)
-        .then(function (response) {
-            return response.json();
-        }).then(function (number) {
-        console.log(number);
-        if (firstValue > number) dislikes.classList.remove("highlight");
-        else if (firstValue < number) dislikes.classList.add("highlight");
-        dislikes.innerHTML = number;
-    });
+    if (!dislikes.classList.contains("highlight") && (!likes.classList.contains("highlight"))) {
+        dislikes.innerHTML = +dislikes.innerHTML + 1;
+        dislikes.classList.add("highlight");
+        fetch(`/dislikeFriend/${id}`)
+            .then()
+    } else if (!dislikes.classList.contains("highlight") && (likes.classList.contains("highlight"))) {
+        likes.innerHTML = +likes.innerHTML - 1;
+        likes.classList.remove("highlight");
+        dislikes.innerHTML = +likes.innerHTML + 1;
+        dislikes.classList.add('highlight');
+        fetch(`/unlikeFriend/${id}`)
+            .then()
+        fetch(`/dislikeFriend/${id}`)
+            .then()
+    } else if (dislikes.classList.contains("highlight")) {
+        dislikes.classList.remove("highlight");
+        dislikes.innerHTML = +dislikes.innerHTML - 1;
+        fetch(`/undislikeFriend/${id}`)
+            .then()
+    } else {
+        dislikes.innerHTML = +dislikes.innerHTML - 1;
+        dislikes.classList.remove("highlight");
+        fetch(`/undislikeFriend/${id}`)
+            .then()
+    }
 }
 
 function moveAway() {

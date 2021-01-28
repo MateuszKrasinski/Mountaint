@@ -19,20 +19,20 @@
     <main>
         <header>
             <div class="search-bar">
-                    <input type="text" placeholder="search friend" name ="name">
+                <input type="text" placeholder="search friend" name="name">
             </div>
 
         </header>
-        <select name="filter" class="filter" >
+        <select name="filter" class="filter">
             <option value="allFriends">All</option>
             <option value="followed">Followed</option>
             <option value="notFollowed">Others</option>
         </select>
         <section class="projects">
             <?php foreach ($users as $user): ?>
-                <div class="project p1"  id="<?= $user->getId()?>">
+                <div class="project p1" id="<?= $user->getId() ?>">
                     <div class="project-image">
-                        <a  href="friendProfile?profile=<?php echo $user->getId(); ?>">
+                        <a href="friendProfile?profile=<?php echo $user->getId(); ?>">
                             <img src="/public/img/<?= $user->getPhoto(); ?>">
                         </a>
                     </div>
@@ -44,12 +44,13 @@
                         </div>
                         <p>
                         <div class="social-section">
-                            <i class="fas fa-heart <?php if(in_array($user->getId(), $liked))echo("highlight"); ?> "><?= $user->getLikes() ?></i>
-                            <i class="fas fa-minus-square <?php if(in_array($user->getId(), $disliked))echo("highlight"); ?> "><?=$user->getDislikes()?></i>
+                            <i class="fas fa-heart <?php if (in_array($user->getId(), $liked)) echo("highlight"); ?> "><?= $user->getLikes() ?></i>
+                            <i class="fas fa-minus-square <?php if (in_array($user->getId(), $disliked)) echo("highlight"); ?> "><?= $user->getDislikes() ?></i>
 
                         </div>
                         <div class="button-container">
-                            <button class="join-btn">follow</button>
+                            <button class="join-btn"><?php if (in_array($user->getId(), $followed)) echo("unfollow"); else echo('follow') ?>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -67,7 +68,7 @@
 <template id="friend-template">
     <div class="project p1">
         <div class="project-image">
-            <a  href="friendProfile?profile=<?php echo $user->getId(); ?>">
+            <a href="friendProfile?profile=<?php echo $user->getId(); ?>">
                 <img src="">
             </a>
         </div>
@@ -80,8 +81,12 @@
             <p>
             </p>
             <div class="social-section">
-                <i class="fas fa-heart <?php  if(in_array($_SESSION['idUser'],$user->getLikes())){echo("highlight"); } ?>" ><?= count($user->getLikes()) ?></i>
-                <i class="fas fa-minus-square <?php  if(in_array($_SESSION['idUser'],$user->getDisLikes())){echo("highlight"); } ?>"><?= count($user->getDislikes())?></i>
+                <i class="fas fa-heart <?php if (in_array($_SESSION['idUser'], $user->getLikes())) {
+                    echo("highlight");
+                } ?>"><?= count($user->getLikes()) ?></i>
+                <i class="fas fa-minus-square <?php if (in_array($_SESSION['idUser'], $user->getDisLikes())) {
+                    echo("highlight");
+                } ?>"><?= count($user->getDislikes()) ?></i>
             </div>
             <div class="button-container">
                 <button class="join-btn">follow</button>

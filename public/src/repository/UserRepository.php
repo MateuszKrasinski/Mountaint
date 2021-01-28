@@ -5,15 +5,6 @@ require_once __DIR__ . '/../models/User.php';
 
 class UserRepository extends Repository
 {
-    public function getUsersFromIdArray(array $usersId)
-    {
-        $result = [];
-        foreach ($usersId as $userId) {
-            $user = $this->getUserById($userId);
-            array_push($result, $user);
-        }
-        return $result;
-    }
 
     public function getUser(string $email): ?User
     {
@@ -117,66 +108,31 @@ class UserRepository extends Repository
         return $result;
     }
 
-    public function getMyFollowed(): ?array
+    public function filter($filter): ?array
     {
-        $stmt = $this->database->connect()->prepare('
-            select * from user_following_user
-                  inner join users u on u.id = user_following_user.id_user_followed
-                  INNER JOIN users_details ud
-                             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
-                where user_following_user.id_user_following = :id
-                group by  id_user_following,id_user_followed, u.id, ud.id,pd.id
+        $stmt = '';
+        if ($filter == "followed") $stmt = $this->database->connect()->prepare('
+            SELECT * FROM select_followed_users(:id)
+        ');
+        else if ($filter == "notFollowed") $stmt = $this->database->connect()->prepare('
+            select * from select_not_followed_users(:id)
 
+        ');
+        else if ($filter == "allFriends") $stmt = $this->database->connect()->prepare('
+            select * from select_all_users(:id);
         ');
         $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return $users;
-
     }
 
-    public function getNotMyFollowed(): ?array
-    {
-        $stmt = $this->database->connect()->prepare('
-            select * from users
-    inner join profile_details p on p.id = users.id_profile_details
-inner join users_details ud on ud.id = users.id_user_details
-where users.id!=:id and  users.id not  in (select id_user_followed from user_following_user
-                                                                inner join users u on u.id = user_following_user.id_user_followed
-                                                                INNER JOIN users_details ud
-                                                                           ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
-                               where user_following_user.id_user_following = :id
-                               group by id_user_following, id_user_followed,u.id, ud.id,pd.id)
-
-        ');
-        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
-        $stmt->execute();
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $users;
-
-    }
-
-    public function getAllFriends(): ?array
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, photo, first_mountain, second_mountain
-            FROM users u INNER JOIN users_details ud
-            ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
-            where u.id != :id
-        ');
-        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
-        $stmt->execute();
-        $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return $users;
-
-    }
 
     public function getUsersByName($searchString): ?array
     {
         $searchString = '%' . strtolower($searchString) . '%';
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, array_to_json(likes) as like, array_to_json(dislikes) as dislike, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE LOWER(name) LIKE :search OR LOWER(surname) LIKE :search
@@ -184,13 +140,7 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
         $stmt->bindParam(':search', $searchString, PDO::PARAM_STR);
         $stmt->execute();
         $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $result = [];
-        foreach ($users as $user) {
-            if (($user['id'] != $_SESSION['idUser'])) {
-                array_push($result, $user);
-            }
-        }
-        return $result;
+        return $users;
     }
 
     public function emailInBase($mail)
@@ -279,7 +229,9 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         return $data['id'];
     }
-    public function getLikedUsers(){
+
+    public function getLikedUsers()
+    {
         $stmt = $this->database->connect()->prepare('
             select id_liked from user_liking_user
             where id_liking=:id
@@ -288,10 +240,22 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
-    public function getDisLikedUsers(){
+
+    public function getDisLikedUsers()
+    {
         $stmt = $this->database->connect()->prepare('
             select id_disliked from user_disliking_user
             where id_disliking=:id
+        ');
+        $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+    public function getFollowedUsers()
+    {
+        $stmt = $this->database->connect()->prepare('
+            select id_user_followed from user_following_user
+            where id_user_following=:id
         ');
         $stmt->bindParam(':id', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
@@ -346,102 +310,103 @@ where users.id!=:id and  users.id not  in (select id_user_followed from user_fol
         ]);
     }
 
-    public function like(int $id)
+    public function like(int $id, $isLiked = false)
     {
+        ($isLiked) ? $value = -1 : $value = 1;
         $user = $this->getUserById($id);
         $stmt = $this->database->connect()->prepare('
             update profile_details
-            set likes = likes+1
+            set likes = likes + :value
             WHERE profile_details.id = :id;
          ');
         $id_det = $this->getUserProfileDetailsId($user);
         $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
+        $stmt->bindParam(':value', $value, PDO::PARAM_INT);
         $stmt->execute();
-        $stmt2 = $this->database->connect()->prepare('
+        if ($isLiked == false) {
+            $stmt2 = $this->database->connect()->prepare('
             insert into user_liking_user(id_liking, id_liked)
-            values (?,?)
+            values (:id_liking,:id_liked)
          ');
-        $stmt2->execute([$_SESSION['idUser'], $id]);
-    }
-    public function unlike(int $id)
-    {
-        $user = $this->getUserById($id);
-        $stmt = $this->database->connect()->prepare('
-            update profile_details
-            set likes = likes-1
-            WHERE profile_details.id = :id;
-         ');
-        $id_det = $this->getUserProfileDetailsId($user);
-        $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
-        $stmt->execute();
-        $stmt2 = $this->database->connect()->prepare('
+        } else {
+            $stmt2 = $this->database->connect()->prepare('
             delete from  user_liking_user
             where id_liked = :id_liked AND id_liking = :id_liking
          ');
+        }
+
+        $stmt2->bindParam(':table', $table);
         $stmt2->bindParam('id_liked', $id);
         $stmt2->bindParam('id_liking', $_SESSION['idUser']);
         $stmt2->execute();
     }
 
-    public function dislike(int $id)
+
+    public function dislike(int $id, $isDisLiked = false)
     {
+        ($isDisLiked) ? $value = -1 : $value = 1;
         $user = $this->getUserById($id);
         $stmt = $this->database->connect()->prepare('
             update profile_details
-            set dislikes = dislikes+1
+            set dislikes = dislikes+:value
             WHERE profile_details.id = :id;
          ');
         $id_det = $this->getUserProfileDetailsId($user);
+        $stmt->bindParam(':value', $value, PDO::PARAM_INT);
         $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
         $stmt->execute();
-        $stmt2 = $this->database->connect()->prepare('
+        if ($isDisLiked == false) {
+            $stmt2 = $this->database->connect()->prepare('
             insert into user_disliking_user(id_disliking, id_disliked)
-            values (?,?)
+            values (:id_disliking,:id_disliked)
          ');
-        $stmt2->execute([$_SESSION['idUser'], $id]);
-    }
-    public function undislike(int $id)
-    {
-        $user = $this->getUserById($id);
-        $stmt = $this->database->connect()->prepare('
-            update profile_details
-            set dislikes = dislikes-1
-            WHERE profile_details.id = :id;
-         ');
-        $id_det = $this->getUserProfileDetailsId($user);
-        $stmt->bindParam(':id', $id_det, PDO::PARAM_INT);
-        $stmt->execute();
-        $stmt2 = $this->database->connect()->prepare('
+        } else {
+            $stmt2 = $this->database->connect()->prepare('
             delete from  user_disliking_user
             where id_disliked = :id_disliked AND id_disliking = :id_disliking
          ');
+        }
         $stmt2->bindParam('id_disliked', $id);
         $stmt2->bindParam('id_disliking', $_SESSION['idUser']);
         $stmt2->execute();
+
     }
-    public function follow(int $id)
+
+
+    public function follow(int $id, $isFollowed= false)
     {
-        $idLogged = $_SESSION['idUser'];
-        $stmt = $this->database->connect()->prepare('
+        ($isFollowed) ? $value = -1 : $value = 1;
+        if(!$isFollowed){
+            $stmt = $this->database->connect()->prepare('
             INSERT INTO user_following_user(id_user_following, id_user_followed)
-             VALUES (?,?)
+             VALUES (:id_following,:id_followed)
             ');
-        $stmt->execute([$idLogged, $id]);
+        }
+        else{
+            $stmt = $this->database->connect()->prepare('
+            delete from  user_following_user
+            where id_user_following = :id_following AND id_user_followed = :id_followed
+            ');
+        }
+        $stmt->bindParam(':id_following',$_SESSION['idUser'],PDO::PARAM_INT);
+        $stmt->bindParam(':id_followed',$id,PDO::PARAM_INT);
+        $stmt->execute();
         $stmt2 = $this->database->connect()->prepare('
-            update profile_details set followers = followers+1
+            update profile_details set followers = followers+:value
             where id = :id;
             ');
         $followed = $this->getUserProfileDetailsId($this->getUserById($id));
         $stmt2->bindParam(":id", $followed, PDO::PARAM_INT);
+        $stmt2->bindParam(":value", $value, PDO::PARAM_INT);
         $stmt2->execute();
         $stmt3 = $this->database->connect()->prepare('
-            update profile_details set followed = followed+1
+            update profile_details set followed = followed+:value 
             where id = :id;
             ');
         $followed = $this->getUserProfileDetailsId($this->getUserById($id));
         $logged = $this->getUserProfileDetailsId($this->getUserById($_SESSION['idUser']));
         $stmt3->bindParam(":id", $logged, PDO::PARAM_INT);
+        $stmt3->bindParam(":value", $value, PDO::PARAM_INT);
         $stmt3->execute();
-
     }
 }
