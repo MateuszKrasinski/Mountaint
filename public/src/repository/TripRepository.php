@@ -178,70 +178,39 @@ class TripRepository extends Repository
         return $trips;
     }
 
-    public function like(int $id)
-    {
-        $trip = $this->getTrip($id);
-        if ((!(in_array($_SESSION['idUser'], $trip->getDislikes()))) && (!(in_array($_SESSION['idUser'], $trip->getLikes())))) {
-            $stmt = $this->database->connect()->prepare('
-            update trips
-            set likes = array_append(likes, :id_user)
-            WHERE trips.id = :id;
-         ');
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        } else if ((in_array($_SESSION['idUser'], $trip->getLikes()))) {
-            $stmt = $this->database->connect()->prepare('
-            update trips
-            set likes = array_remove(likes, :id_user)
-            WHERE trips.id = :id;
-         ');
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-    }
-
-    public function dislike(int $id)
-    {
-        $trip = $this->getTrip($id);
-        if ((!(in_array($_SESSION['idUser'], $trip->getDislikes()))) && (!(in_array($_SESSION['idUser'], $trip->getLikes())))) {
-            $stmt = $this->database->connect()->prepare('
-            update trips
-            set dislikes = array_append(dislikes, :id_user)
-            WHERE trips.id = :id;
-         ');
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        } else if ((in_array($_SESSION['idUser'], $trip->getDislikes()))) {
-            $stmt = $this->database->connect()->prepare('
-            update trips
-            set dislikes = array_remove(dislikes, :id_user)
-            WHERE trips.id = :id;
-         ');
-            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-            $stmt->execute();
-        }
-    }
 
     public function newParticipant(int $id, $iSOwner = "false")
     {
-                $stmt2 = $this->database->connect()->prepare('
+        $stmt2 = $this->database->connect()->prepare('
                 INSERT INTO  users_trips (id_user, id_trip, owner)
                  VALUES (?,?,?)');
-            $stmt2->execute([$_SESSION['idUser'], $id, $iSOwner]);
-            $stmt3 = $stmt = $this->database->connect()->prepare('
+        $stmt2->execute([$_SESSION['idUser'], $id, $iSOwner]);
+        $stmt3 = $stmt = $this->database->connect()->prepare('
                 update trips set  participants =  participants + 1
                 where id = :id
 
         ');
-            $stmt3->bindParam(':id', $id, PDO::PARAM_INT);
-            $stmt3->execute();
+        $stmt3->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt3->execute();
 
     }
+    public function removeParticipant(int $id, $iSOwner = "false")
+    {
+        $stmt2 = $this->database->connect()->prepare('
+                delete  from users_trips 
+                    where id_trip = :id_trip AND id_user=:id_user ');
+        $stmt2->bindParam(':id_trip',$id,PDO::PARAM_INT);
+        $stmt2->bindParam(':id_user',$_SESSION['idUser'],PDO::PARAM_INT);
+        $stmt2->execute();
+        $stmt3 = $stmt = $this->database->connect()->prepare('
+                update trips set  participants =  participants - 1
+                where id = :id
 
+        ');
+        $stmt3->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt3->execute();
+
+    }
     public function myTrips(): array
     {
         $stmt = $this->database->connect()->prepare('
@@ -249,11 +218,32 @@ class TripRepository extends Repository
             left join trips t on t.id = users_trips.id_trip
             where id_user = :id_user and owner = true
         ');
-        $stmt->bindParam(':id_user',$_SESSION['idUser'],PDO::PARAM_INT);
+        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);;
     }
 
+    public function joinedTripsId(): array{
+        $stmt = $this->database->connect()->prepare('
+            SELECT id_trip FROM users_trips
+            inner join trips t on t.id = users_trips.id_trip
+            where id_user = :id_user AND owner = false
+        ');
+        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->execute();
+        $trips = $stmt->fetchAll(PDO::FETCH_COLUMN);
+        return $trips;
+    }
+    public function myTripsId(){
+        $stmt = $this->database->connect()->prepare('
+            select id_trip from users_trips
+            left join trips t on t.id = users_trips.id_trip
+            where id_user = :id_user and owner = true
+        ');
+        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);;
+    }
     public function allTrips()
     {
         $stmt = $this->database->connect()->prepare('
@@ -264,17 +254,6 @@ class TripRepository extends Repository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function isParticipant($id_user, $id_trip)
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT count(*) FROM users_trips
-            where id_trip = :id_trip AND id_user = :id_user 
-        ');
-        $stmt->bindParam(':id_user', $id_user, PDO::PARAM_INT);
-        $stmt->bindParam(':id_trip', $id_trip, PDO::PARAM_INT);
-        if ($stmt->execute() == 0) return true;
-        return false;
-    }
 
 
 }

@@ -57,7 +57,7 @@
                     <p><?= $trip->getDescription() ?></p>
 
                     <div class="button-container">
-                        <button class="join-btn">join</button>
+                        <button class="join-btn"><?php if (in_array($trip->getID(), $myTrips)) echo("remove"); else if(in_array($trip->getID(), $joined))echo ('leave') ;else echo('join') ?></button>
                     </div>
                 </div>
             </div>

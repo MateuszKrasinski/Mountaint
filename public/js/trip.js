@@ -41,15 +41,24 @@ function giveDislike() {
 function joinTrip() {
     const idTrip = (this.parentElement.parentElement.parentElement.id);
     const data = {id_trip: idTrip};
-    fetch("/joinTrip", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(() => {
-        console.log('finished')
-    })
+    if (this.innerText === 'join'){
+        fetch("/joinTrip", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then()
+    }
+    else{
+        fetch("/leaveTrip", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then()
+    }
 }
 
 
@@ -76,13 +85,13 @@ function searchTrip(event) {
 
 
 function loadProjects(projects) {
-    projects.forEach(project => {
+    projects['trips'].forEach(project => {
         console.log(project);
-        createProject(project);
+        createProject(project,projects['joined'], projects['myTrips']);
     });
 }
 
-function createProject(project) {
+function createProject(project, joined, myTrips) {
     const template = document.querySelector("#project-template");
 
     const clone = template.content.cloneNode(true);
@@ -99,7 +108,8 @@ function createProject(project) {
     const dateFinish = clone.querySelector(".users");
     dateFinish.innerHTML =  '<i class="fas fa-users"></i>'+project.participants;
     const join = clone.querySelector(".join-btn");
-
+    if (joined.includes(project.id))join.innerText = 'leave';
+    if (myTrips.includes(project.id))join.innerText = 'remove';
     join.addEventListener('click', joinTrip);
     join.addEventListener('click', moveAway);
     projectContainer.appendChild(clone);

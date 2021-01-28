@@ -140,7 +140,8 @@ class SecurityController extends AppController
         http_response_code(200);
         $liked = $this->userRepository->getLikedUsers();
         $disliked = $this->userRepository->getDisLikedUsers();
-        echo json_encode(array('users' => $this->userRepository->filter($filter), 'liked' => $liked, 'disliked' => $disliked));
+        $followed = $this->userRepository->getFollowedUsers();
+        echo json_encode(array('users' => $this->userRepository->filter($filter), 'liked' => $liked, 'disliked' => $disliked, 'followed' => $followed));
 
     }
 
@@ -212,10 +213,12 @@ class SecurityController extends AppController
     {
         $this->userRepository->follow($id);
     }
+
     public function unfollow(int $id)
     {
-        $this->userRepository->follow($id,true);
+        $this->userRepository->follow($id, true);
     }
+
     public function follow2()
     {
         $followedUser = $this->userRepository->getUserById($_GET['id']);

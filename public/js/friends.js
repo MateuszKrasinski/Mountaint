@@ -28,11 +28,11 @@ search.addEventListener("keyup", function (event) {
 
 function loadProjects(projects) {
     projects['users'].forEach(project => {
-        createProject(project, projects['liked'], projects['disliked']);
+        createProject(project, projects['liked'], projects['disliked'], projects['followed']);
     });
 }
 
-function createProject(project, liked, disliked) {
+function createProject(project, liked, disliked,followed) {
     console.log(liked);
     console.log(disliked);
     const template = document.querySelector("#friend-template");
@@ -57,6 +57,7 @@ function createProject(project, liked, disliked) {
     wantToGo[0].innerText = project.first_mountain;
     wantToGo[1].innerText = project.second_mountain;
     const follow = clone.querySelector(".join-btn");
+    if( followed.includes(project.id)) follow.innerText = 'unfollow';
     follow.addEventListener('click', giveFollow);
     follow.addEventListener('click', moveAway);
     projectContainer.appendChild(clone);
