@@ -14,7 +14,7 @@ class TripController extends AppController
     private $message = [];
     private $tripRepository;
 
-    public function joinTrip()
+    public function joinTrip($isProfileView = false)
     {
         $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
         if ($contentType === "application/json") {
@@ -23,23 +23,17 @@ class TripController extends AppController
 
             header('Content-type: application/json');
             http_response_code(200);
-            $this->tripRepository->newParticipant($decoded['id_trip']);
+            if ($decoded['option'] == "join")
+                $this->tripRepository->newParticipant($decoded['id_trip']);
+            elseif ($decoded['option'] == "leave")
+                $this->tripRepository->removeParticipant($decoded['id_trip']);
+            elseif ($decoded['option'] == "remove")
+                $this->tripRepository->removeParticipant($decoded['id_trip'], true);
         }
-
+        if ($isProfileView) $this->trip();
     }
-    public function leaveTrip()
-    {
-        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
-        if ($contentType === "application/json") {
-            $content = trim(file_get_contents("php://input"));
-            $decoded = json_decode($content, true);
 
-            header('Content-type: application/json');
-            http_response_code(200);
-            $this->tripRepository->removeParticipant($decoded['id_trip']);
-        }
 
-    }
     public function joinTripFromProfile()
     {
         http_response_code(200);
@@ -65,36 +59,12 @@ class TripController extends AppController
 
     }
 
-    public function myTrips()
+    public function filterTrips($filter)
     {
         http_response_code(200);
-        $joinedTrips = $this->tripRepository->joinedTripsId();
-        $myTrips = $this->tripRepository->myTripsId();
-        echo json_encode(['trips'=>$this->tripRepository->myTrips() ,'joined' => $joinedTrips, 'myTrips' => $myTrips]);
-    }
-
-    public function otherTrips()
-    {
-        http_response_code(200);
-        $joinedTrips = $this->tripRepository->joinedTripsId();
-        $myTrips = $this->tripRepository->myTripsId();
-        echo json_encode(['trips'=>$this->tripRepository->getOtherTrips() ,'joined' => $joinedTrips, 'myTrips' => $myTrips]);
-    }
-
-    public function allTrips()
-    {
-        http_response_code(200);
-        $joinedTrips = $this->tripRepository->joinedTripsId();
-        $myTrips = $this->tripRepository->myTripsId();
-        echo json_encode(['trips'=>$this->tripRepository->allTrips() ,'joined' => $joinedTrips, 'myTrips' => $myTrips]);
-    }
-
-    public function joinedTrips()
-    {
-        http_response_code(200);
-        $joinedTrips = $this->tripRepository->joinedTripsId();
-        $myTrips = $this->tripRepository->myTripsId();
-        echo json_encode(['trips'=>$this->tripRepository->getJoinedTrips() ,'joined' => $joinedTrips, 'myTrips' => $myTrips]);
+        $joinedTrips = $this->tripRepository->getTripsId("joinedTrips");
+        $myTrips = $this->tripRepository->getTripsId("myTrips");
+        echo json_encode(['trips' => $this->tripRepository->filter($filter), 'joined' => $joinedTrips, 'myTrips' => $myTrips]);
     }
 
     public function __construct()
@@ -107,8 +77,8 @@ class TripController extends AppController
 
     {
         $trips = $this->tripRepository->getTrips();
-        $joinedTrips = $this->tripRepository->joinedTripsId();
-        $myTrips = $this->tripRepository->myTripsId();
+        $joinedTrips = $this->tripRepository->getTripsId("joinedTrips");
+        $myTrips = $this->tripRepository->getTripsId("myTrips");
         $this->render('trip', ['trips' => $trips, 'joined' => $joinedTrips, 'myTrips' => $myTrips]);
     }
 
@@ -125,9 +95,10 @@ class TripController extends AppController
             $this->tripRepository->addTrip($trip);
             $id = $this->tripRepository->getTripId($trip);
             $this->tripRepository->newParticipant($id, "true");
-            $url = "http://$_SERVER[HTTP_HOST]";
+            $joinedTrips = $this->tripRepository->getTripsId("joinedTrips");
+            $myTrips = $this->tripRepository->getTripsId("myTrips");
             return $this->render('trip', [
-                'trips' => $this->tripRepository->getTrips(),
+                'trips' => $this->tripRepository->getTrips(), 'joined' => $joinedTrips, 'myTrips' => $myTrips,
                 'messages' => $this->message]);
         }
         return $this->render('add_project', ['messages' => $this->message]);
@@ -142,10 +113,10 @@ class TripController extends AppController
 
             header('Content-type: application/json');
             http_response_code(200);
-            $joinedTrips = $this->tripRepository->joinedTripsId();
-            $myTrips = $this->tripRepository->myTripsId();
+            $joinedTrips = $this->tripRepository->getTripsId("joinedTrips");
+            $myTrips = $this->tripRepository->getTripsId("myTrips");
             $trips = $this->tripRepository->getProjectByTitle($decoded['search']);
-            echo json_encode(['trips'=>$trips, 'joined' => $joinedTrips, 'myTrips' => $myTrips]);
+            echo json_encode(['trips' => $trips, 'joined' => $joinedTrips, 'myTrips' => $myTrips]);
         }
     }
 
@@ -163,21 +134,6 @@ class TripController extends AppController
         return true;
     }
 
-    public function like(int $id)
-    {
-        $this->tripRepository->like($id);
-        $trip = $this->tripRepository->getTrip($id);
-        echo json_encode(count($trip->getLikes()));
-        http_response_code(200);
-    }
-
-    public function dislike(int $id)
-    {
-        $this->tripRepository->dislike($id);
-        $trip = $this->tripRepository->getTrip($id);
-        echo json_encode(count($trip->getDislikes()));
-        http_response_code(200);
-    }
 
 }
 

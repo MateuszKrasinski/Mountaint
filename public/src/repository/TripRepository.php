@@ -37,25 +37,6 @@ class TripRepository extends Repository
     }
 
 
-    public function getLikes(int $id)
-    {
-        $userRepository = new UserRepository();
-        $stmt = $this->database->connect()->prepare('
-            select id_user
-            from users_trips
-            where id_trip = :id
-        ');
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        $participantsID = ($stmt->fetchAll(PDO::FETCH_ASSOC));
-        $participants = [];
-        foreach ($participantsID as $participantID) {
-            $participants[] = $userRepository->getUserById($participantID['id_user']);
-
-        }
-        return $participants;
-    }
-
     public function addTrip(Trip $trip): void
     {
         $date = new DateTime();
@@ -121,49 +102,6 @@ class TripRepository extends Repository
         return $participants;
     }
 
-    public function getOtherTrips()
-    {
-        $stmt = $this->database->connect()->prepare('
-            select *
-            from trips
-            where id in (select id_trip as entity
-             from users_trips
-                      left join trips t on t.id = users_trips.id_trip
-             where   id_trip not in (select id_trip
-                                   from users_trips
-                                   where id_user = :id_user)
-             GROUP BY id_trip)
-        ');
-        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-        $stmt->execute();
-        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $trips;
-    }
-
-    public function getJoinedTrips()
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT * FROM users_trips
-            inner join trips t on t.id = users_trips.id_trip
-            where id_user = :id_user AND owner = false
-        ');
-        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-        $stmt->execute();
-        $trips = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        return $trips;
-    }
-
-    public function getTripId(Trip $trip): int
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT * FROM public.trips WHERE title = :title AND description = :description
-        ');
-        $stmt->bindParam(':title', $trip->getTitle(), PDO::PARAM_STR);
-        $stmt->bindParam(':description', $trip->getDescription(), PDO::PARAM_STR);
-        $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $data['id'];
-    }
 
     public function getProjectByTitle(string $searchString): array
     {
@@ -194,64 +132,70 @@ class TripRepository extends Repository
         $stmt3->execute();
 
     }
+
     public function removeParticipant(int $id, $iSOwner = "false")
     {
-        $stmt2 = $this->database->connect()->prepare('
+        if ($iSOwner) {
+            $stmt2 = $this->database->connect()->prepare('
+                delete  from users_trips 
+                    where id_trip = :id_trip  ');
+            $stmt3 = $stmt = $this->database->connect()->prepare('
+                 delete  from trips
+                    where id = :id_trip');
+        } else {
+            $stmt2 = $this->database->connect()->prepare('
                 delete  from users_trips 
                     where id_trip = :id_trip AND id_user=:id_user ');
-        $stmt2->bindParam(':id_trip',$id,PDO::PARAM_INT);
-        $stmt2->bindParam(':id_user',$_SESSION['idUser'],PDO::PARAM_INT);
-        $stmt2->execute();
-        $stmt3 = $stmt = $this->database->connect()->prepare('
+            $stmt3 = $stmt = $this->database->connect()->prepare('
                 update trips set  participants =  participants - 1
                 where id = :id
-
         ');
+        }
+        $stmt2->bindParam(':id_trip', $id, PDO::PARAM_INT);
+        if (!$iSOwner) $stmt2->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt2->execute();
         $stmt3->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt3->execute();
-
     }
-    public function myTrips(): array
+
+    public function filter($filter): array
     {
-        $stmt = $this->database->connect()->prepare('
-            select * from users_trips
-            left join trips t on t.id = users_trips.id_trip
-            where id_user = :id_user and owner = true
+        if ($filter == 'myTrips') {
+            $stmt = $this->database->connect()->prepare('
+            select * from select_my_trips(:id_user)
         ');
+        } elseif ($filter == "joinedTrips") {
+            $stmt = $this->database->connect()->prepare('
+            SELECT * FROM select_joined_trips(:id_user)
+        ');
+        } elseif ($filter == "otherTrips") {
+            $stmt = $this->database->connect()->prepare('
+            SELECT * FROM select_other_trips(:id_user)
+        ');
+        } elseif ($filter == "allTrips") {
+            $stmt = $this->database->connect()->prepare('
+            SELECT * FROM trips 
+        ');
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);;
+        }
         $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);;
     }
 
-    public function joinedTripsId(): array{
+    public function getTripsId($type):array{
         $stmt = $this->database->connect()->prepare('
             SELECT id_trip FROM users_trips
             inner join trips t on t.id = users_trips.id_trip
-            where id_user = :id_user AND owner = false
+            where id_user = :id_user AND owner = :is_owner
         ');
+        ($type=="myTrips")?$isOwner= true:$isOwner=false;
         $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->bindParam(':is_owner', $isOwner, PDO::PARAM_INT);
         $stmt->execute();
         $trips = $stmt->fetchAll(PDO::FETCH_COLUMN);
         return $trips;
-    }
-    public function myTripsId(){
-        $stmt = $this->database->connect()->prepare('
-            select id_trip from users_trips
-            left join trips t on t.id = users_trips.id_trip
-            where id_user = :id_user and owner = true
-        ');
-        $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);;
-    }
-    public function allTrips()
-    {
-        $stmt = $this->database->connect()->prepare('
-            SELECT * FROM trips 
-        ');
-        $stmt->execute();
-
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 

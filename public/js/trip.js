@@ -40,26 +40,16 @@ function giveDislike() {
 
 function joinTrip() {
     const idTrip = (this.parentElement.parentElement.parentElement.id);
-    const data = {id_trip: idTrip};
-    if (this.innerText === 'join'){
+    const data = {id_trip: idTrip, option: this.innerText};
         fetch("/joinTrip", {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        }).then()
-    }
-    else{
-        fetch("/leaveTrip", {
-            method: "POST",
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        }).then()
-    }
+        }).then(()=>console.log('joined'))
 }
+
 
 
 function searchTrip(event) {
@@ -117,11 +107,12 @@ function createProject(project, joined, myTrips) {
 
 function filter() {
     let selectedOption = buttonMyProject.value;
-    fetch(`/${selectedOption}`).then(function (response) {
+    fetch(`/filterTrips/${selectedOption}`).then(function (response) {
         return response.json();
     }).then(function (projects) {
         projectContainer.innerHTML = "";
         loadProjects(projects)
+        console.log(selectedOption);
     });
 }
 

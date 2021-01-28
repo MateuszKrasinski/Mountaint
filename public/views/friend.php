@@ -42,7 +42,7 @@
                             <div class="want-to-go"><?= $user->getFirstMountain(); ?></div>
                             <div class="want-to-go"><?= $user->getSecondMountain(); ?></div>
                         </div>
-                        <p>
+                        <p><?= $user->getDescription(); ?>
                         <div class="social-section">
                             <i class="fas fa-heart <?php if (in_array($user->getId(), $liked)) echo("highlight"); ?> "><?= $user->getLikes() ?></i>
                             <i class="fas fa-minus-square <?php if (in_array($user->getId(), $disliked)) echo("highlight"); ?> "><?= $user->getDislikes() ?></i>
