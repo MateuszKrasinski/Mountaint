@@ -9,7 +9,7 @@ Router::get('trip', 'TripController');
 Router::get('profile', 'SecurityController');
 Router::get('logout', 'SecurityController');
 Router::get('addTrip', 'TripController');
-Router::get('messages', 'DefaultController');
+Router::get('messages', 'SecurityController');
 Router::get('notifications', 'DefaultController');
 Router::post('login', 'SecurityController');
 Router::post('newUser', 'SecurityController');
@@ -42,8 +42,8 @@ Router::get('followed', 'SecurityController');
 Router::get('notFollowed', 'SecurityController');
 Router::get('allFriends', 'SecurityController');
 Router::get('filter', 'SecurityController');
-
-
-
+Router::get('chat', 'SecurityController');
+Router::get('sendMessage', 'SecurityController');
+Router::get('getMessages', 'SecurityController');
 
 Router::run($path);

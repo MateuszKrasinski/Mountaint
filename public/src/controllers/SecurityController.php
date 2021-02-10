@@ -39,12 +39,44 @@ class SecurityController extends AppController
         }
     }
 
+    public function sendMessage()
+    {
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+        if ($contentType === "application/json") {
+            $content = trim(file_get_contents("php://input"));
+            $decoded = json_decode($content, true);
+
+            header('Content-type: application/json');
+            http_response_code(200);
+            $this->userRepository->sendMessage($decoded['messageTo'],$decoded['content']);
+        }
+    }
+
+
     public function profile()
 
     {
         $user = $this->userRepository->getUserById($_SESSION['idUser']);
 
         $this->render('profile', ['user' => $user]);
+    }
+
+    public function chat()
+
+    {
+        $id = intval($_GET['profile']);
+        $user = $this->userRepository->getUserById($id);
+        $messages = $this->userRepository->getMessages($id);
+        $this->render('chat', ['user' => $user, 'messages' => $messages]);
+    }
+    public function getMessages($id){
+        echo json_encode(['messages' => $this->userRepository->getJsonMessages($id),'loggedUser' => $_SESSION['idUser']]);
+    }
+    public function messages()
+    {
+        $users = $this->userRepository->getUsers();
+
+        $this->render('messages', ['users' => $users]);
     }
 
     public function friendProfile()
@@ -102,11 +134,9 @@ class SecurityController extends AppController
             $device = 'mobile';
         setcookie("host", $_SERVER["HTTP_HOST"], time() + 60, '/');
         setcookie("device", $device, time() + 60, '/');
-        $_SESSION['email'] = $email;
         $_SESSION['idUser'] = $userRepository->getUserId($user);
         $_SESSION['idProfileDetails'] = $userRepository->getUserProfileDetailsId($user);
         $_SESSION['idUserDetails'] = $userRepository->getUserDetailsId($user);
-        $_SESSION['user'] = $user;
         $name = $user->getName();
         $surname = $user->getSurname();
         $log = new Logs($name, $surname, 'chrome', 'data', $_SERVER['HTTP_HOST'], $device);

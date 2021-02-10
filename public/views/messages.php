@@ -15,48 +15,18 @@
 <div class="base-container">
     <?PHP include('public/views/nav.php') ?>
     <main>
+        <?php foreach ($users as $user): ?>
         <div class="message">
             <div class="photo-container">
-                <div class="photo"><img src="/public/img/person2.svg" alt=""></div>
+                <div class="photo"><a href="chat?profile=<?php echo $user->getId(); ?>"><img src="/public/img/<?= $user->getPhoto(); ?>"></a></div>
             </div>
             <div class="message-container">
-                <div class="user">Name Surname</div>
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores earum fuga
-                    fugit
-                    illo itaque nemo non ratione tenetur! Cum dicta doloribus in neque nihil nobis non obcaecati,
-                    ratione
-                    rem sed!
+                <div class="user"><?= $user->getName() . " " . $user->getSurname(); ?></div>
+                <div class="message-text">Last message!
                 </div>
             </div>
         </div>
-        <div class="message">
-            <div class="photo-container">
-                <div class="photo"><img src="/public/img/person3.svg" alt=""></div>
-            </div>
-            <div class="message-container">
-                <div class="user">Name Surname</div>
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores earum fuga
-                    fugit
-                    illo itaque nemo non ratione tenetur! Cum dicta doloribus in neque nihil nobis non obcaecati,
-                    ratione
-                    rem sed!
-                </div>
-            </div>
-        </div>
-        <div class="message">
-            <div class="photo-container">
-                <div class="photo"><img src="/public/img/person.svg" alt=""></div>
-            </div>
-            <div class="message-container">
-                <div class="user">Name Surname</div>
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores earum fuga
-                    fugit
-                    illo itaque nemo non ratione tenetur! Cum dicta doloribus in neque nihil nobis non obcaecati,
-                    ratione
-                    rem sed!
-                </div>
-            </div>
-        </div>
+        <?php endforeach ?>
 
     </main>
 </div>

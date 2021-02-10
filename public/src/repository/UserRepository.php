@@ -2,7 +2,7 @@
 
 require_once 'Repository.php';
 require_once __DIR__ . '/../models/User.php';
-
+require_once __DIR__ . '/../models/Message.php';
 class UserRepository extends Repository
 {
 
@@ -44,8 +44,7 @@ class UserRepository extends Repository
 
     public function getUserById(int $id): ?User
     {
-        $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain
+        $stmt = $this->database->connect()->prepare('SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain,phone, followers, followed
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             where u.id = :id
@@ -71,10 +70,62 @@ class UserRepository extends Repository
             $user['photo'],
             $user['likes'],
             $user['dislikes'],
+            $user['followers'],
+            $user['followed'],
             $user['id']
         );
     }
 
+    public function sendMessage($messageTo, $content)
+    {
+        $date = new DateTime();
+        $stmt = $this->database->connect()->prepare('
+            insert into messages (id_from, id_to, content) values (?,?,?)
+        ');
+        $stmt->execute([
+            $_SESSION['idUser'],
+            $messageTo,
+            $content,
+        ]);
+    }
+
+    public function getMessages($messageWith)
+    {
+        $stmt = $this->database->connect()->prepare('
+            select id_from, id_to,  content from messages
+            where id_from = :id_from AND id_to=:id_to 
+            OR id_from = :id_to AND id_to=:id_from
+                  
+            order by timestamp 
+ 
+        ');
+        $stmt->bindParam(':id_from', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_to', $messageWith, PDO::PARAM_INT);
+        $stmt->execute();
+        $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $result = [];
+        foreach ($messages as $msg){
+            array_push($result, new Message($msg['id_from'],$msg['id_to'],$msg['content']));
+        }
+        return $result;
+    }
+    public function getJsonMessages($messageWith)
+    {
+        $stmt = $this->database->connect()->prepare('
+            select id_from, id_to,  content from messages
+            where id_from = :id_from AND id_to=:id_to 
+            OR id_from = :id_to AND id_to=:id_from
+                  
+            order by timestamp 
+ 
+        ');
+        $stmt->bindParam(':id_from', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_to', $messageWith, PDO::PARAM_INT);
+        $stmt->execute();
+        $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return $messages;
+    }
     public function getUsers(): ?array
     {
         $result = [];
@@ -251,6 +302,7 @@ class UserRepository extends Repository
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
+
     public function getFollowedUsers()
     {
         $stmt = $this->database->connect()->prepare('
@@ -261,6 +313,7 @@ class UserRepository extends Repository
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
+
     public function getUserId(User $user): int
     {
         $stmt = $this->database->connect()->prepare('
@@ -373,23 +426,22 @@ class UserRepository extends Repository
     }
 
 
-    public function follow(int $id, $isFollowed= false)
+    public function follow(int $id, $isFollowed = false)
     {
         ($isFollowed) ? $value = -1 : $value = 1;
-        if(!$isFollowed){
+        if (!$isFollowed) {
             $stmt = $this->database->connect()->prepare('
             INSERT INTO user_following_user(id_user_following, id_user_followed)
              VALUES (:id_following,:id_followed)
             ');
-        }
-        else{
+        } else {
             $stmt = $this->database->connect()->prepare('
             delete from  user_following_user
             where id_user_following = :id_following AND id_user_followed = :id_followed
             ');
         }
-        $stmt->bindParam(':id_following',$_SESSION['idUser'],PDO::PARAM_INT);
-        $stmt->bindParam(':id_followed',$id,PDO::PARAM_INT);
+        $stmt->bindParam(':id_following', $_SESSION['idUser'], PDO::PARAM_INT);
+        $stmt->bindParam(':id_followed', $id, PDO::PARAM_INT);
         $stmt->execute();
         $stmt2 = $this->database->connect()->prepare('
             update profile_details set followers = followers+:value
