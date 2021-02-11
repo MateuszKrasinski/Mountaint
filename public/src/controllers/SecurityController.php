@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/Logs.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
 require_once __DIR__ . '/../repository/LogsRepository.php';
+require_once __DIR__ . '/../repository/NotificationRepository.php';
 
 class SecurityController extends AppController
 {
@@ -15,12 +16,14 @@ class SecurityController extends AppController
     private $message = [];
     private $userRepository;
     private $logsRepository;
+    private $notifyRepository;
 
     public function __construct()
     {
         parent::__construct();
         $this->userRepository = new UserRepository();
         $this->logsRepository = new logsRepository();
+        $this->notifyRepository = new NotificationRepository();
     }
 
     public function searchFriend()
@@ -48,7 +51,7 @@ class SecurityController extends AppController
 
             header('Content-type: application/json');
             http_response_code(200);
-            $this->userRepository->sendMessage($decoded['messageTo'],$decoded['content']);
+            $this->userRepository->sendMessage($decoded['messageTo'], $decoded['content']);
         }
     }
 
@@ -69,14 +72,17 @@ class SecurityController extends AppController
         $messages = $this->userRepository->getMessages($id);
         $this->render('chat', ['user' => $user, 'messages' => $messages]);
     }
-    public function getMessages($id){
-        echo json_encode(['messages' => $this->userRepository->getJsonMessages($id),'loggedUser' => $_SESSION['idUser']]);
+
+    public function getMessages($id)
+    {
+        echo json_encode(['messages' => $this->userRepository->getJsonMessages($id), 'loggedUser' => $_SESSION['idUser']]);
     }
+
     public function messages()
     {
         $users = $this->userRepository->getUsers();
-
-        $this->render('messages', ['users' => $users]);
+        $lastMessages = $this->userRepository->getLastMessages($users);
+        $this->render('messages', ['users' => $users, "lastMessages" => $lastMessages]);
     }
 
     public function friendProfile()
@@ -185,7 +191,7 @@ class SecurityController extends AppController
                 dirname(__DIR__) . self::UPLOAD_DIRECTORY . $_FILES['file']['name']
             );
 
-            $user = $this->userRepository->getUser($_SESSION['email']);
+            $user = $this->userRepository->getUserById($_SESSION['idUser']);
             $idProfileDetails = $this->userRepository->getUserProfileDetailsId($user);
             $this->userRepository->setProfile($idProfileDetails, $user);
             $url = "http://$_SERVER[HTTP_HOST]";
@@ -203,6 +209,7 @@ class SecurityController extends AppController
     public function likeFriend(int $id)
     {
         $this->userRepository->like($id);
+        $this->notifyRepository->newNotification($id, "liked You");
 
         http_response_code(200);
     }
@@ -216,6 +223,8 @@ class SecurityController extends AppController
     public function dislikeFriend(int $id)
     {
         $this->userRepository->dislike($id);
+        $this->notifyRepository->newNotification($id, "disliked You");
+
         http_response_code(200);
     }
 
@@ -242,7 +251,9 @@ class SecurityController extends AppController
     public function follow(int $id)
     {
         $this->userRepository->follow($id);
+        $this->notifyRepository->newNotification($id, "followed You");
     }
+
 
     public function unfollow(int $id)
     {

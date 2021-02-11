@@ -3,13 +3,14 @@
 require_once 'Repository.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/Message.php';
+
 class UserRepository extends Repository
 {
 
     public function getUser(string $email): ?User
     {
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, likes,dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description, likes,dislikes, photo, first_mountain, second_mountain,followed, followers
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
             WHERE email = :email
@@ -34,10 +35,11 @@ class UserRepository extends Repository
             $user['first_mountain'],
             $user['second_mountain'],
             $user['photo'],
-            json_decode($user['likes']),
-            json_decode($user['dislikes']),
-
-            $user['id'],
+            $user['likes'],
+            $user['dislikes'],
+            $user['followers'],
+            $user['followed'],
+            $user['id']
 
         );
     }
@@ -104,11 +106,12 @@ class UserRepository extends Repository
         $stmt->execute();
         $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
         $result = [];
-        foreach ($messages as $msg){
-            array_push($result, new Message($msg['id_from'],$msg['id_to'],$msg['content']));
+        foreach ($messages as $msg) {
+            array_push($result, new Message($msg['id_from'], $msg['id_to'], $msg['content']));
         }
         return $result;
     }
+
     public function getJsonMessages($messageWith)
     {
         $stmt = $this->database->connect()->prepare('
@@ -126,11 +129,12 @@ class UserRepository extends Repository
 
         return $messages;
     }
+
     public function getUsers(): ?array
     {
         $result = [];
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain, followed, followers
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
         ');
@@ -159,6 +163,29 @@ class UserRepository extends Repository
         return $result;
     }
 
+    public function getLastMessages($users)
+    {
+        $result = [];
+        foreach ($users as $user) {
+            $stmt = $this->database->connect()->prepare('
+            select id_from, id_to,  content from messages
+            where id_from = :id_from AND id_to=:id_to 
+            OR id_from = :id_to AND id_to=:id_from
+            order by timestamp DESC
+            fetch first row only    
+ 
+        ');
+            $stmt->bindParam(':id_from', $_SESSION['idUser'], PDO::PARAM_INT);
+            $stmt->bindParam(':id_to', $user->getId(),  PDO::PARAM_INT);
+            $stmt->execute();
+            $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            foreach ($messages as $msg) {
+                array_push($result, new Message($msg['id_from'], $msg['id_to'], $msg['content']));
+            }
+        }
+        return $result;
+    }
+
     public function filter($filter): ?array
     {
         $stmt = '';
@@ -183,10 +210,10 @@ class UserRepository extends Repository
     {
         $searchString = '%' . strtolower($searchString) . '%';
         $stmt = $this->database->connect()->prepare('
-            SELECT u.id , email, password, name, surname, description, likes, dislikes, photo, first_mountain, second_mountain
+            SELECT u.id , email, password, name, surname, description,likes,dislikes, photo, first_mountain, second_mountain,followed, followers
             FROM users u INNER JOIN users_details ud
             ON u.id_user_details = ud.id inner join profile_details pd on pd.id = u.id_profile_details
-            WHERE LOWER(name) LIKE :search OR LOWER(surname) LIKE :search
+            WHERE LOWER(ud.name) LIKE :search OR LOWER(ud.surname) LIKE :search
         ');
         $stmt->bindParam(':search', $searchString, PDO::PARAM_STR);
         $stmt->execute();
@@ -273,8 +300,8 @@ class UserRepository extends Repository
         ');
         $desc = $user->getDescription();
         $stmt->bindParam(':description', $desc, PDO::PARAM_STR);
-//        $stmt->bindParam(':firstMountain', $user->getFirstMountain(), PDO::PARAM_STR);
-//        $stmt->bindParam(':secondMountain', $user->getSecondMountain(), PDO::PARAM_STR);
+        $stmt->bindParam(':firstMountain', $user->getFirstMountain(), PDO::PARAM_STR);
+        $stmt->bindParam(':secondMountain', $user->getSecondMountain(), PDO::PARAM_STR);
         $stmt->execute();
 
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -388,7 +415,6 @@ class UserRepository extends Repository
          ');
         }
 
-        $stmt2->bindParam(':table', $table);
         $stmt2->bindParam('id_liked', $id);
         $stmt2->bindParam('id_liking', $_SESSION['idUser']);
         $stmt2->execute();

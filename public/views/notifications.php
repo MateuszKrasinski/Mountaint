@@ -15,54 +15,30 @@
 <div class="base-container">
     <?PHP include('public/views/nav.php') ?>
     <main>
-        <div class="message">
-            <div class="photo-container">
-                <div class="photo"><img src="/public/img/person2.svg" alt=""></div>
-            </div>
-            <div class="message-container">
-                <div class="user">Name Surname</div>
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores earum fuga
-                    fugit
-                    illo itaque nemo non ratione tenetur! Cum dicta doloribus in neque nihil nobis non obcaecati,
-                    ratione
-                    rem sed!
-                </div>
-            </div>
-        </div>
-        <div class="message">
-            <div class="photo-container">
-                <div class="photo"><img src="/public/img/person3.svg" alt=""></div>
-            </div>
-            <div class="message-container">
-                <div class="user">Name Surname</div>
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores earum fuga
-                    fugit
-                    illo itaque nemo non ratione tenetur! Cum dicta doloribus in neque nihil nobis non obcaecati,
-                    ratione
-                    rem sed!
-                </div>
-            </div>
-        </div>
-        <div class="message">
-            <div class="photo-container">
-                <div class="photo"><img src="/public/img/person.svg" alt=""></div>
-            </div>
-            <div class="message-container">
-                <div class="user">Name Surname</div>
-                <div class="message-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolores earum fuga
-                    fugit
-                    illo itaque nemo non ratione tenetur! Cum dicta doloribus in neque nihil nobis non obcaecati,
-                    ratione
-                    rem sed!
-                </div>
-            </div>
-        </div>
 
+        <?php
+        foreach ($notifications as $notification): ?>
+            <div class="message">
+                <div class="photo-container">
+                    <div class="photo"><a href="friendProfile?profile=<?php echo $notification->getFrom()->getId(); ?>"><img
+                                    src="/public/img/<?= $notification->getFrom()->getPhoto(); ?>"></a></div>
+                </div>
+                <div class="message-container">
+                    <div class="user"><?= $notification->getFrom()->getName() . " " . $notification->getFrom()->getSurname(); ?></div>
+                    <div class="message-text"><?= $notification->getType() ?>
+                        <?php if($notification->getTrip()!=null):?>
+                            <div class="photo-container">
+                                <div class="trip-photo"><a href="tripProfile?profile=<?php echo $notification->getTrip()->getId(); ?>"><img
+                                                src="/public/img/<?= $notification->getTrip()->getImage(); ?>"></a></div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+        <?php endforeach ?>
     </main>
 </div>
 
-
-</div>
 
 </body>
 

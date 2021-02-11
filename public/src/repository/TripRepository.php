@@ -91,6 +91,17 @@ class TripRepository extends Repository
         return $result;
     }
 
+    public function getTripOwner($tripId): int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT id_user FROM users_trips where id_trip = :id_trip
+        ');
+        $stmt->bindParam(':id_trip', $tripId, PDO::PARAM_INT);
+        $stmt->execute();
+        $participants = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $participants[0]['id_user'];
+    }
+
     public function getTripParticipants($tripId): array
     {
         $stmt = $this->database->connect()->prepare('
@@ -102,6 +113,17 @@ class TripRepository extends Repository
         return $participants;
     }
 
+    public function getTripId(Trip $trip): int
+    {
+        $stmt = $this->database->connect()->prepare('
+            SELECT * FROM public.trips WHERE title = :title AND description = :description
+        ');
+        $stmt->bindParam(':title', $trip->getTitle(), PDO::PARAM_STR);
+        $stmt->bindParam(':description', $trip->getDescription(), PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $data['id'];
+    }
 
     public function getProjectByTitle(string $searchString): array
     {
@@ -141,7 +163,7 @@ class TripRepository extends Repository
                     where id_trip = :id_trip  ');
             $stmt3 = $stmt = $this->database->connect()->prepare('
                  delete  from trips
-                    where id = :id_trip');
+                    where id = :id');
         } else {
             $stmt2 = $this->database->connect()->prepare('
                 delete  from users_trips 
@@ -151,8 +173,9 @@ class TripRepository extends Repository
                 where id = :id
         ');
         }
+        if(!$iSOwner)$stmt2->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt2->bindParam(':id_trip', $id, PDO::PARAM_INT);
-        if (!$iSOwner) $stmt2->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
+
         $stmt2->execute();
         $stmt3->bindParam(':id', $id, PDO::PARAM_INT);
         $stmt3->execute();
@@ -184,20 +207,20 @@ class TripRepository extends Repository
         return $stmt->fetchAll(PDO::FETCH_ASSOC);;
     }
 
-    public function getTripsId($type):array{
+    public function getTripsId($type): array
+    {
         $stmt = $this->database->connect()->prepare('
             SELECT id_trip FROM users_trips
             inner join trips t on t.id = users_trips.id_trip
             where id_user = :id_user AND owner = :is_owner
         ');
-        ($type=="myTrips")?$isOwner= true:$isOwner=false;
+        ($type == "myTrips") ? $isOwner = true : $isOwner = false;
         $stmt->bindParam(':id_user', $_SESSION['idUser'], PDO::PARAM_INT);
         $stmt->bindParam(':is_owner', $isOwner, PDO::PARAM_INT);
         $stmt->execute();
         $trips = $stmt->fetchAll(PDO::FETCH_COLUMN);
         return $trips;
     }
-
 
 
 }

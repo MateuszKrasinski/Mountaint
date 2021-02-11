@@ -13,6 +13,7 @@ class TripController extends AppController
 
     private $message = [];
     private $tripRepository;
+    private $notificationRepository;
 
     public function joinTrip($isProfileView = false)
     {
@@ -23,10 +24,12 @@ class TripController extends AppController
 
             header('Content-type: application/json');
             http_response_code(200);
-            if ($decoded['option'] == "join")
+            if ($decoded['option'] == "join") {
                 $this->tripRepository->newParticipant($decoded['id_trip']);
-            elseif ($decoded['option'] == "leave")
-                $this->tripRepository->removeParticipant($decoded['id_trip']);
+                $this->notificationRepository->newNotification($this->tripRepository->getTripOwner($decoded['id_trip']), "joined your trip"."/".$decoded['id_trip']);
+
+            } elseif ($decoded['option'] == "leave")
+                $this->tripRepository->removeParticipant($decoded['id_trip'], false);
             elseif ($decoded['option'] == "remove")
                 $this->tripRepository->removeParticipant($decoded['id_trip'], true);
         }
@@ -71,6 +74,7 @@ class TripController extends AppController
     {
         parent::__construct();
         $this->tripRepository = new TripRepository();
+        $this->notificationRepository = new NotificationRepository();
     }
 
     public function trip()

@@ -35,6 +35,7 @@ function loadProjects(projects) {
 function createProject(project, liked, disliked,followed) {
     console.log(liked);
     console.log(disliked);
+    console.log(project);
     const template = document.querySelector("#friend-template");
     const clone = template.content.cloneNode(true);
     const div = clone.querySelector("div");
@@ -52,12 +53,12 @@ function createProject(project, liked, disliked,followed) {
     const dislike = clone.querySelector(".fa-minus-square");
     dislike.innerText = project.dislikes;
     dislike.addEventListener('click', giveDislike);
-    if (disliked.includes(project.id)) dislike.classList.add('highlight');
+    if (disliked!== undefined && disliked.includes(project.id)) dislike.classList.add('highlight');
     const wantToGo = clone.querySelectorAll(".want-to-go")
     wantToGo[0].innerText = project.first_mountain;
     wantToGo[1].innerText = project.second_mountain;
     const follow = clone.querySelector(".join-btn");
-    if( followed.includes(project.id)) follow.innerText = 'unfollow';
+    if( followed!== undefined &&followed.includes(project.id)) follow.innerText = 'unfollow';
     follow.addEventListener('click', giveFollow);
     follow.addEventListener('click', moveAway);
     projectContainer.appendChild(clone);

@@ -47,7 +47,7 @@ function joinTrip() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
-        }).then(()=>console.log('joined'))
+        }).then(()=>console.log(this.innerText))
 }
 
 

@@ -45,5 +45,6 @@ Router::get('filter', 'SecurityController');
 Router::get('chat', 'SecurityController');
 Router::get('sendMessage', 'SecurityController');
 Router::get('getMessages', 'SecurityController');
+Router::get('getNotifications', 'NotificationController');
 
 Router::run($path);

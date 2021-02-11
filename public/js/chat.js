@@ -37,12 +37,12 @@ function getMessages() {
     });
 
 }
-setInterval(getMessages, 2000);
-function loadMessages(messages, loggedUser) {
-    messages.forEach((msg) => {
-        createMessage(msg, loggedUser);
-    })
-}
+// setInterval(getMessages, 2000);
+// function loadMessages(messages, loggedUser) {
+//     messages.forEach((msg) => {
+//         createMessage(msg, loggedUser);
+//     })
+// }
 
 function createMessage(passedContent, loggedUser) {
     let content = passedContent['content'];

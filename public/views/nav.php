@@ -15,8 +15,8 @@
             <a href="messages" class="button">Messages</a>
         </li>
         <li>
-            <a href="notifications"><i class="fas fa-bell"></i></a>
-            <a href="notifications" class="button">Notifications</a>
+            <a href="getNotifications"><i class="fas fa-bell"></i></a>
+            <a href="getNotifications" class="button">Notifications</a>
         </li>
         <li>
             <a href="logout"><i class="fas fa-sign-out-alt"></i></a>
