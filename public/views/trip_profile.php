@@ -8,6 +8,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://kit.fontawesome.com/b6de4b91fe.js" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="/public/js/trip.js" defer></script>
     <title>New Trip</title>
 </head>
 
@@ -15,7 +16,7 @@
 <div class="base-container">
     <?PHP include('public/views/nav.php') ?>
     <main>
-        <form onsubmit=noReload() action="joinTripFromProfile" method="POST" ENCTYPE="multipart/form-data">
+        <form onsubmit=noReload() action="" method="POST" ENCTYPE="multipart/form-data">
             <input type="hidden" name="id" value="<?= $trip->getId(); ?>">
             <div class="messages">
                 <?php
@@ -66,7 +67,7 @@
                         </div>
                     </div>
                     <div class="btn-container">
-                        <button type="submit">join</button>
+                        <button class="join-btn" type="submit">join</button>
                     </div>
 
 

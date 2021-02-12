@@ -29,10 +29,7 @@ class DefaultController extends AppController
         $this->render('add_project');
     }
 
-    public function messages()
-    {
-        $this->render('messages');
-    }
+
 
     public function notifications()
     {

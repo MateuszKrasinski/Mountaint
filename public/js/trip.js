@@ -40,17 +40,16 @@ function giveDislike() {
 
 function joinTrip() {
     const idTrip = (this.parentElement.parentElement.parentElement.id);
-    const data = {id_trip: idTrip};
-    fetch("/joinTrip", {
-        method: "POST",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    }).then(() => {
-        console.log('finished')
-    })
+    const data = {id_trip: idTrip, option: this.innerText};
+        fetch("/joinTrip", {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        }).then(()=>console.log(this.innerText))
 }
+
 
 
 function searchTrip(event) {
@@ -76,13 +75,13 @@ function searchTrip(event) {
 
 
 function loadProjects(projects) {
-    projects.forEach(project => {
+    projects['trips'].forEach(project => {
         console.log(project);
-        createProject(project);
+        createProject(project,projects['joined'], projects['myTrips']);
     });
 }
 
-function createProject(project) {
+function createProject(project, joined, myTrips) {
     const template = document.querySelector("#project-template");
 
     const clone = template.content.cloneNode(true);
@@ -94,18 +93,13 @@ function createProject(project) {
     title.innerHTML = project.title;
     const description = clone.querySelector("p");
     description.innerHTML = project.description;
-    const like = clone.querySelector(".fa-heart");
-    like.innerText = project.like.length;
-    const dislike = clone.querySelector(".fa-minus-square");
-    dislike.innerText = project.dislike.length;
     const dateStart = clone.querySelector(".date");
     dateStart.innerText = project.date_start + "\n" + project.time_start;
     const dateFinish = clone.querySelector(".users");
-    dateFinish.innerHTML =  '<i class="fas fa-users"></i>'+project.participants.length;
+    dateFinish.innerHTML =  '<i class="fas fa-users"></i>'+project.participants;
     const join = clone.querySelector(".join-btn");
-
-    like.addEventListener('click',giveLike);
-    dislike.addEventListener('click', giveDislike);
+    if (joined.includes(project.id))join.innerText = 'leave';
+    if (myTrips.includes(project.id))join.innerText = 'remove';
     join.addEventListener('click', joinTrip);
     join.addEventListener('click', moveAway);
     projectContainer.appendChild(clone);
@@ -113,11 +107,12 @@ function createProject(project) {
 
 function filter() {
     let selectedOption = buttonMyProject.value;
-    fetch(`/${selectedOption}`).then(function (response) {
+    fetch(`/filterTrips/${selectedOption}`).then(function (response) {
         return response.json();
     }).then(function (projects) {
         projectContainer.innerHTML = "";
         loadProjects(projects)
+        console.log(selectedOption);
     });
 }
 

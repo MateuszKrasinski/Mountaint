@@ -6,6 +6,7 @@ require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/Logs.php';
 require_once __DIR__ . '/../repository/UserRepository.php';
 require_once __DIR__ . '/../repository/LogsRepository.php';
+require_once __DIR__ . '/../repository/NotificationRepository.php';
 
 class SecurityController extends AppController
 {
@@ -15,12 +16,14 @@ class SecurityController extends AppController
     private $message = [];
     private $userRepository;
     private $logsRepository;
+    private $notifyRepository;
 
     public function __construct()
     {
         parent::__construct();
         $this->userRepository = new UserRepository();
         $this->logsRepository = new logsRepository();
+        $this->notifyRepository = new NotificationRepository();
     }
 
     public function searchFriend()
@@ -32,10 +35,26 @@ class SecurityController extends AppController
 
             header('Content-type: application/json');
             http_response_code(200);
+            $liked = $this->userRepository->getLikedUsers();
+            $disliked = $this->userRepository->getDisLikedUsers();
+            echo json_encode(array('users' => $this->userRepository->getUsersByName($decoded['search']), 'liked' => $liked, 'disliked' => $disliked));
 
-            echo json_encode($this->userRepository->getUsersByName($decoded['search']));
         }
     }
+
+    public function sendMessage()
+    {
+        $contentType = isset($_SERVER["CONTENT_TYPE"]) ? trim($_SERVER["CONTENT_TYPE"]) : '';
+        if ($contentType === "application/json") {
+            $content = trim(file_get_contents("php://input"));
+            $decoded = json_decode($content, true);
+
+            header('Content-type: application/json');
+            http_response_code(200);
+            $this->userRepository->sendMessage($decoded['messageTo'], $decoded['content']);
+        }
+    }
+
 
     public function profile()
 
@@ -43,6 +62,27 @@ class SecurityController extends AppController
         $user = $this->userRepository->getUserById($_SESSION['idUser']);
 
         $this->render('profile', ['user' => $user]);
+    }
+
+    public function chat()
+
+    {
+        $id = intval($_GET['profile']);
+        $user = $this->userRepository->getUserById($id);
+        $messages = $this->userRepository->getMessages($id);
+        $this->render('chat', ['user' => $user, 'messages' => $messages]);
+    }
+
+    public function getMessages($id)
+    {
+        echo json_encode(['messages' => $this->userRepository->getJsonMessages($id), 'loggedUser' => $_SESSION['idUser']]);
+    }
+
+    public function messages()
+    {
+        $users = $this->userRepository->getUsers();
+        $lastMessages = $this->userRepository->getLastMessages($users);
+        $this->render('messages', ['users' => $users, "lastMessages" => $lastMessages]);
     }
 
     public function friendProfile()
@@ -59,8 +99,11 @@ class SecurityController extends AppController
 
     {
         $users = $this->userRepository->getUsers();
+        $liked = $this->userRepository->getLikedUsers();
+        $disliked = $this->userRepository->getDisLikedUsers();
+        $followed = $this->userRepository->getFollowedUsers();
 
-        $this->render('friend', ['users' => $users]);
+        $this->render('friend', ['users' => $users, 'liked' => $liked, 'disliked' => $disliked, 'followed' => $followed]);
 
     }
 
@@ -97,22 +140,22 @@ class SecurityController extends AppController
             $device = 'mobile';
         setcookie("host", $_SERVER["HTTP_HOST"], time() + 60, '/');
         setcookie("device", $device, time() + 60, '/');
-        $_SESSION['email'] = $email;
         $_SESSION['idUser'] = $userRepository->getUserId($user);
         $_SESSION['idProfileDetails'] = $userRepository->getUserProfileDetailsId($user);
         $_SESSION['idUserDetails'] = $userRepository->getUserDetailsId($user);
-        $_SESSION['user'] = $user;
         $name = $user->getName();
         $surname = $user->getSurname();
-        $log = new Logs($name,$surname,'chrome','data',$_SERVER['HTTP_HOST'],$device);
+        $log = new Logs($name, $surname, 'chrome', 'data', $_SERVER['HTTP_HOST'], $device);
         $this->logsRepository->addLogs($log);
         $url = "http://$_SERVER[HTTP_HOST]";
         header("Location: {$url}/profile");
     }
-    public function logout(): void{
+
+    public function logout(): void
+    {
         session_destroy();
-        setcookie("host", "", time() -3600, '/');
-        setcookie("device", "", time() -3600, '/');
+        setcookie("host", "", time() - 3600, '/');
+        setcookie("device", "", time() - 3600, '/');
         $this->render('login');
     }
 
@@ -120,31 +163,22 @@ class SecurityController extends AppController
     {
         $user = new User($_POST['email'], password_hash($_POST['password'], PASSWORD_DEFAULT), $_POST['name'], $_POST['surname'], $_POST['phone']);
         $condition = $this->userRepository->emailInBase($_POST['email']);
-        if(!$condition){
+        if (!$condition) {
             $this->userRepository->addUser($user);
             $this->render('login');
-        }
-        else{
+        } else {
             $this->render('register', ['messages' => ['User with this email  exists!']]);
         }
     }
-    public function followed(){
 
-            http_response_code(200);
-
-            echo json_encode($this->userRepository->getMyFollowed());
-    }
-    public function notFollowed(){
-
+    public function filter($filter)
+    {
         http_response_code(200);
+        $liked = $this->userRepository->getLikedUsers();
+        $disliked = $this->userRepository->getDisLikedUsers();
+        $followed = $this->userRepository->getFollowedUsers();
+        echo json_encode(array('users' => $this->userRepository->filter($filter), 'liked' => $liked, 'disliked' => $disliked, 'followed' => $followed));
 
-        echo json_encode($this->userRepository->getNotMyFollowed());
-    }
-    public function allFriends(){
-
-        http_response_code(200);
-
-        echo json_encode($this->userRepository->getAllFriends());
     }
 
     public function setProfile()
@@ -157,7 +191,7 @@ class SecurityController extends AppController
                 dirname(__DIR__) . self::UPLOAD_DIRECTORY . $_FILES['file']['name']
             );
 
-            $user = $this->userRepository->getUser($_SESSION['email']);
+            $user = $this->userRepository->getUserById($_SESSION['idUser']);
             $idProfileDetails = $this->userRepository->getUserProfileDetailsId($user);
             $this->userRepository->setProfile($idProfileDetails, $user);
             $url = "http://$_SERVER[HTTP_HOST]";
@@ -171,19 +205,35 @@ class SecurityController extends AppController
         }
 
     }
-    public function likeFriend(int $id) {
+
+    public function likeFriend(int $id)
+    {
         $this->userRepository->like($id);
-        $user = $this->userRepository->getUserById($id);
-        echo json_encode(count($user->getLikes()));
+        $this->notifyRepository->newNotification($id, "liked You");
+
         http_response_code(200);
     }
 
-    public function dislikeFriend(int $id) {
-        $this->userRepository->dislike($id);
-        $user = $this->userRepository->getUserById($id);
-        echo json_encode(count($user->getDislikes()));
+    public function unlikeFriend(int $id)
+    {
+        $this->userRepository->like($id, true);
         http_response_code(200);
     }
+
+    public function dislikeFriend(int $id)
+    {
+        $this->userRepository->dislike($id);
+        $this->notifyRepository->newNotification($id, "disliked You");
+
+        http_response_code(200);
+    }
+
+    public function undislikeFriend(int $id)
+    {
+        $this->userRepository->dislike($id, true);
+        http_response_code(200);
+    }
+
     private function validate(array $file): bool
     {
         if ($file['size'] > self::MAX_FILE_SIZE) {
@@ -197,14 +247,23 @@ class SecurityController extends AppController
         }
         return true;
     }
-    public function follow(int $id){
-        $followedUser = $this->userRepository->getUserById($id);
-        if(!in_array($_SESSION['idUser'], $followedUser->getFollowers()))
-            $this->userRepository->follow($id);
+
+    public function follow(int $id)
+    {
+        $this->userRepository->follow($id);
+        $this->notifyRepository->newNotification($id, "followed You");
     }
-    public function follow2(){
+
+
+    public function unfollow(int $id)
+    {
+        $this->userRepository->follow($id, true);
+    }
+
+    public function follow2()
+    {
         $followedUser = $this->userRepository->getUserById($_GET['id']);
-        if(!in_array($_SESSION['idUser'], $followedUser->getFollowers()))
+        if (!in_array($_SESSION['idUser'], $followedUser->getFollowers()))
             $this->userRepository->follow($_GET['id']);
         $users = $this->userRepository->getUsers();
         $this->render('friend', ['users' => $users]);

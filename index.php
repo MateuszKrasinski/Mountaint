@@ -9,7 +9,7 @@ Router::get('trip', 'TripController');
 Router::get('profile', 'SecurityController');
 Router::get('logout', 'SecurityController');
 Router::get('addTrip', 'TripController');
-Router::get('messages', 'DefaultController');
+Router::get('messages', 'SecurityController');
 Router::get('notifications', 'DefaultController');
 Router::post('login', 'SecurityController');
 Router::post('newUser', 'SecurityController');
@@ -18,25 +18,33 @@ Router::post('searchFriend', 'SecurityController');
 Router::post('friendProfile', 'SecurityController');
 Router::post('tripProfile', 'TripController');
 Router::post('joinTrip', 'TripController');
+Router::post('leaveTrip', 'TripController');
+Router::post('removeTrip', 'TripController');
 Router::post('joinTripFromProfile', 'TripController');
 Router::get('register', 'DefaultController');
 Router::post('search', 'TripController');
 Router::get('like', 'TripController');
 Router::get('dislike', 'TripController');
 Router::get('likeFriend', 'SecurityController');
+Router::get('unlikeFriend', 'SecurityController');
 Router::get('dislikeFriend', 'SecurityController');
+Router::get('undislikeFriend', 'SecurityController');
 Router::get('follow', 'SecurityController');
+Router::get('unfollow', 'SecurityController');
 Router::get('follow2', 'SecurityController');
 Router::get('myFriends', 'SecurityController');
 Router::get('myTrips', 'TripController');
 Router::get('allTrips', 'TripController');
 Router::get('joinedTrips', 'TripController');
 Router::get('otherTrips', 'TripController');
+Router::get('filterTrips', 'TripController');
 Router::get('followed', 'SecurityController');
 Router::get('notFollowed', 'SecurityController');
 Router::get('allFriends', 'SecurityController');
-
-
-
+Router::get('filter', 'SecurityController');
+Router::get('chat', 'SecurityController');
+Router::get('sendMessage', 'SecurityController');
+Router::get('getMessages', 'SecurityController');
+Router::get('getNotifications', 'NotificationController');
 
 Router::run($path);

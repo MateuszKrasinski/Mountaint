@@ -259,7 +259,7 @@ form > textarea::placeholder, .create-trip-container::placeholder {
     width: 30%;
 }
 
-button {
+.join-btn{
     width: 12vw;
     height: 6vh;
     color: white;
